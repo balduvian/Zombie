@@ -16,7 +16,7 @@ public class Game {
 		world = new World((int)(Math.random()*1000+100));
 		window = new Window();
 		while(true){
-			System.out.println(window.pressed.keys[87]);
+			lag();
 			if(window.pressed.keys[upbind]){
 				globaly -= 0.01;
 			}
@@ -29,6 +29,13 @@ public class Game {
 			if(window.pressed.keys[rightbind]){
 				globalx += 0.01;
 			}		
+		}
+	}
+	
+	public void lag(){
+		double f = 0;
+		for(int i=0;i<89;i++){
+			f+= Math.random();
 		}
 	}
 	

@@ -26,14 +26,14 @@ public class Window extends JFrame{
 		height = winh;
 		pixelw = (int)(winw*pfac);
 		pixelh = (int)(winh*pfac);
-		cdy = (int)Math.ceil(pixelh/(Game.world.csize*tiles))+1;//chunks displayed at a time
-		cdx = (int)Math.ceil(pixelw/(Game.world.csize*tiles))+1;
+		cdy = (int)Math.ceil(pixelh/(Game.world.csize*tiles))+3;//chunks displayed at a time
+		cdx = (int)Math.ceil(pixelw/(Game.world.csize*tiles))+2;
 		setSize(width,height);
 	}
 	
 	public Window(){
 		setrender(640,480,1.0,32);
-		setResizable(false);
+		setResizable(true);
 		pressed = new Misen();
 		addKeyListener(pressed);
 		canvas = new Canvas();
@@ -69,10 +69,10 @@ public class Window extends JFrame{
 			World ga = Game.world;
 			for(int y=0;y<cdy;y++){//draw world
 				for(int x=0;x<cdx;x++){
-					//System.out.println(cdy+" "+cdx);
+					System.out.println(cdy+" "+cdx);
 					try{
-						int yn = (int)(((Game.globaly+y*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws);
-						int xn = (int)(((Game.globalx+x*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws);
+						int yn = (int)Math.round(((Game.globaly+y*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws)-1;
+						int xn = (int)Math.round(((Game.globalx+x*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws)-1;
 						for(int yy=0;yy<ga.csize;yy++){//draw world
 							for(int xx=0;xx<ga.csize;xx++){
 								int cn = ga.chunks[yn][xn][yy][xx]*28;
