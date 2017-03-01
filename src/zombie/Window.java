@@ -69,7 +69,6 @@ public class Window extends JFrame{
 			World ga = Game.world;
 			for(int y=0;y<cdy;y++){//draw world
 				for(int x=0;x<cdx;x++){
-					System.out.println(cdy+" "+cdx);
 					try{
 						int yn = (int)Math.round(((Game.globaly+y*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws)-1;
 						int xn = (int)Math.round(((Game.globalx+x*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws)-1;

@@ -12,30 +12,47 @@ public class Game {
 	static int downbind = 83;
 	static int rightbind = 68;
 	
+	int pps = 10;
+	
+	private long goal = 0;
+	private long seccount = 0;
+	private int loopcount = 0;
+	private long dong = System.currentTimeMillis();
+	private double tps = 0;//ticks per second
+	
 	public Game(){
 		world = new World((int)(Math.random()*1000+100));
 		window = new Window();
 		while(true){
-			lag();
+			
+			if(seccount==0){
+				loopcount = 0;
+				goal = System.currentTimeMillis();
+			}else{
+				loopcount++;
+				seccount = System.currentTimeMillis()-goal;
+				if(seccount>=1000){
+					seccount = 0;
+					tps = ((double)loopcount/seccount);
+				}
+			}
+			
+			System.out.println("lop: "+loopcount);
+			System.out.println("sec: "+seccount);
+			System.out.println("tps: "+tps);
+			
 			if(window.pressed.keys[upbind]){
-				globaly -= 0.01;
+				globaly -= pps*tps;
 			}
 			if(window.pressed.keys[leftbind]){
-				globalx -= 0.01;
+				globalx -= pps*tps;
 			}
 			if(window.pressed.keys[downbind]){
-				globaly += 0.01;
+				globaly += pps*tps;
 			}
 			if(window.pressed.keys[rightbind]){
-				globalx += 0.01;
-			}		
-		}
-	}
-	
-	public void lag(){
-		double f = 0;
-		for(int i=0;i<89;i++){
-			f+= Math.random();
+				globalx += pps*tps;
+			}
 		}
 	}
 	
