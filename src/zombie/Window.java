@@ -60,12 +60,18 @@ public class Window extends JFrame{
 		public void keyTyped(KeyEvent ex) {}
 	}
 	
+	public int xdisp(double x, int w){
+		return (int)(x-(w/2)-Game.globalx);
+	}
+	public int ydisp(double y, int h){
+		return (int)(y-(h/2)-Game.globaly);
+	}
+	
 	public class Canvas extends JPanel{
 		private static final long serialVersionUID = 7723498599824735171L;
 
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
-			//g.fillRect(32,32,16,16);
 			World ga = Game.world;
 			for(int y=0;y<cdy;y++){//draw world
 				for(int x=0;x<cdx;x++){
@@ -76,12 +82,21 @@ public class Window extends JFrame{
 							for(int xx=0;xx<ga.csize;xx++){
 								int cn = ga.chunks[yn][xn][yy][xx]*28;
 								g.setColor(new Color(cn,cn,cn));
-								g.fillRect(xn*tiles*ga.csize+(xx*tiles)-(int)Game.globalx, yn*tiles*ga.csize+(yy*tiles)-(int)Game.globaly, tiles, tiles);
+								g.fillRect(xdisp(xn*tiles*ga.csize+(xx*tiles),tiles),ydisp(yn*tiles*ga.csize+(yy*tiles),tiles),tiles,tiles);
+								//g.fillRect(xn*tiles*ga.csize+(xx*tiles)-(int)Game.globalx, yn*tiles*ga.csize+(yy*tiles)-(int)Game.globaly, tiles, tiles);
 							}
 						}
 					}catch(Exception ex){}
 				}
 			}
+			for(int c=0;c<Game.enumm;c++){
+				Entity et = Game.entities[c];
+				if(et!=null){
+					g.drawImage(et.face,xdisp(et.x,et.w),ydisp(et.y,et.h),et.w,et.h,null);
+				}
+			}
+			g.setColor(Color.black);
+			g.drawString(Game.globaly+" "+Game.globalx, 20, 20);
 			repaint();
 		}
 	}
