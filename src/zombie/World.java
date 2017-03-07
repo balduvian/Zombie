@@ -3,7 +3,8 @@ package zombie;
 public class World {
 	
 	int seed;
-	int rz = 5; //render zone
+	int rb = 2; //render buffer
+	int rz;
 	int csize = 8;
 	int[][][][] chunks;//cy, cx, y in chunk, x in chunk
 	int[][][][] rendered;//the rendered chunks;
@@ -16,6 +17,7 @@ public class World {
 	
 	public World(int s){
 		seed = s;
+		rz = rb*2+1;
 		worw = rz;
 		worh = rz;
 		offy = worh/2;
@@ -106,22 +108,35 @@ public class World {
 	}
 	
 	public void shift(int dir){
+		boolean epn = false;
 		if(dir == 0){
 			rofy--;
-			if(offy+rofy-(rz/2)<0){//do we need to load more chunks
-				expand(0);
-			}
-			for(int yy=0;yy<rz;yy++){//then redo the render
-				for(int xx=0;xx<rz;xx++){
-					rendered[yy][xx] = chunks[yy-rofy][xx-rofx];
-				}
+			if(offy+rofy-rb<0){//do we need to load more chunks
+				epn = true;
 			}
 		}else if(dir == 1){
-			
+			rofx++;
+			if(offx+rofx+rb>=worw){//do we need to load more chunks
+				epn = true;
+			}
 		}else if(dir == 2){
-			
+			rofy++;
+			if(offy+rofy+rb>=worh){//do we need to load more chunks
+				epn = true;
+			}
 		}else if(dir == 3){
-			
+			rofx--;
+			if(offx+rofx-rb<0){//do we need to load more chunks
+				epn = true;
+			}
+		}
+		if(epn){
+			expand(dir);
+		}
+		for(int yy=0;yy<rz;yy++){//then redo the render
+			for(int xx=0;xx<rz;xx++){
+				rendered[yy][xx] = chunks[yy-rofy][xx-rofx];
+			}
 		}
 	}
 	
@@ -138,7 +153,8 @@ public class World {
 			for(int xx=0;xx<csize;xx++){
 				//int ay = y*ws+yy;
 				//int ax = x*ws+xx;
-				chunks[y][x][yy][xx] = (int)(Math.random()*10);
+				chunks[y][x][yy][xx] = (y+x);
+				//chunks[y][x][yy][xx] = (int)(Math.random()*10);
 			}
 		}
 	}

@@ -5,6 +5,7 @@ public class Game {
 	final static int emax = 256;
 	static Entity[] entities = new Entity[emax];
 	static int enumm = 0;
+	static int square = 32;
 	
 	static Window window;
 	static World world;
@@ -16,7 +17,7 @@ public class Game {
 	static int downbind = 83;
 	static int rightbind = 68;
 	
-	int pps = 128;
+	int pps = 1000;
 	
 	private long goal = 0;
 	private long seccount = 0;
@@ -44,11 +45,11 @@ public class Game {
 		world = new World((int)(Math.random()*1000+100));
 		window = new Window();
 		
-		create(new Entity(90,90,48,48,100));
-		create(new Entity(140,140,48,48,100));
-		create(new Entity(60,60,48,48,100));
-		create(new Entity(200,90,48,48,100));
-		create(new Entity(0,0,48,48,100));
+		create(new Entity(0,0,28,28,100));
+		create(new Entity(32,32,28,28,100));
+		create(new Entity(64,64,28,28,100));
+		create(new Entity(96,96,28,28,100));
+		create(new Entity(128,128,28,28,100));
 		while(true){
 			
 			if(seccount==0){

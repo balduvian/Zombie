@@ -32,7 +32,7 @@ public class Window extends JFrame{
 	}
 	
 	public Window(){
-		setrender(640,480,1.0,32);
+		setrender(640,480,1.0,Game.square);
 		setResizable(true);
 		pressed = new Misen();
 		addKeyListener(pressed);
@@ -61,10 +61,10 @@ public class Window extends JFrame{
 	}
 	
 	public int xdisp(double x, int w){
-		return (int)(x-(w/2)-Game.globalx);
+		return (int)(x-(w/2)-Game.globalx)-(width/2);
 	}
 	public int ydisp(double y, int h){
-		return (int)(y-(h/2)-Game.globaly);
+		return (int)(y-(h/2)-Game.globaly)-(height/2);
 	}
 	
 	public class Canvas extends JPanel{
@@ -73,20 +73,15 @@ public class Window extends JFrame{
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			World ga = Game.world;
-			for(int y=0;y<cdy;y++){//draw world
-				for(int x=0;x<cdx;x++){
-					try{
-						int yn = (int)Math.round(((Game.globaly+y*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws)-1;
-						int xn = (int)Math.round(((Game.globalx+x*ga.csize*tiles)/(ga.ws*ga.csize*tiles))*ga.ws)-1;
-						for(int yy=0;yy<ga.csize;yy++){//draw world
-							for(int xx=0;xx<ga.csize;xx++){
-								int cn = ga.chunks[yn][xn][yy][xx]*28;
-								g.setColor(new Color(cn,cn,cn));
-								g.fillRect(xdisp(xn*tiles*ga.csize+(xx*tiles),tiles),ydisp(yn*tiles*ga.csize+(yy*tiles),tiles),tiles,tiles);
-								//g.fillRect(xn*tiles*ga.csize+(xx*tiles)-(int)Game.globalx, yn*tiles*ga.csize+(yy*tiles)-(int)Game.globaly, tiles, tiles);
-							}
+			for(int y=0;y<ga.rz;y++){//draw world
+				for(int x=0;x<ga.rz;x++){
+					for(int yy=0;yy<ga.csize;yy++){//draw world
+						for(int xx=0;xx<ga.csize;xx++){
+							int ccp = ga.rendered[y][x][yy][xx]*18;
+							g.setColor(new Color(ccp,ccp,ccp));
+							g.fillRect(((x*ga.csize*tiles)-((ga.csize*tiles)/2))+((xx*tiles)-(tiles/2))-(int)(Game.globalx%(ga.csize*tiles))-(width/2), ((y*ga.csize*tiles)-((ga.csize*tiles)/2))+((yy*tiles)-(tiles/2))-(int)(Game.globaly%(ga.csize*tiles))-(height/2), tiles, tiles);
 						}
-					}catch(Exception ex){}
+					}
 				}
 			}
 			for(int c=0;c<Game.enumm;c++){
@@ -95,6 +90,8 @@ public class Window extends JFrame{
 					g.drawImage(et.face,xdisp(et.x,et.w),ydisp(et.y,et.h),et.w,et.h,null);
 				}
 			}
+			g.setColor(Color.red);
+			g.drawRect(0, 0, width-1, height-1);
 			g.setColor(Color.black);
 			g.drawString(Game.globaly+" "+Game.globalx, 20, 20);
 			repaint();
