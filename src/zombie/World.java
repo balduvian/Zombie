@@ -153,7 +153,7 @@ public class World {
 			for(int xx=0;xx<csize;xx++){
 				//int ay = y*ws+yy;
 				//int ax = x*ws+xx;
-				chunks[y][x][yy][xx] = (y+x);
+				chunks[y][x][yy][xx] = Math.abs((y-offy)%5+(x-offx)%5)+(int)(Math.random()*2);
 				//chunks[y][x][yy][xx] = (int)(Math.random()*10);
 			}
 		}

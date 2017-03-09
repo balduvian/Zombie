@@ -60,6 +60,14 @@ public class Window extends JFrame{
 		public void keyTyped(KeyEvent ex) {}
 	}
 	
+	public void pdr(int x, int y, int w, int h, int mod, Graphics g){
+		g.fillRect((int)(x-(w/2)-(int)(Game.globalx%mod))-(width/2), (int)(y-(h/2)-(int)(Game.globaly%mod))-(height/2), w, h);
+	}
+	
+	public void odr(int x, int y, int w, int h, Graphics g){
+		g.fillRect((int)(x-(w/2)-Game.globalx)-(width/2), (int)(y-(h/2)-Game.globaly)-(height/2), w, h);
+	}
+	
 	public int xdisp(double x, int w){
 		return (int)(x-(w/2)-Game.globalx)-(width/2);
 	}
@@ -79,7 +87,10 @@ public class Window extends JFrame{
 						for(int xx=0;xx<ga.csize;xx++){
 							int ccp = ga.rendered[y][x][yy][xx]*18;
 							g.setColor(new Color(ccp,ccp,ccp));
-							g.fillRect(((x*ga.csize*tiles)-((ga.csize*tiles)/2))+((xx*tiles)-(tiles/2))-(int)(Game.globalx%(ga.csize*tiles))-(width/2), ((y*ga.csize*tiles)-((ga.csize*tiles)/2))+((yy*tiles)-(tiles/2))-(int)(Game.globaly%(ga.csize*tiles))-(height/2), tiles, tiles);
+							//-(int)(Game.globalx%(ga.csize*tiles))
+
+							pdr((x*ga.csize*tiles)+xx*tiles,(y*ga.csize*tiles)+yy*tiles,tiles,tiles,ga.csize*tiles,g);
+							//g.fillRect(((x*ga.csize*tiles)-((ga.csize*tiles)/2))+((xx*tiles)-(tiles/2))-(int)(Game.globalx%(ga.csize*tiles))-(width/2), ((y*ga.csize*tiles)-((ga.csize*tiles)/2))+((yy*tiles)-(tiles/2))-(int)(Game.globaly%(ga.csize*tiles))-(height/2), tiles, tiles);
 						}
 					}
 				}
@@ -87,7 +98,9 @@ public class Window extends JFrame{
 			for(int c=0;c<Game.enumm;c++){
 				Entity et = Game.entities[c];
 				if(et!=null){
-					g.drawImage(et.face,xdisp(et.x,et.w),ydisp(et.y,et.h),et.w,et.h,null);
+					g.setColor(Color.red);
+					odr((int)(et.x),(int)(et.y),tiles,tiles,g);
+					//g.drawImage(et.face,xdisp(et.x,et.w),ydisp(et.y,et.h),et.w,et.h,null);
 				}
 			}
 			g.setColor(Color.red);

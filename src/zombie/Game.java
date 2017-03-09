@@ -45,11 +45,10 @@ public class Game {
 		world = new World((int)(Math.random()*1000+100));
 		window = new Window();
 		
+		globalx = (world.worw*world.csize*square)/2*-1;
+		globaly = (world.worh*world.csize*square)/2*-1;
+		
 		create(new Entity(0,0,28,28,100));
-		create(new Entity(32,32,28,28,100));
-		create(new Entity(64,64,28,28,100));
-		create(new Entity(96,96,28,28,100));
-		create(new Entity(128,128,28,28,100));
 		while(true){
 			
 			if(seccount==0){
@@ -64,6 +63,10 @@ public class Game {
 					System.out.println("tps: "+tpm);
 					seccount = 0;
 				}
+			}
+			
+			if(globalx<world.rz*world.offy){
+				
 			}
 			
 			if(window.pressed.keys[upbind]){
