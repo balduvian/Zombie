@@ -35,8 +35,10 @@ public class World {
 	}
 	
 	public void expand(int dir){
+		System.out.println("EXPANDING DONGER");
 		if(dir == 0){
-			int[][][][] neww = new int[worh++][worw][csize][csize];
+			worh++;
+			int[][][][] neww = new int[worh][worw][csize][csize];
 			offy--;
 			for(int ty=0;ty<worh;ty++){
 				for(int tx=0;tx<worw;tx++){
@@ -47,14 +49,17 @@ public class World {
 							}
 						}
 					}else{
-						neww[ty][tx] = chunks[ty-1][tx];
+						try{
+							neww[ty][tx] = chunks[ty-1][tx];
+						}catch(Exception ex){}
 					}
 				}
 			}
 			chunks = neww.clone();
 		}
 		if(dir == 1){
-			int[][][][] neww = new int[worh++][worw][csize][csize];
+			worw++;
+			int[][][][] neww = new int[worh][worw][csize][csize];
 			for(int ty=0;ty<worh;ty++){
 				for(int tx=0;tx<worw;tx++){
 					if(tx==worw-1){
@@ -71,7 +76,8 @@ public class World {
 			chunks = neww.clone();
 		}
 		if(dir == 2){
-			int[][][][] neww = new int[worh++][worw][csize][csize];
+			worh++;
+			int[][][][] neww = new int[worh][worw][csize][csize];
 			for(int ty=0;ty<worh;ty++){
 				for(int tx=0;tx<worw;tx++){
 					if(ty==worh-1){
@@ -88,7 +94,8 @@ public class World {
 			chunks = neww.clone();
 		}
 		if(dir == 3){
-			int[][][][] neww = new int[worh][worw++][csize][csize];
+			worw++;
+			int[][][][] neww = new int[worh][worw][csize][csize];
 			offx--;
 			for(int ty=0;ty<worh;ty++){
 				for(int tx=0;tx<worw;tx++){
@@ -99,7 +106,9 @@ public class World {
 							}
 						}
 					}else{
-						neww[ty][tx] = chunks[ty][tx-1];
+						try{
+							neww[ty][tx] = chunks[ty][tx-1];
+						}catch(Exception ex){}
 					}
 				}
 			}
@@ -110,23 +119,23 @@ public class World {
 	public void shift(int dir){
 		boolean epn = false;
 		if(dir == 0){
-			rofy--;
-			if(offy+rofy-rb<0){//do we need to load more chunks
+			rofy++;
+			if(offy-rofy-rb<0){//do we need to load more chunks
 				epn = true;
 			}
 		}else if(dir == 1){
-			rofx++;
-			if(offx+rofx+rb>=worw){//do we need to load more chunks
+			rofx--;
+			if(offx-rofx+rb>=worw){//do we need to load more chunks
 				epn = true;
 			}
 		}else if(dir == 2){
-			rofy++;
-			if(offy+rofy+rb>=worh){//do we need to load more chunks
+			rofy--;
+			if(offy-rofy+rb>=worh){//do we need to load more chunks
 				epn = true;
 			}
 		}else if(dir == 3){
-			rofx--;
-			if(offx+rofx-rb<0){//do we need to load more chunks
+			rofx++;
+			if(offx-rofx-rb<0){//do we need to load more chunks
 				epn = true;
 			}
 		}
@@ -135,9 +144,12 @@ public class World {
 		}
 		for(int yy=0;yy<rz;yy++){//then redo the render
 			for(int xx=0;xx<rz;xx++){
-				rendered[yy][xx] = chunks[yy-rofy][xx-rofx];
+				rendered[yy][xx] = chunks[yy][xx];
 			}
 		}
+		System.out.println(worw+" "+worh);
+		System.out.println(offx+" "+offy);
+		System.out.println(rofx+" "+rofy);
 	}
 	
 	public void rcopy(int y, int x){

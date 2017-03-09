@@ -45,8 +45,8 @@ public class Game {
 		world = new World((int)(Math.random()*1000+100));
 		window = new Window();
 		
-		globalx = (world.worw*world.csize*square)/2*-1;
-		globaly = (world.worh*world.csize*square)/2*-1;
+		globalx = 0;//(world.worw*world.csize*square)/2*-1;
+		globaly = 0;//(world.worh*world.csize*square)/2*-1;
 		
 		create(new Entity(0,0,28,28,100));
 		while(true){
@@ -65,9 +65,20 @@ public class Game {
 				}
 			}
 			
-			if(globalx<world.rz*world.offy){
-				
+			int yn = ((int)globaly/square);
+			int target = ((world.rb*-1)-world.rofy)-world.csize;
+			System.out.println("yn: "+yn);
+			System.out.println("target: "+target);
+			
+			if(yn<target){
+				System.out.println("OH YEAH");
+				world.shift(0);
+				//int y =1/0;
 			}
+			/*if((globalx/square)<(world.worw*world.csize)-world.rz-world.rofx){
+				System.out.println("AAECHING");
+				world.shift(3);
+			}*/
 			
 			if(window.pressed.keys[upbind]){
 				globaly -= (pps/tpm);
