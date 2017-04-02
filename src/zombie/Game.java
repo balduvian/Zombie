@@ -9,15 +9,17 @@ public class Game {
 	
 	static Window window;
 	static World world;
-	static double globaly;
-	static double globalx;
+	static int globaly;
+	static int globalx;
+	static double gexy;
+	static double gexx;
 	
 	static int upbind = 87;
 	static int leftbind = 65;
 	static int downbind = 83;
 	static int rightbind = 68;
 	
-	int pps = 1000;
+	double pps = 0.1;
 	
 	private long goal = 0;
 	private long seccount = 0;
@@ -65,33 +67,45 @@ public class Game {
 				}
 			}
 			
-			int yn = ((int)globaly/square);
-			int target = ((world.rb*-1)-world.rofy)-world.csize;
-			System.out.println("yn: "+yn);
-			System.out.println("target: "+target);
-			
-			if(yn<target){
-				System.out.println("OH YEAH");
+			if(globaly<0){
 				world.shift(0);
-				//int y =1/0;
 			}
-			/*if((globalx/square)<(world.worw*world.csize)-world.rz-world.rofx){
-				System.out.println("AAECHING");
-				world.shift(3);
-			}*/
+			
+			if(globaly>(world.rz)*world.csize){
+				world.shift(2);
+			}
 			
 			if(window.pressed.keys[upbind]){
-				globaly -= (pps/tpm);
+				gexy -= (pps/tpm);
 			}
 			if(window.pressed.keys[leftbind]){
-				globalx -= (pps/tpm);
+				gexx -= (pps/tpm);
 			}
 			if(window.pressed.keys[downbind]){
-				globaly += (pps/tpm);
+				gexy += (pps/tpm);
+				System.out.println("yag");
 			}
 			if(window.pressed.keys[rightbind]){
-				globalx += (pps/tpm);
+				gexx += (pps/tpm);
+				System.out.println("yag");
 			}
+			
+			if(gexy>=1){
+				gexy=0;
+				globaly++;
+			}else if(gexy<=-1){
+				gexy=0;
+				globaly--;
+			}
+			
+			if(gexx>=1){
+				gexx=0;
+				globalx++;
+			}else if(gexx<=-1){
+				gexx=0;
+				globalx--;
+			}
+			
 		}
 	}
 	
