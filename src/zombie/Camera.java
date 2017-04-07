@@ -5,17 +5,30 @@ public class Camera {
 	double cx;
 	double cy;
 	Entity fol;
-	boolean suit;
+	int suit;
+	boolean mov = false;
+	double[] destin;
+	double tleft;
 	
-	public Camera(Entity f){
+	public Camera(int f){
 		
 	}
 	
-	public Camera(){
+	public Camera(double nx, double ny){
 		
 	}
 	
-	public void travel(double x, double y){
-		
+	public void tick(){
+		if(mov){
+			if(cx != destin[1] && cy != destin[0]){
+				
+			}
+		}
+	}
+	
+	public void travel(double y, double x, double tim){
+		mov = false;
+		destin = new double[]{y,x};
+		tleft = tim;
 	}
 }
