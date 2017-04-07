@@ -15,8 +15,8 @@ public class World {
 	public World(int s){
 		seed = s;
 		rz = rb*2+1;
-		offy = rz/2;
-		offx = rz/2;
+		offy = 0;
+		offx = 0;
 		rendered = new int[rz][rz][csize][csize];
 		for(int y=0;y<rz;y++){
 			for(int x=0;x<rz;x++){
@@ -26,7 +26,6 @@ public class World {
 	}
 	
 	public void shift(int dir){
-		System.out.println("EXPANDING DONGER");
 		if(dir == 0){
 			offy--;
 			for(int ty=0;ty<rz;ty++){

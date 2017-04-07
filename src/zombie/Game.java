@@ -5,7 +5,7 @@ public class Game {
 	final static int emax = 256;
 	static Entity[] entities = new Entity[emax];
 	static int enumm = 0;
-	static int square = 32;
+	static int square = 48;
 	
 	static Window window;
 	static World world;
@@ -19,13 +19,14 @@ public class Game {
 	static int downbind = 83;
 	static int rightbind = 68;
 	
-	double pps = 0.1;
+	private double spd = 4;//movespeed
 	
 	private long goal = 0;
 	private long seccount = 0;
 	private int loopcount = 0;
 	private long dong = System.currentTimeMillis();
-	private double tpm = 0;//ticks per millisecond
+	static double tpm = 0;//ticks per millisecond
+	private boolean ready = false;
 	
 	public static void create(Entity e){
 		entities[enumm] = e;
@@ -50,8 +51,9 @@ public class Game {
 		globalx = 0;//(world.worw*world.csize*square)/2*-1;
 		globaly = 0;//(world.worh*world.csize*square)/2*-1;
 		
-		create(new Entity(0,0,28,28,100));
-		while(true){
+		create(new Entity(0,0,1,1,100));
+		
+		while(true){//LOOOOOOOOOOOOOOOP
 			
 			if(seccount==0){
 				loopcount = 0;
@@ -67,45 +69,52 @@ public class Game {
 				}
 			}
 			
-			if(globaly<0){
-				world.shift(0);
+			if(ready){
+				/*if(globaly<0-(world.offy*world.csize)){
+					world.shift(0);
+					System.out.println("up");
+				}*/
+				
+				/*if(globaly>world.offy-((world.rz)*world.csize)){
+					world.shift(2);
+					System.out.println("down");
+				}*/
+				
+				if(window.pressed.keys[upbind]){
+					gexy -= (spd/tpm);
+				}
+				if(window.pressed.keys[leftbind]){
+					gexx -= (spd/tpm);
+				}
+				if(window.pressed.keys[downbind]){
+					gexy += (spd/tpm);
+				}
+				if(window.pressed.keys[rightbind]){
+					gexx += (spd/tpm);
+				}
+				
+				if(gexy>=1){
+					gexy=0;
+					globaly++;
+				}else if(gexy<=-1){
+					gexy=0;
+					globaly--;
+				}
+				
+				if(gexx>=1){
+					gexx=0;
+					globalx++;
+				}else if(gexx<=-1){
+					gexx=0;
+					globalx--;
+				}
+				
+				for(int i=0;i<enumm;i++){
+					entities[i].tick();
+				}
+			}else if(tpm!=0){
+				ready=true;
 			}
-			
-			if(globaly>(world.rz)*world.csize){
-				world.shift(2);
-			}
-			
-			if(window.pressed.keys[upbind]){
-				gexy -= (pps/tpm);
-			}
-			if(window.pressed.keys[leftbind]){
-				gexx -= (pps/tpm);
-			}
-			if(window.pressed.keys[downbind]){
-				gexy += (pps/tpm);
-				System.out.println("yag");
-			}
-			if(window.pressed.keys[rightbind]){
-				gexx += (pps/tpm);
-				System.out.println("yag");
-			}
-			
-			if(gexy>=1){
-				gexy=0;
-				globaly++;
-			}else if(gexy<=-1){
-				gexy=0;
-				globaly--;
-			}
-			
-			if(gexx>=1){
-				gexx=0;
-				globalx++;
-			}else if(gexx<=-1){
-				gexx=0;
-				globalx--;
-			}
-			
 		}
 	}
 	
