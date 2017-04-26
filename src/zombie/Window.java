@@ -32,8 +32,8 @@ public class Window extends JFrame{
 	}
 	
 	public Window(){
-		setrender(1200,480,1.0,Game.square);
-		setResizable(true);
+		setrender(800,500,1.0,Game.square);
+		setResizable(false);
 		pressed = new Misen();
 		addKeyListener(pressed);
 		canvas = new Canvas();
@@ -60,19 +60,19 @@ public class Window extends JFrame{
 		public void keyTyped(KeyEvent ex) {}
 	}
 	
-	public int[] ldr(int x, double xx, int y, double yy, int w, int h){
+	public int[] ldr(int x, double xx, int y, double yy, double w, double h){
 		int d1 = xdisp(x,xx,w);
 		int d2 = ydisp(y,yy,h);
-		int d3 = w*Game.square;
-		int d4 = h*Game.square;
+		int d3 = (int)(w*Game.square);
+		int d4 = (int)(h*Game.square);
 		return new int[]{d1,d2,d3,d4};
 	}
 	
-	public int xdisp(int x, double off, int w){
+	public int xdisp(int x, double off, double w){
 		return (int)((((x+off)-(w/2.0))-Game.gexx-Game.globalx)*Game.square+width/2);
 		//return (int)(x-(w/2)-Game.globalx)-(width/2);
 	}
-	public int ydisp(int y, double off, int h){
+	public int ydisp(int y, double off, double h){
 		//return (int)(y-(h/2)-Game.globaly)-(height/2);
 		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly)*Game.square+height/2);
 	}
@@ -102,15 +102,12 @@ public class Window extends JFrame{
 				if(et!=null){
 					g.setColor(Color.red);
 					int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
-					g.fillRect(lo[0],lo[1],lo[2],lo[3]);
-					//odr((int)(et.x),(int)(et.y),tiles,tiles,g);
-					//g.drawImage(et.face,xdisp(et.x,et.w),ydisp(et.y,et.h),et.w,et.h,null);
+					g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
 				}
 			}
 			g.setColor(Color.red);
-			g.drawRect(0, 0, width-1, height-1);
-			g.setColor(Color.black);
-			g.drawString(Game.globaly+" "+Game.gexy+" "+Game.globalx+" "+Game.gexx, 20, 20);
+			//g.drawRect(0, 0, width-1, height-1);
+			g.drawString(Game.globaly+" "+Math.floor(Game.gexy*100)/100+" "+Game.globalx+" "+Math.floor(Game.gexx*100)/100, 20, 20);
 			g.drawRect(width/2-2, height/2-2, 2, 2);
 			repaint();
 		}
