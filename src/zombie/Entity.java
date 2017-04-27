@@ -79,9 +79,9 @@ public class Entity {
 		if(despawn){
 			if(y<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offy){
 				destroy();
-			}else if(x>(Game.world.csize*(Game.world.rb))+(Game.world.csize*Game.world.offx)){
+			}else if(x>(Game.world.csize*(Game.world.rb+1))+(Game.world.csize*Game.world.offx)){
 				destroy();
-			}else if(y>(Game.world.csize*(Game.world.rb))+(Game.world.csize*Game.world.offy)){
+			}else if(y>(Game.world.csize*(Game.world.rb+1))+(Game.world.csize*Game.world.offy)){
 				destroy();
 			}else if(x<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offx){
 				destroy();

@@ -99,34 +99,13 @@ public class World {
 	}
 	
 	public void loadchunk(int x, int y){
-		System.out.println("loading chunk "+(x+offx-rb)+" "+(y+offy-rb));
+		//System.out.println("loading chunk "+(x+offx-rb)+" "+(y+offy-rb));
 		int evn = (int)(Math.random()*3);//number of entities on chunk
 		if(evn>csize*csize){
 			evn = csize*csize;
 		}
-		int[][] sofar = new int[evn][2];//no dupe spawns
-		int favance = 0;
-		for(int i=0;i<evn;i++){
-			boolean pass = true;
-			int chunkx = (x+offx-rb)*csize;
-			int chunky = (y+offy-rb)*csize;
-			int andx = ((int)(Math.random()*csize));
-			int andy = ((int)(Math.random()*csize));
-			for(int u=0;u<favance;u++){
-				if(sofar[u][0]==andx && sofar[u][1]==andy){
-					pass = false;
-					//System.out.println("DENIED");
-					break;
-				}
-			}
-			if(pass){//if it's not a dupe lol
-				Game.create(chunkx+andx, chunky+andy, new DroneEntity());
-				sofar[favance][0] = andx;
-				sofar[favance][1] = andy;
-						favance++;
-			}
-		}
 		chunkregion[y][x] = (int)(Math.random()*Game.spawnmap.numregions);
+		Game.spawnmap.regionspawnroutine(x, y, chunkregion[y][x]);
 		for(int yy=0;yy<csize;yy++){
 			for(int xx=0;xx<csize;xx++){
 				rendered[y][x][yy][xx] = 0;

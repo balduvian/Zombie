@@ -6,7 +6,7 @@ public class DroneEntity extends Entity{
 
 	Color[] listc = {Color.RED,Color.BLUE,Color.GREEN,Color.WHITE,Color.BLACK,Color.CYAN};
 	Color c;
-	boolean immobile = false;
+	boolean immobile = true;
 	
 	public DroneEntity() {
 		super();
