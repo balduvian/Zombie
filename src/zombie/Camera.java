@@ -31,8 +31,10 @@ public class Camera{
 			}
 		}else if(mode==1){
 			Entity fiii = Game.entities[target];
-			cx = fiii.x+fiii.exx;
-			cy = fiii.y+fiii.exy;
+			if(fiii!=null){
+				cx = fiii.x+fiii.exx;
+				cy = fiii.y+fiii.exy;
+			}
 		}else if(mode==2){
 			if(Game.window.pressed.keys[Binds.upbind]){
 				cy -= (cspeed/Game.tpm);

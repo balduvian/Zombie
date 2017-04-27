@@ -26,14 +26,14 @@ public class Window extends JFrame{
 		height = winh;
 		pixelw = (int)(winw*pfac);
 		pixelh = (int)(winh*pfac);
-		cdy = (int)Math.ceil(pixelh/(Game.world.csize*tiles))+3;//chunks displayed at a time
-		cdx = (int)Math.ceil(pixelw/(Game.world.csize*tiles))+2;
+		//cdy = (int)Math.ceil(pixelh/(Game.world.csize*tiles))+3;//chunks displayed at a time
+		//cdx = (int)Math.ceil(pixelw/(Game.world.csize*tiles))+2;
 		setSize(width,height);
 	}
 	
 	public Window(){
 		setrender(800,500,1.0,Game.square);
-		setResizable(false);
+		setResizable(true);//DOWE
 		pressed = new Misen();
 		addKeyListener(pressed);
 		canvas = new Canvas();
@@ -77,38 +77,51 @@ public class Window extends JFrame{
 		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly)*Game.square+height/2);
 	}
 	
+	public double bitrand(int s, int o){
+		return((((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
+	}
+	
 	public class Canvas extends JPanel{
 		private static final long serialVersionUID = 7723498599824735171L;
 
 		public void paintComponent(Graphics g){
 			super.paintComponent(g);
-			World ga = Game.world;
-			for(int y=0;y<ga.rz;y++){//draw chunk
-				for(int x=0;x<ga.rz;x++){
-					for(int yy=0;yy<ga.csize;yy++){//draw within
-						for(int xx=0;xx<ga.csize;xx++){
-							
-							int ccp = ga.rendered[y][x][yy][xx]*18;
-							g.setColor(new Color(ccp,ccp,ccp));
-							
-							int[] lo = ldr(((x+ga.offx-ga.rb)*ga.csize)+xx,0,((y+ga.offy-ga.rb)*ga.csize)+yy,0,1,1);
-							g.fillRect(lo[0],lo[1],lo[2],lo[3]);
+			if(Game.activity==1){
+				World ga = Game.world;
+				for(int y=0;y<ga.rz;y++){//draw chunk
+					for(int x=0;x<ga.rz;x++){
+						for(int yy=0;yy<ga.csize;yy++){//draw within
+							for(int xx=0;xx<ga.csize;xx++){
+								
+								/*int ccp = ga.rendered[y][x][yy][xx]*18;
+								g.setColor(new Color(ccp,ccp,ccp));*/
+								
+								int[] ccp = Game.spawnmap.rcolors[ga.chunkregion[y][x]];
+								int xtx = (x+ga.offx)*ga.csize+xx;
+								int yty = (y+ga.offy)*ga.csize+yy;
+								g.setColor(new Color(ccp[0]+(int)(bitrand(xtx,yty)*10-5),
+										ccp[1]+(int)(bitrand(xtx,yty)*10-5),
+										ccp[2]+(int)(bitrand(xtx,yty)*10-5)));
+								
+								int[] lo = ldr(((x+ga.offx-ga.rb)*ga.csize)+xx,0,((y+ga.offy-ga.rb)*ga.csize)+yy,0,1,1);
+								g.fillRect(lo[0],lo[1],lo[2],lo[3]);
+							}
 						}
 					}
 				}
-			}
-			for(int c=0;c<Game.enumm;c++){
-				Entity et = Game.entities[c];
-				if(et!=null){
-					g.setColor(Color.red);
-					int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
-					g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
+				for(int c=0;c<Game.enumm;c++){
+					Entity et = Game.entities[c];
+					if(et!=null){
+						g.setColor(Color.red);
+						int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
+						g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
+					}
 				}
+				g.setColor(Color.red);
+				//g.drawRect(0, 0, width-1, height-1);
+				g.drawString(Game.globaly+" "+Math.floor(Game.gexy*100)/100+" "+Game.globalx+" "+Math.floor(Game.gexx*100)/100+" "+Game.world.seed, 20, 20);
+				g.drawRect(width/2-2, height/2-2, 2, 2);
 			}
-			g.setColor(Color.red);
-			//g.drawRect(0, 0, width-1, height-1);
-			g.drawString(Game.globaly+" "+Math.floor(Game.gexy*100)/100+" "+Game.globalx+" "+Math.floor(Game.gexx*100)/100, 20, 20);
-			g.drawRect(width/2-2, height/2-2, 2, 2);
 			repaint();
 		}
 	}

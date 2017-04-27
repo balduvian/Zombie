@@ -20,6 +20,9 @@ public class Game {
 	//world
 	public static World world;
 	
+	//spawnmap
+	public static SpawnMap spawnmap;
+	
 	//global display positioning
 	public static int globaly;
 	public static int globalx;
@@ -28,6 +31,8 @@ public class Game {
 	
 	//desbugging nocamera movespeed
 	private double spd = 4;//movespeed
+	
+	static int activity = 0;
 	
 	//ticking variables
 	private long goal = 0;
@@ -42,14 +47,21 @@ public class Game {
 	static double tpm = 0;//ticks per millisecond
 	
 	//game methods
-	public static void create(Entity e){
-		entities[enumm] = e;
-		enumm++;
+	public static void create(int x, int y, Entity e){
+		if(enumm<emax){
+			entities[enumm] = e;
+			entities[enumm].spawnpos(x, y);
+			enumm++;
+		}else{
+			System.out.println("FULL"+enumm);
+		}
 	}
 	
 	public static void ccreate(Camera c){
-		cameras[cnumm] = c;
-		cnumm++;
+		if(cnumm<cmax){
+			cameras[cnumm] = c;
+			cnumm++;
+		}
 	}
 	
 	public static void delete(int i){
@@ -61,23 +73,21 @@ public class Game {
 			entities[n].index--;
 		}
 		enumm--;
+		//System.out.println("destroyed"+enumm);
 	}
 	
 	public Game(){
-		world = new World((int)(Math.random()*1000+100));
 		window = new Window();
+		spawnmap = new SpawnMap();
+		world = new World((int)(Math.random()*1000+100));
 		
-		globalx = 0;//(world.worw*world.csize*square)/2*-1;
-		globaly = 0;//(world.worh*world.csize*square)/2*-1;
+		globalx = 0;
+		globaly = 0;
 		
-		create(new DroneEntity(0,0));
-		create(new DroneEntity(0,0));
-		create(new DroneEntity(0,0));
-		create(new DroneEntity(0,0));
-		create(new DroneEntity(0,0));
 		ccreate(new Camera(0,0,2));
 		ccreate(new Camera(0,0,1,0));
 		
+		activity = 1;
 		gameloop: while(true){//LOOOOOOOOOOOOOOOP
 			
 			if(seccount==0){
@@ -110,16 +120,20 @@ public class Game {
 				gexx = cameras[currentcamera].cx-globalx;
 				globaly = (int)Math.floor(cameras[currentcamera].cy);
 				gexy = cameras[currentcamera].cy-globaly;
-				if(globaly<0-(world.offy*world.csize)){
-					world.shift(0);
-					System.out.println("up");
-					int sdf = 7/0;
-				}
 				
-				/*if(globaly>world.offy-((world.rz)*world.csize)){
+				if(globaly<(world.csize*world.offy)-1){
+					world.shift(0);
+				}
+				if(globalx>(world.csize*(world.rb-1))+(world.csize*world.offx)){
+					world.shift(1);
+				}
+				if(globaly>(world.csize*(world.rb-1))+(world.csize*world.offy)){
 					world.shift(2);
-					System.out.println("down");
-				}*/
+				}
+				if(globalx<(world.csize*world.offx)-1){
+					world.shift(3);
+				}
+
 				//TICK
 				for(int i=0;i<cnumm;i++){
 					cameras[i].tick();

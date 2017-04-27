@@ -17,9 +17,10 @@ public class Entity {
 	int health;
 	BufferedImage face;
 	double speed;
+	boolean despawn = false;
 	
-	int mmode;
-	int mdir;
+	int mmode = 0;
+	int mdir = 4;
 	
 	public void destroy(){
 		Game.delete(index);
@@ -45,12 +46,13 @@ public class Entity {
 		}
 	}
 	
-	public Entity(int plx, int ply){
+	public Entity(){
 		index = Game.enumm;
-		x = plx;
-		y = ply;
-		mmode = 0;
-		mdir = 4;
+	}
+	
+	public void spawnpos(int spx, int spy){
+		x = spx;
+		y = spy;
 	}
 	
 	public void shift(int dir){
@@ -74,7 +76,17 @@ public class Entity {
 	}
 	
 	public void tick(){
-		
+		if(despawn){
+			if(y<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offy){
+				destroy();
+			}else if(x>(Game.world.csize*(Game.world.rb))+(Game.world.csize*Game.world.offx)){
+				destroy();
+			}else if(y>(Game.world.csize*(Game.world.rb))+(Game.world.csize*Game.world.offy)){
+				destroy();
+			}else if(x<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offx){
+				destroy();
+			}
+		}
 	}
 	
 }
