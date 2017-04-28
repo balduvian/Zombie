@@ -32,7 +32,7 @@ public class Window extends JFrame{
 	}
 	
 	public Window(){
-		setrender(800,500,1.0,Game.square);
+		setrender(1100,700,1.0,Game.square);
 		setResizable(true);//DOWE
 		pressed = new Misen();
 		addKeyListener(pressed);
@@ -78,7 +78,7 @@ public class Window extends JFrame{
 	}
 	
 	public double bitrand(int s, int o){
-		return((((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
+		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
 	}
 	
 	public class Canvas extends JPanel{
@@ -90,20 +90,91 @@ public class Window extends JFrame{
 				World ga = Game.world;
 				for(int y=0;y<ga.rz;y++){//draw chunk
 					for(int x=0;x<ga.rz;x++){
+						boolean fromup = false;
+						boolean fromright = false;
+						boolean fromdown = false;
+						boolean fromleft = false;
+						if(y>0 && ga.chunkregion[y][x] != ga.chunkregion[y-1][x]){
+							fromup = true;
+						}
+						if(x<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y][x+1]){
+							fromright = true;
+						}
+						if(y<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y+1][x]){
+							fromdown = true;
+						}
+						if(x>0 && ga.chunkregion[y][x] != ga.chunkregion[y][x-1]){
+							fromleft = true;
+						}
 						for(int yy=0;yy<ga.csize;yy++){//draw within
 							for(int xx=0;xx<ga.csize;xx++){
 								
-								/*int ccp = ga.rendered[y][x][yy][xx]*18;
-								g.setColor(new Color(ccp,ccp,ccp));*/
+								int acx = ((x+ga.offx-ga.rb)*ga.csize)+xx;
+								int acy = ((y+ga.offy-ga.rb)*ga.csize)+yy;
 								
-								int[] ccp = Game.spawnmap.rcolors[ga.chunkregion[y][x]];
-								int xtx = (x+ga.offx)*ga.csize+xx;
-								int yty = (y+ga.offy)*ga.csize+yy;
-								g.setColor(new Color(ccp[0]+(int)(bitrand(xtx,yty)*10-5),
-										ccp[1]+(int)(bitrand(xtx,yty)*10-5),
-										ccp[2]+(int)(bitrand(xtx,yty)*10-5)));
+								int[] ccp = null;
 								
-								int[] lo = ldr(((x+ga.offx-ga.rb)*ga.csize)+xx,0,((y+ga.offy-ga.rb)*ga.csize)+yy,0,1,1);
+								double rb = (Math.pow(xx, 4)/Math.pow((ga.csize-1.0),4));
+								double lb = (Math.pow((xx-(ga.csize-1)), 4)/Math.pow((ga.csize-1.0),4));
+								double db = (Math.pow(yy, 4)/Math.pow((ga.csize-1.0),4));
+								double ub = (Math.pow((yy-(ga.csize-1)), 4)/Math.pow((ga.csize-1.0),4));
+								
+								int tempamm = 1;
+								int[] tempccp = new int[3];
+								for(int i=0;i<3;i++){
+									tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i];
+								}
+								if(fromup){
+									tempamm++;
+									for(int i=0;i<3;i++){
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y-1][x]][i]*ub;
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-ub);
+									}
+								}
+								if(fromright){
+									tempamm++;
+									for(int i=0;i<3;i++){
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x+1]][i]*rb;
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-rb);
+									}
+								}
+								if(fromdown){
+									tempamm++;
+									for(int i=0;i<3;i++){
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y+1][x]][i]*db;
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-db);
+									}
+								}
+								if(fromleft){
+									tempamm++;
+									for(int i=0;i<3;i++){
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x-1]][i]*lb;
+										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-lb);
+									}
+								}
+								ccp = new int[]{tempccp[0]/tempamm,tempccp[1]/tempamm,tempccp[2]/tempamm};
+								
+								/*if(fromup && ub*bitrand(acx, acy)>0.5){
+									ccp = ga.spawnmap.rcolors[ga.chunkregion[y-1][x]];
+								}
+								else if(fromright && rb*bitrand(acx, acy)>0.5){
+									ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x+1]];
+								}
+								else if(fromdown && db*bitrand(acx, acy)>0.5){
+									ccp = ga.spawnmap.rcolors[ga.chunkregion[y+1][x]];
+								}
+								else if(fromleft && lb*bitrand(acx, acy)>0.5){
+									ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x-1]];
+								}
+								else{
+									ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x]];
+								}*/
+								
+								g.setColor(new Color(ccp[0]+(int)(bitrand(acx,acy)*10-5),
+										ccp[1]+(int)(bitrand(acx,acy)*10-5),
+										ccp[2]+(int)(bitrand(acx,acy)*10-5)));
+								
+								int[] lo = ldr(acx,0,acy,0,1,1);
 								g.fillRect(lo[0],lo[1],lo[2],lo[3]);
 							}
 						}
@@ -112,7 +183,6 @@ public class Window extends JFrame{
 				for(int c=0;c<Game.enumm;c++){
 					Entity et = Game.entities[c];
 					if(et!=null){
-						g.setColor(Color.red);
 						int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
 						g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
 					}

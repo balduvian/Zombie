@@ -20,9 +20,6 @@ public class Game {
 	//world
 	public static World world;
 	
-	//spawnmap
-	public static SpawnMap spawnmap;
-	
 	//global display positioning
 	public static int globaly;
 	public static int globalx;
@@ -78,7 +75,6 @@ public class Game {
 	
 	public Game(){
 		window = new Window();
-		spawnmap = new SpawnMap();
 		world = new World((int)(Math.random()*1000+100));
 		
 		globalx = 0;
