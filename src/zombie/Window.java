@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferStrategy;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.*;
 
@@ -17,8 +20,10 @@ public class Window extends JFrame{
 	int pixelw;
 	int cdy;
 	int cdx;
-	Canvas canvas;
 	Misen pressed;
+	BufferStrategy bb;
+	Graphics g;
+	ExecutorService exe;
 	
 	public void setrender(int winw, int winh, double pfac, int ts){
 		tiles = ts;
@@ -31,16 +36,143 @@ public class Window extends JFrame{
 		setSize(width,height);
 	}
 	
+	public class PaintLoop implements Runnable{
+		public void run() {
+			while(true){
+				do {
+					try{
+						g = bb.getDrawGraphics();
+						if(Game.activity==1){
+							World ga = Game.world;
+							for(int y=0;y<ga.rz;y++){//draw chunk
+								for(int x=0;x<ga.rz;x++){
+									boolean fromup = false;
+									boolean fromright = false;
+									boolean fromdown = false;
+									boolean fromleft = false;
+									if(y>0 && ga.chunkregion[y][x] != ga.chunkregion[y-1][x]){
+										fromup = true;
+									}
+									if(x<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y][x+1]){
+										fromright = true;
+									}
+									if(y<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y+1][x]){
+										fromdown = true;
+									}
+									if(x>0 && ga.chunkregion[y][x] != ga.chunkregion[y][x-1]){
+										fromleft = true;
+									}
+									for(int yy=0;yy<ga.csize;yy++){//draw within
+										for(int xx=0;xx<ga.csize;xx++){
+											
+											int acx = ((x+ga.offx-ga.rb)*ga.csize)+xx;
+											int acy = ((y+ga.offy-ga.rb)*ga.csize)+yy;
+											
+											int[] ccp = null;
+											
+											double rb = (Math.pow(xx, 4)/Math.pow((ga.csize-1.0),4));
+											double lb = (Math.pow((xx-(ga.csize-1)), 4)/Math.pow((ga.csize-1.0),4));
+											double db = (Math.pow(yy, 4)/Math.pow((ga.csize-1.0),4));
+											double ub = (Math.pow((yy-(ga.csize-1)), 4)/Math.pow((ga.csize-1.0),4));
+											
+											int tempamm = 1;
+											int[] tempccp = new int[3];
+											for(int i=0;i<3;i++){
+												tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i];
+											}
+											if(fromup){
+												tempamm++;
+												for(int i=0;i<3;i++){
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y-1][x]][i]*ub;
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-ub);
+												}
+											}
+											if(fromright){
+												tempamm++;
+												for(int i=0;i<3;i++){
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x+1]][i]*rb;
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-rb);
+												}
+											}
+											if(fromdown){
+												tempamm++;
+												for(int i=0;i<3;i++){
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y+1][x]][i]*db;
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-db);
+												}
+											}
+											if(fromleft){
+												tempamm++;
+												for(int i=0;i<3;i++){
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x-1]][i]*lb;
+													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-lb);
+												}
+											}
+											ccp = new int[]{tempccp[0]/tempamm,tempccp[1]/tempamm,tempccp[2]/tempamm};
+											
+											/*if(fromup && ub*bitrand(acx, acy)>0.5){
+												ccp = ga.spawnmap.rcolors[ga.chunkregion[y-1][x]];
+											}
+											else if(fromright && rb*bitrand(acx, acy)>0.5){
+												ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x+1]];
+											}
+											else if(fromdown && db*bitrand(acx, acy)>0.5){
+												ccp = ga.spawnmap.rcolors[ga.chunkregion[y+1][x]];
+											}
+											else if(fromleft && lb*bitrand(acx, acy)>0.5){
+												ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x-1]];
+											}
+											else{
+												ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x]];
+											}*/
+											
+											g.setColor(new Color(ccp[0]+(int)(bitrand(acx,acy)*10-5),
+													ccp[1]+(int)(bitrand(acx,acy)*10-5),
+													ccp[2]+(int)(bitrand(acx,acy)*10-5)));
+											
+											int[] lo = ldr(acx,0,acy,0,1,1);
+											g.fillRect(lo[0],lo[1],lo[2],lo[3]);
+										}
+									}
+								}
+							}
+							for(int c=0;c<Game.enumm;c++){
+								Entity et = Game.entities[c];
+								if(et!=null){
+									int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
+									g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
+								}
+							}
+							g.setColor(Color.red);
+							//g.drawRect(0, 0, width-1, height-1);
+							g.drawString(Game.globaly+" "+Math.floor(Game.gexy*100)/100+" "+Game.globalx+" "+Math.floor(Game.gexx*100)/100+" "+Game.world.seed, 20, 20);
+							g.drawRect(width/2-2, height/2-2, 2, 2);
+						}else{
+							//OH YEAH MR KRABS
+						}
+					} finally {
+						g.dispose();
+					}
+					bb.show();
+				} while (bb.contentsLost());
+			}
+		}
+	}
+	
 	public Window(){
 		setrender(1100,700,1.0,Game.square);
 		setResizable(true);//DOWE
 		pressed = new Misen();
 		addKeyListener(pressed);
-		canvas = new Canvas();
-		add(canvas);
+		//canvas = new Canvas();
+		//add(canvas);
 		setTitle("Zombie");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		createBufferStrategy(2);
+		bb = getBufferStrategy();
+		exe = Executors.newFixedThreadPool(1);
+		exe.execute(new PaintLoop());
 	}
 	
 	public class Misen implements KeyListener{
@@ -79,121 +211,6 @@ public class Window extends JFrame{
 	
 	public double bitrand(int s, int o){
 		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
-	}
-	
-	public class Canvas extends JPanel{
-		private static final long serialVersionUID = 7723498599824735171L;
-
-		public void paintComponent(Graphics g){
-			super.paintComponent(g);
-			if(Game.activity==1){
-				World ga = Game.world;
-				for(int y=0;y<ga.rz;y++){//draw chunk
-					for(int x=0;x<ga.rz;x++){
-						boolean fromup = false;
-						boolean fromright = false;
-						boolean fromdown = false;
-						boolean fromleft = false;
-						if(y>0 && ga.chunkregion[y][x] != ga.chunkregion[y-1][x]){
-							fromup = true;
-						}
-						if(x<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y][x+1]){
-							fromright = true;
-						}
-						if(y<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y+1][x]){
-							fromdown = true;
-						}
-						if(x>0 && ga.chunkregion[y][x] != ga.chunkregion[y][x-1]){
-							fromleft = true;
-						}
-						for(int yy=0;yy<ga.csize;yy++){//draw within
-							for(int xx=0;xx<ga.csize;xx++){
-								
-								int acx = ((x+ga.offx-ga.rb)*ga.csize)+xx;
-								int acy = ((y+ga.offy-ga.rb)*ga.csize)+yy;
-								
-								int[] ccp = null;
-								
-								double rb = (Math.pow(xx, 4)/Math.pow((ga.csize-1.0),4));
-								double lb = (Math.pow((xx-(ga.csize-1)), 4)/Math.pow((ga.csize-1.0),4));
-								double db = (Math.pow(yy, 4)/Math.pow((ga.csize-1.0),4));
-								double ub = (Math.pow((yy-(ga.csize-1)), 4)/Math.pow((ga.csize-1.0),4));
-								
-								int tempamm = 1;
-								int[] tempccp = new int[3];
-								for(int i=0;i<3;i++){
-									tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i];
-								}
-								if(fromup){
-									tempamm++;
-									for(int i=0;i<3;i++){
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y-1][x]][i]*ub;
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-ub);
-									}
-								}
-								if(fromright){
-									tempamm++;
-									for(int i=0;i<3;i++){
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x+1]][i]*rb;
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-rb);
-									}
-								}
-								if(fromdown){
-									tempamm++;
-									for(int i=0;i<3;i++){
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y+1][x]][i]*db;
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-db);
-									}
-								}
-								if(fromleft){
-									tempamm++;
-									for(int i=0;i<3;i++){
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x-1]][i]*lb;
-										tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-lb);
-									}
-								}
-								ccp = new int[]{tempccp[0]/tempamm,tempccp[1]/tempamm,tempccp[2]/tempamm};
-								
-								/*if(fromup && ub*bitrand(acx, acy)>0.5){
-									ccp = ga.spawnmap.rcolors[ga.chunkregion[y-1][x]];
-								}
-								else if(fromright && rb*bitrand(acx, acy)>0.5){
-									ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x+1]];
-								}
-								else if(fromdown && db*bitrand(acx, acy)>0.5){
-									ccp = ga.spawnmap.rcolors[ga.chunkregion[y+1][x]];
-								}
-								else if(fromleft && lb*bitrand(acx, acy)>0.5){
-									ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x-1]];
-								}
-								else{
-									ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x]];
-								}*/
-								
-								g.setColor(new Color(ccp[0]+(int)(bitrand(acx,acy)*10-5),
-										ccp[1]+(int)(bitrand(acx,acy)*10-5),
-										ccp[2]+(int)(bitrand(acx,acy)*10-5)));
-								
-								int[] lo = ldr(acx,0,acy,0,1,1);
-								g.fillRect(lo[0],lo[1],lo[2],lo[3]);
-							}
-						}
-					}
-				}
-				for(int c=0;c<Game.enumm;c++){
-					Entity et = Game.entities[c];
-					if(et!=null){
-						int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
-						g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
-					}
-				}
-				g.setColor(Color.red);
-				//g.drawRect(0, 0, width-1, height-1);
-				g.drawString(Game.globaly+" "+Math.floor(Game.gexy*100)/100+" "+Game.globalx+" "+Math.floor(Game.gexx*100)/100+" "+Game.world.seed, 20, 20);
-				g.drawRect(width/2-2, height/2-2, 2, 2);
-			}
-			repaint();
-		}
 	}
 	
 }

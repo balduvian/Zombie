@@ -1,5 +1,7 @@
 package zombie;
 
+import java.awt.image.BufferedImage;
+
 public class Game {
 	
 	//setting up list of entities of cameras and entities and related values
@@ -11,6 +13,10 @@ public class Game {
 	public static int cnumm = 0;
 	public static int currentcamera = 0;
 	
+	//setting up a list of images
+	public final static int pmax = 64;
+	public static BufferedImage[] images = new BufferedImage[pmax];
+	
 	//display size
 	public static int square = 48;
 	
@@ -19,6 +25,9 @@ public class Game {
 	
 	//world
 	public static World world;
+	
+	//IT'S DA TURN
+	public static int turn;
 	
 	//global display positioning
 	public static int globaly;
