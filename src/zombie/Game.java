@@ -2,6 +2,8 @@ package zombie;
 
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+
 public class Game {
 	
 	//setting up list of entities of cameras and entities and related values
@@ -67,6 +69,28 @@ public class Game {
 		if(cnumm<cmax){
 			cameras[cnumm] = c;
 			cnumm++;
+		}
+	}
+	
+	private void loadimages(){
+		BufferedImage b = null;
+		try{
+			b = ImageIO.read(this.getClass().getResource("/zimages/images.png"));
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		int cuo = 16;
+		int wu = b.getWidth()/cuo;
+		int hu = b.getHeight()/cuo;
+		for(int y=0;y<hu;y++){
+			for(int x=0;x<wu;x++){
+				BufferedImage lod = new BufferedImage(cuo,cuo,BufferedImage.TYPE_INT_ARGB);
+				for(int yy=0;yy<cuo;yy++){
+					for(int xx=0;xx<cuo;xx++){
+						
+					}
+				}
+			}
 		}
 	}
 	
