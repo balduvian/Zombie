@@ -5,8 +5,11 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
 	
-	int xres;
-	int yres;
+	public static int IDNULL = 0;
+	public static int IDSURVIVOR = 1;
+	public static int IDZOMBIE = 2;
+	
+	int id;
 	int index; //index in the list;
 	int y;
 	int x;
@@ -14,36 +17,16 @@ public class Entity {
 	double exx;
 	double w;
 	double h;
-	int health;
-	BufferedImage face;
 	double speed;
 	boolean despawn = false;
-	
+	int imgid;
+	int layers;
+	int[] layeredimgid;
 	int mmode = 0;
 	int mdir = 4;
 	
 	public void destroy(){
 		Game.delete(index);
-	}
-	
-	public void drawcolor(Color c){
-		face = new BufferedImage(xres,yres,BufferedImage.TYPE_INT_ARGB);
-		int rgbc = c.getRGB();
-		for(int yy=0;yy<yres;yy++){
-			for(int xx=0;xx<xres;xx++){
-				face.setRGB(xx, yy, rgbc);
-			}
-		}
-	}
-	
-	public void drawnoise(){
-		face = new BufferedImage(xres,yres,BufferedImage.TYPE_INT_ARGB);
-		for(int yy=0;yy<yres;yy++){
-			for(int xx=0;xx<xres;xx++){
-				int rgbc = new Color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)).getRGB();
-				face.setRGB(xx, yy, rgbc);
-			}
-		}
 	}
 	
 	public Entity(){

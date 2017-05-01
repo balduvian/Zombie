@@ -9,16 +9,11 @@ public class DroneEntity extends Entity{
 	boolean immobile = true;
 	
 	public DroneEntity() {
-		super();
-		health = 100;
-		xres = 8;
-		yres = 8;
 		w = 1;
 		h = 1;
 		speed = 2;
 		despawn = true;
 		c = listc[(int)(Math.random()*6)];
-		drawnoise();
 	}
 	
 	public void tick(){

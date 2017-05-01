@@ -140,7 +140,11 @@ public class Window extends JFrame{
 								Entity et = Game.entities[c];
 								if(et!=null){
 									int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
-									g.drawImage(et.face, lo[0],lo[1],lo[2],lo[3], null);
+									if(et.id == Entity.IDSURVIVOR){
+										g.drawImage(Game.images[ImageLoader.PLAYEROUTLINE], lo[0],lo[1],lo[2],lo[3], null);
+									}else{
+										g.drawImage(Game.images[et.imgid], lo[0],lo[1],lo[2],lo[3], null);
+									}
 								}
 							}
 							g.setColor(Color.red);

@@ -16,7 +16,7 @@ public class Game {
 	public static int currentcamera = 0;
 	
 	//setting up a list of images
-	public final static int pmax = 64;
+	public final static int pmax = 128;
 	public static BufferedImage[] images = new BufferedImage[pmax];
 	
 	//display size
@@ -72,28 +72,6 @@ public class Game {
 		}
 	}
 	
-	private void loadimages(){
-		BufferedImage b = null;
-		try{
-			b = ImageIO.read(this.getClass().getResource("/zimages/images.png"));
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
-		int cuo = 16;
-		int wu = b.getWidth()/cuo;
-		int hu = b.getHeight()/cuo;
-		for(int y=0;y<hu;y++){
-			for(int x=0;x<wu;x++){
-				BufferedImage lod = new BufferedImage(cuo,cuo,BufferedImage.TYPE_INT_ARGB);
-				for(int yy=0;yy<cuo;yy++){
-					for(int xx=0;xx<cuo;xx++){
-						
-					}
-				}
-			}
-		}
-	}
-	
 	public static void delete(int i){
 		entities[i] = null;
 		for(int n=i;n<enumm-1;n++){
@@ -107,6 +85,8 @@ public class Game {
 	}
 	
 	public Game(){
+		ImageLoader.loadimages();
+		
 		window = new Window();
 		world = new World((int)(Math.random()*1000+100));
 		
@@ -115,6 +95,8 @@ public class Game {
 		
 		ccreate(new Camera(0,0,2));
 		ccreate(new Camera(0,0,1,0));
+		
+		create(0, 1, new Survivor(0));
 		
 		activity = 1;
 		gameloop: while(true){//LOOOOOOOOOOOOOOOP
