@@ -7,12 +7,14 @@ import javax.imageio.ImageIO;
 public class Game {
 	
 	//setting up list of entities of cameras and entities and related values
-	public final static int emax = 256;
 	public final static int cmax = 20;
-	public static Camera[] cameras = new Camera[cmax];
-	public static Entity[] entities = new Entity[emax];
-	public static int enumm = 0;
 	public static int cnumm = 0;
+	public static Camera[] cameras = new Camera[cmax];
+	
+	public final static int emax = 256;
+	public static int enumm = 0;
+	public static Entity[] entities = new Entity[emax];
+	
 	public static int currentcamera = 0;
 	
 	//setting up a list of images
@@ -60,8 +62,6 @@ public class Game {
 			entities[enumm] = e;
 			entities[enumm].spawnpos(x, y);
 			enumm++;
-		}else{
-			System.out.println("FULL"+enumm);
 		}
 	}
 	

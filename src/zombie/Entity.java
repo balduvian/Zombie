@@ -20,8 +20,14 @@ public class Entity {
 	double speed;
 	boolean despawn = false;
 	int imgid;
-	int layers;
-	int[] layeredimgid;
+	
+	boolean anim = false;//animations
+	int[] imgframes;
+	int numframes;
+	int frame = 0;
+	double sinceframe;
+	int frametime;
+	
 	int mmode = 0;
 	int mdir = 4;
 	
@@ -68,6 +74,13 @@ public class Entity {
 				destroy();
 			}else if(x<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offx){
 				destroy();
+			}
+		}
+		if(anim){
+			sinceframe -= (1.0/Game.tpm);
+			if(sinceframe<=0){
+				sinceframe = frametime;
+				frame = (frame+1)%numframes;
 			}
 		}
 	}

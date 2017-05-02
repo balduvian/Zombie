@@ -3,7 +3,7 @@ package zombie;
 public class Survivor extends Character{
 	
 	public static final int NUMRACES = 4;
-	public static final int[] RACEIDS = {//for imaging
+	public static final int[] RACEIDS = {
 			ImageLoader.RACE0,
 			ImageLoader.RACE1,
 			ImageLoader.RACE2,
@@ -22,6 +22,7 @@ public class Survivor extends Character{
 	public int race;
 	
 	public Survivor(int region){
+		friendly = true;
 		id = Entity.IDSURVIVOR;
 		h = 1;
 		w = 1;

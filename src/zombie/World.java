@@ -153,6 +153,18 @@ public class World {
 				{0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,5},	
 				{0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,5}
 		};
+		int lvmax = 16;
+		int[][] levelchances = {
+				{0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,2},
+				{0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,3},
+				{1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,4},
+				{1,1,2,2,2,2,2,2,3,3,3,3,4,4,4,5},
+				{2,2,2,3,3,3,3,4,4,4,4,4,5,5,5,6},
+				{3,3,3,3,3,4,4,4,5,5,5,5,6,6,6,7},
+				{4,4,4,4,4,4,5,5,5,5,6,6,6,7,7,8},
+				{6,6,6,6,6,6,7,7,7,7,8,8,8,9,9,10},
+				
+		};
 		public int assignregion(int cx, int cy){
 			int hmy = 0;
 			int[] hat = new int[numregions];
@@ -195,7 +207,25 @@ public class World {
 		}
 		
 		private void espw(int x, int y, int we){
-			if(we>-1){
+			if(we==0){
+				Game.create(x, y, new BasicZombie());
+			}
+			if(we==1){
+				Game.create(x, y, new DroneEntity());
+			}
+			if(we==2){
+				Game.create(x, y, new DroneEntity());
+			}
+			if(we==3){
+				Game.create(x, y, new DroneEntity());
+			}
+			if(we==4){
+				Game.create(x, y, new DroneEntity());
+			}
+			if(we==5){
+				Game.create(x, y, new DroneEntity());
+			}
+			if(we==6){
 				Game.create(x, y, new DroneEntity());
 			}
 		}
