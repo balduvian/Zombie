@@ -140,18 +140,8 @@ public class Window extends JFrame{
 								Entity et = Game.entities[c];
 								if(et!=null){
 									int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
-									if(et.id == Entity.IDSURVIVOR){
-										Survivor set = (Survivor)et;
-										g.drawImage(Game.images[Survivor.RACEIDS[set.race]], lo[0],lo[1],lo[2],lo[3], null);
-										g.drawImage(Game.images[Survivor.SKINIDS[set.skin]], lo[0],lo[1],lo[2],lo[3], null);
-										g.drawImage(Game.images[ImageLoader.PLAYEROUTLINE], lo[0],lo[1],lo[2],lo[3], null);
-									}else if(et.id == Entity.IDZOMBIE){
-										Zombie set = (Zombie)et;
-										if(et.anim){
-											
-										}
-									}else{
-										g.drawImage(Game.images[et.imgid], lo[0],lo[1],lo[2],lo[3], null);
+									for(int l=0;l<et.imgs.layers;l++){
+										g.drawImage(Game.images[et.imgs.sheet[et.imgs.frame][l]], lo[0],lo[1],lo[2],lo[3], null);
 									}
 								}
 							}

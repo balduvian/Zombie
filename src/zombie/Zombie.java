@@ -10,9 +10,9 @@ public class Zombie extends Character{
 	
 	int zombid;
 	
-	public Zombie(){
+	public Zombie(int level){
 		id = Entity.IDZOMBIE;
 		friendly = false;
-		despawn = false;
+		despawn = true;
 	}
 }

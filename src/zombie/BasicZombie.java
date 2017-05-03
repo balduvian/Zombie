@@ -2,12 +2,20 @@ package zombie;
 
 public class BasicZombie extends Zombie{
 	
-	public BasicZombie(){
-		imgframes = new int[]{ImageLoader.ZOMBIEENEMY0, ImageLoader.ZOMBIEENEMY1};
-		anim = true;
+	public static final int[] BZDEF = {
+			5,
+			5,
+			5,
+			5,
+			5
+	};
+	
+	public BasicZombie(int level){
+		super(level);
+		imgs = new ImgSheet(new int[][]{{ImageLoader.ZOMBIEENEMY0}, {ImageLoader.ZOMBIEENEMY1}},1,0.3);
 		zombid = Zombie.BASICZOMBIEID;
-		frametime = 100;
-		sinceframe = frametime;
+		logname = "Basic Zombie";
+		init(level);
 	}
 	
 }

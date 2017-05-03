@@ -177,6 +177,7 @@ public class World {
 			}
 			return hat[(int)(Math.random()*hmy)];
 		}
+		
 		public void spawnroutine(int cx, int cy, int region){
 			int tryflag = (int)(Math.random()*spmax);
 			int tries = spawnchances[region][tryflag];
@@ -184,8 +185,6 @@ public class World {
 			int favance = 0;
 			for(int i=0;i<tries;i++){
 				boolean pass = true;
-				int spawnflag = (int)(Math.random()*chmax);
-				int gen = chances[region][spawnflag];
 				int andx = ((int)(Math.random()*csize));
 				int andy = ((int)(Math.random()*csize));
 				for(int u=0;u<favance;u++){
@@ -195,38 +194,42 @@ public class World {
 					}
 				}
 				if(pass){
-					espw((cx+offx-rb)*csize+andx, (cy+offy-rb)*csize+andy, gen);
+					int spawnflag = (int)(Math.random()*chmax);
+					int gen = chances[region][spawnflag];
+					int levflag = (int)(Math.random()*lvmax);
+					int level = levelchances[region][levflag];
+					espw((cx+offx-rb)*csize+andx, (cy+offy-rb)*csize+andy, gen, level);
 				}
 			}
 		}
 		
-		public void spawnspecificenemy(int cx, int cy, int enemy){
+		public void spawnspecificenemy(int cx, int cy, int enemy, int level){
 			int andx = ((int)(Math.random()*csize));
 			int andy = ((int)(Math.random()*csize));
-			espw((cx+offx-rb)*csize+andx, (cy+offy-rb)*csize+andy, enemy);
+			espw((cx+offx-rb)*csize+andx, (cy+offy-rb)*csize+andy, enemy, level);
 		}
 		
-		private void espw(int x, int y, int we){
+		private void espw(int x, int y, int we, int le){
 			if(we==0){
-				Game.create(x, y, new BasicZombie());
+				Game.create(x, y, new BasicZombie(le));
 			}
 			if(we==1){
-				Game.create(x, y, new DroneEntity());
+				Game.create(x, y, new BasicZombie(le));
 			}
 			if(we==2){
-				Game.create(x, y, new DroneEntity());
+				Game.create(x, y, new BasicZombie(le));
 			}
 			if(we==3){
-				Game.create(x, y, new DroneEntity());
+				Game.create(x, y, new BasicZombie(le));
 			}
 			if(we==4){
-				Game.create(x, y, new DroneEntity());
+				Game.create(x, y, new BasicZombie(le));
 			}
 			if(we==5){
-				Game.create(x, y, new DroneEntity());
+				Game.create(x, y, new BasicZombie(le));
 			}
 			if(we==6){
-				Game.create(x, y, new DroneEntity());
+				Game.create(x, y, new BasicZombie(le));
 			}
 		}
 	}

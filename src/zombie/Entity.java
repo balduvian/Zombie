@@ -9,27 +9,66 @@ public class Entity {
 	public static int IDSURVIVOR = 1;
 	public static int IDZOMBIE = 2;
 	
-	int id;
+	public static int DEFAULTWIDTH = 1;
+	public static int DEFAULTHEIGHT = 1;
+	
+	int id = IDNULL;
 	int index; //index in the list;
 	int y;
 	int x;
 	double exy;
 	double exx;
-	double w;
-	double h;
+	double w = DEFAULTWIDTH;
+	double h = DEFAULTHEIGHT;
 	double speed;
 	boolean despawn = false;
-	int imgid;
 	
-	boolean anim = false;//animations
-	int[] imgframes;
-	int numframes;
-	int frame = 0;
-	double sinceframe;
-	int frametime;
-	
+	ImgSheet imgs;
+
 	int mmode = 0;
 	int mdir = 4;
+	
+	public class ImgSheet{
+		boolean anim;
+		int frames;
+		int layers;
+		double frametime;
+		double timer;
+		double vari;
+		int frame;
+		int[][] sheet;
+		
+		public ImgSheet(int[][] imagse, double time, double variation){
+			sheet = imagse.clone();
+			frametime=time;
+			vari = variation;
+			baseops();			
+		}
+		
+		public ImgSheet(){
+			sheet = new int[][]{{ImageLoader.CLOSE}};
+			frametime = 1;
+			vari = 0;
+			baseops();
+			anim = false;
+		}
+		
+		public double makeac(){
+			return frametime + (Math.random()*(vari*2)-vari);
+		}
+		
+		public int randframe(){
+			return (int)(Math.random()*frames);
+		}
+		
+		private void baseops(){
+			frame = randframe();
+			frames = sheet.length;
+			layers = sheet[0].length;
+			timer = makeac();
+			anim = true;
+		}
+	}
 	
 	public void destroy(){
 		Game.delete(index);
@@ -76,11 +115,11 @@ public class Entity {
 				destroy();
 			}
 		}
-		if(anim){
-			sinceframe -= (1.0/Game.tpm);
-			if(sinceframe<=0){
-				sinceframe = frametime;
-				frame = (frame+1)%numframes;
+		if(imgs.anim){
+			imgs.timer -= (1.0/Game.tpm);
+			if(imgs.timer<=0){
+				imgs.timer = imgs.makeac();
+				imgs.frame = (imgs.frame+1)%imgs.frames;
 			}
 		}
 	}

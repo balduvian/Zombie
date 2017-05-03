@@ -22,7 +22,7 @@ public class Game {
 	public static BufferedImage[] images = new BufferedImage[pmax];
 	
 	//display size
-	public static int square = 48;
+	public static int square = 64;
 	
 	//window
 	public static Window window;
@@ -40,7 +40,7 @@ public class Game {
 	public static double gexx;
 	
 	//desbugging nocamera movespeed
-	private double spd = 4;//movespeed
+	private double spd = 4;
 	
 	static int activity = 0;
 	

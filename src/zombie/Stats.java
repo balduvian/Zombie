@@ -2,9 +2,10 @@ package zombie;
 
 public class Stats {
 	
-	public static final int BASETOTAL = 25;
+	public static final int BARMULT = 5;
 	public static final int NUMSTATS = 5;
 	public static final int NUMBARS = 2;
+	
 	String type;
 	String name;
 	int level;
@@ -34,7 +35,7 @@ public class Stats {
 	public void makebars(){//update the bars and maxes
 		for(int i=0;i<NUMBARS;i++){
 			double oldb = bmax[i];
-			bmax[i] = stats[i]*5;
+			bmax[i] = stats[i]*BARMULT;
 			double crat = bmax[i]/oldb;
 			bars[i] = (int)(bars[i]*crat);
 		}
@@ -42,17 +43,23 @@ public class Stats {
 	}
 	public void createbars(){//used only for initializing bars
 		for(int i=0;i<NUMBARS;i++){
-			bmax[i] = stats[i]*5;
+			bmax[i] = stats[i]*BARMULT;
 			bars[i] = bmax[i];
 		}
 	}
 	
-	public Stats(int level){
-		int rem = BASETOTAL;
+	public Stats(int level, int total){
+		int rem = total;
 		while(rem!=0){
 			bases[(int)(Math.random()*NUMSTATS)] += 1;
 			rem--;
 		}
+		makestats();
+		createbars();
+	}
+	
+	public Stats(int level, int[] preset){
+		bases = preset.clone();
 		makestats();
 		createbars();
 	}
