@@ -151,10 +151,8 @@ public class Window extends JFrame{
 									}
 								}
 							}
-							g.setColor(Color.WHITE);
-							g.fillRect(4, 4, 200, 20);
 							g.setColor(Color.red);
-							g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 50, 50);
+							g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 20, 30);
 							g.drawRect(width/2-2, height/2-2, 2, 2);
 						}else{
 							//OH YEAH MR KRABS
@@ -169,12 +167,11 @@ public class Window extends JFrame{
 	}
 	
 	public Window(){
-		setrender(1100,700,1.0,Game.square);
-		setResizable(true);//DOWE
+		setrender(1600,800,1.0,Game.square);
+		this.setBounds(100, 100, width+100, height+100);
+		setUndecorated(true);
 		pressed = new Misen();
 		addKeyListener(pressed);
-		//canvas = new Canvas();
-		//add(canvas);
 		setTitle("Zombie");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);

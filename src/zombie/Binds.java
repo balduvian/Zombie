@@ -1,9 +1,13 @@
 package zombie;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 public class Binds {
 	
-	public static int upbind = 87;
-	public static int leftbind = 65;
-	public static int downbind = 83;
-	public static int rightbind = 68;
+	public static final int UPBIND = KeyEvent.VK_W;
+	public static final int LEFTBIND = KeyEvent.VK_A;
+	public static final int DOWNBIND = KeyEvent.VK_S;
+	public static final int RIGHTBIND = KeyEvent.VK_D;
+	public static final int ENDBIND = KeyEvent.VK_END;
 }

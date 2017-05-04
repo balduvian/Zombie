@@ -149,7 +149,11 @@ public class Game {
 				if(globalx<(world.csize*world.offx)-1){
 					world.shift(3);
 				}
-
+				
+				if(window.pressed.keys[Binds.ENDBIND]){
+					System.exit(0);
+				}
+				
 				//TICK
 				for(int i=0;i<cnumm;i++){
 					cameras[i].tick();

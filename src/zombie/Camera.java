@@ -36,16 +36,16 @@ public class Camera{
 				cy = fiii.y+fiii.exy;
 			}
 		}else if(mode==2){
-			if(Game.window.pressed.keys[Binds.upbind]){
+			if(Game.window.pressed.keys[Binds.UPBIND]){
 				cy -= (cspeed/Game.tpm);
 			}
-			if(Game.window.pressed.keys[Binds.rightbind]){
+			if(Game.window.pressed.keys[Binds.RIGHTBIND]){
 				cx += (cspeed/Game.tpm);
 			}
-			if(Game.window.pressed.keys[Binds.downbind]){
+			if(Game.window.pressed.keys[Binds.DOWNBIND]){
 				cy += (cspeed/Game.tpm);
 			}
-			if(Game.window.pressed.keys[Binds.leftbind]){
+			if(Game.window.pressed.keys[Binds.LEFTBIND]){
 				cx -= (cspeed/Game.tpm);
 			}
 		}
