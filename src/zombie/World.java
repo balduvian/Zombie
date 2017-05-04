@@ -25,6 +25,13 @@ public class World {
 		}
 	}
 	
+	public int getacx(int cx){
+		return (cx+offx-rb);
+	}
+	public int getacy(int cy){
+		return (cy+offy-rb);
+	}
+	
 	public void shift(int dir){
 		if(dir == 0){
 			offy--;
@@ -97,18 +104,15 @@ public class World {
 	}
 	
 	public void loadchunk(int x, int y){
-		//System.out.println("loading chunk "+(x+offx-rb)+" "+(y+offy-rb));
-		int evn = (int)(Math.random()*3);//number of entities on chunk
-		if(evn>csize*csize){
-			evn = csize*csize;
-		}
-		chunkregion[y][x] = spawnmap.assignregion(x,y);
-		spawnmap.spawnroutine(x, y, chunkregion[y][x]);
-		for(int yy=0;yy<csize;yy++){
-			for(int xx=0;xx<csize;xx++){
-				rendered[y][x][yy][xx] = 0;
-			}
-		}
+		
+		int acx = getacx(x);
+		int acy = getacy(y);
+		
+		chunkregion[y][x] = spawnmap.assignregion(acx,acy);
+		
+		spawnmap.spawnroutine(acx, acy, chunkregion[y][x]);
+		
+		rendered[y][x] = spawnmap.build(acx,acy);
 	}
 	
 	public class SpawnMap {
@@ -131,6 +135,27 @@ public class World {
 				{65,80}
 		};
 		// !!!@@@###$$$%%%^^^&&&***((()))---
+		int numprops = 4;
+		int[][] props = {
+				{ImageLoader.VILLAGEPROP0,ImageLoader.VILLAGEPROP1,ImageLoader.VILLAGEPROP2,ImageLoader.VILLAGEPROP3},
+				{ImageLoader.FORESTPROP0,ImageLoader.FORESTPROP1,ImageLoader.FORESTPROP2,ImageLoader.FORESTPROP3},
+				{ImageLoader.PLAINSPROP0,ImageLoader.PLAINSPROP1,ImageLoader.PLAINSPROP2,ImageLoader.PLAINSPROP3},
+				{ImageLoader.CITYPROP0,ImageLoader.CITYPROP1,ImageLoader.CITYPROP2,ImageLoader.CITYPROP3},
+				{ImageLoader.DESERTPROP0,ImageLoader.DESERTPROP1,ImageLoader.DESERTPROP2,ImageLoader.DESERTPROP3},
+				{ImageLoader.SWAMPPROP0,ImageLoader.SWAMPPROP1,ImageLoader.SWAMPPROP2,ImageLoader.SWAMPPROP3},
+				{ImageLoader.SALTPROP0,ImageLoader.SALTPROP1,ImageLoader.SALTPROP2,ImageLoader.SALTPROP3},
+				{ImageLoader.HELLPROP0,ImageLoader.HELLPROP1,ImageLoader.HELLPROP2,ImageLoader.HELLPROP3,},
+		};
+		int[][] tiles = {
+				{ImageLoader.VILLAGEWALL,ImageLoader.VILLAGEPATH},
+				{ImageLoader.FORESTWALL,ImageLoader.FORESTPATH},
+				{ImageLoader.PLAINSWALL,ImageLoader.PLAINSPATH},
+				{ImageLoader.CITYWALL,ImageLoader.CITYPATH},
+				{ImageLoader.DESERTWALL,ImageLoader.DESERTPATH},
+				{ImageLoader.SWAMPWALL,ImageLoader.SWAMPPATH},
+				{ImageLoader.SALTWALL,ImageLoader.SALTPATH},
+				{ImageLoader.HELLWALL,ImageLoader.HELLPATH},
+		};
 		int chmax = 16;//16 in the list of probabilities
 		int[][] chances = {
 				{0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2},
@@ -165,17 +190,62 @@ public class World {
 				{6,6,6,6,6,6,7,7,7,7,8,8,8,9,9,10},
 				
 		};
+		int numstructures = 3;
+		int[][][] structures = {
+				{
+					{0,0,0,2,2,0,0,0},
+					{0,1,1,2,2,1,1,0},
+					{0,1,2,2,2,2,1,0},
+					{0,1,2,2,2,2,1,0},
+					{0,1,2,2,2,2,1,0},
+					{0,1,2,2,2,2,1,0},
+					{0,1,1,2,2,1,1,0},
+					{0,0,0,2,2,0,0,0},
+				},
+				{
+					{0,0,0,0,0,0,0,0},
+					{0,0,2,2,2,2,0,0},
+					{0,2,2,2,2,2,2,0},
+					{0,2,2,2,2,2,2,0},
+					{1,1,1,1,1,1,1,1},
+					{0,2,2,2,2,2,2,0},
+					{0,0,2,2,2,2,0,0},
+					{0,0,0,0,0,0,0,0},
+				},
+				{
+					{0,0,0,2,2,0,0,0},
+					{0,1,2,2,2,2,1,0},
+					{0,2,2,2,2,2,2,0},
+					{2,2,2,1,1,2,2,2},
+					{2,2,2,1,1,2,2,2},
+					{0,2,2,2,2,2,2,0},
+					{0,1,2,2,2,2,1,0},
+					{0,0,0,2,2,0,0,0},
+				}
+		};
 		public int assignregion(int cx, int cy){
 			int hmy = 0;
 			int[] hat = new int[numregions];
-			int nowt = Math.abs((cx+offx-rb))+Math.abs((cy+offy-rb));
+			int nowt = Math.abs(cx)+Math.abs(cy);
 			for(int i=0;i<numregions;i++){
 				if((nowt>=bounds[i][0] || bounds[i][0] == -1) && (nowt<=bounds[i][1] || bounds[i][1] == -1)){
 					hat[hmy] = i;
 					hmy++;
 				}
 			}
-			return hat[(int)(Math.random()*hmy)];
+			return hat[(int)(Game.bitrand(cx,cy)*hmy)];
+		}
+		
+		public int[][] build(int cx, int cy){
+			int[][] blt = new int[csize][csize];
+			if(Game.bitrand(cx+cx,cy+cy)>0.8){
+				blt = structures[(int)(Game.bitrand(cx+cx, cy+cy)*numstructures)].clone();
+			}else{
+				int rx = (int)(Game.bitrand(cx+cx,cy+cy)*csize);
+				int ry = (int)(Game.bitrand(cx+cx+23,cy+cy+89)*csize);
+				blt[ry][rx] = 3;
+			}
+			return blt;
 		}
 		
 		public void spawnroutine(int cx, int cy, int region){
@@ -198,7 +268,7 @@ public class World {
 					int gen = chances[region][spawnflag];
 					int levflag = (int)(Math.random()*lvmax);
 					int level = levelchances[region][levflag];
-					espw((cx+offx-rb)*csize+andx, (cy+offy-rb)*csize+andy, gen, level);
+					espw(cx*csize+andx, cy*csize+andy, gen, level);
 				}
 			}
 		}

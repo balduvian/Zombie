@@ -18,8 +18,8 @@ public class Game {
 	public static int currentcamera = 0;
 	
 	//setting up a list of images
-	public final static int pmax = 128;
-	public static BufferedImage[] images = new BufferedImage[pmax];
+	public final static int Imax = 256;
+	public static BufferedImage[] images = new BufferedImage[Imax];
 	
 	//display size
 	public static int square = 64;
@@ -55,6 +55,11 @@ public class Game {
 	private int tackfill = 0;
 	private int pretpm = 0;
 	static double tpm = 0;//ticks per millisecond
+	
+	//random
+	public static double bitrand(int s, int o){
+		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
+	}
 	
 	//game methods
 	public static void create(int x, int y, Entity e){

@@ -126,12 +126,18 @@ public class Window extends JFrame{
 												ccp = ga.spawnmap.rcolors[ga.chunkregion[y][x]];
 											}*/
 											
-											g.setColor(new Color(ccp[0]+(int)(bitrand(acx,acy)*10-5),
-													ccp[1]+(int)(bitrand(acx,acy)*10-5),
-													ccp[2]+(int)(bitrand(acx,acy)*10-5)));
+											g.setColor(new Color(ccp[0]+(int)(Game.bitrand(acx,acy)*10-5),
+													ccp[1]+(int)(Game.bitrand(acx,acy)*10-5),
+													ccp[2]+(int)(Game.bitrand(acx,acy)*10-5)));
 											
 											int[] lo = ldr(acx,0,acy,0,1,1);
 											g.fillRect(lo[0],lo[1],lo[2],lo[3]);
+											
+											if(Game.world.rendered[y][x][yy][xx]==3){
+												g.drawImage(Game.images[Game.world.spawnmap.props[Game.world.chunkregion[y][x]][(int)(Game.bitrand(acx, acy)*Game.world.spawnmap.numprops)]],lo[0],lo[1],lo[2],lo[3],null);
+											}else if(Game.world.rendered[y][x][yy][xx]>0){
+												g.drawImage(Game.images[Game.world.spawnmap.tiles[Game.world.chunkregion[y][x]][Game.world.rendered[y][x][yy][xx]-1]],lo[0],lo[1],lo[2],lo[3],null);
+											}
 										}
 									}
 								}
@@ -145,9 +151,10 @@ public class Window extends JFrame{
 									}
 								}
 							}
+							g.setColor(Color.WHITE);
+							g.fillRect(4, 4, 200, 20);
 							g.setColor(Color.red);
-							//g.drawRect(0, 0, width-1, height-1);
-							g.drawString(Game.globaly+" "+Math.floor(Game.gexy*100)/100+" "+Game.globalx+" "+Math.floor(Game.gexx*100)/100+" "+Game.world.seed, 20, 20);
+							g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 50, 50);
 							g.drawRect(width/2-2, height/2-2, 2, 2);
 						}else{
 							//OH YEAH MR KRABS
@@ -204,15 +211,10 @@ public class Window extends JFrame{
 	
 	public int xdisp(int x, double off, double w){
 		return (int)((((x+off)-(w/2.0))-Game.gexx-Game.globalx)*Game.square+width/2);
-		//return (int)(x-(w/2)-Game.globalx)-(width/2);
-	}
-	public int ydisp(int y, double off, double h){
-		//return (int)(y-(h/2)-Game.globaly)-(height/2);
-		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly)*Game.square+height/2);
 	}
 	
-	public double bitrand(int s, int o){
-		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
+	public int ydisp(int y, double off, double h){
+		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly)*Game.square+height/2);
 	}
 	
 }

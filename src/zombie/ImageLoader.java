@@ -55,38 +55,38 @@ public class ImageLoader {
 	public static final int SALTPATH = 45;
 	public static final int HELLWALL = 46;
 	public static final int HELLPATH = 47;
-	public static final int ZOMBIEENEMY0 = 48;
-	public static final int ZOMBIEENEMY1 = 49;
-	public static final int HALFENEMY0 = 50;
-	public static final int HALFENEMY1 = 51;
-	public static final int SKELETONENEMY0 = 52;
-	public static final int SKELETONENEMY1 = 53;
-	public static final int MUSCLEENEMY0 = 54;
-	public static final int MUSCLEENEMY1 = 55;
-	public static final int CACTUSENEMY0 = 56;
-	public static final int CACTUSENEMY1 = 57;
-	public static final int SHAMANENEMY0 = 58;
-	public static final int SHAMANENEMY1 = 59;
-	public static final int OOZEENEMY0 = 60;
-	public static final int OOZEENEMY1 = 61;
-	public static final int FLAMEENEMY0 = 62;
-	public static final int FLAMEENEMY1 = 63;
-	public static final int SANDENEMY0 = 64;
-	public static final int SANDENEMY1 = 65;
-	public static final int IMPENEMY0 = 66;
-	public static final int IMPENEMY1 = 67;
-	public static final int DEVILENEMY0 = 68;
-	public static final int DEVILENEMY1 = 69;
-	public static final int ELEMENTALENEMY0 = 70;
-	public static final int ELEMENTALENEMY1 = 71;
-	public static final int METALENEMY0 = 72;
-	public static final int METALENEMY1 = 73;
-	public static final int GHOSTENEMY0 = 74;
-	public static final int GHOSTENEMY1 = 75;
-	public static final int BEASTENEMY0 = 76;
-	public static final int BEASTENEMY1 = 77;
-	public static final int GIANTENEMY0 = 78;
-	public static final int GIANTENEMY1 = 79;
+	public static final int ZOMBIEE0 = 48;
+	public static final int ZOMBIEE1 = 49;
+	public static final int HALFE0 = 50;
+	public static final int HALFE1 = 51;
+	public static final int MUSCLEE0 = 52;
+	public static final int MUSCLEE1 = 53;
+	public static final int CACTUSE0 = 54;
+	public static final int CACTUSE1 = 55;
+	public static final int COWBOYE0 = 56;
+	public static final int COWBOYE1 = 57;
+	public static final int GAPINGE0 = 58;
+	public static final int GAPINGE1 = 59;
+	public static final int FLAMESKELETONE0 = 60;
+	public static final int FLAMESKELETONE1 = 61;
+	public static final int OOZEE0 = 62;
+	public static final int OOZEE1 = 63;
+	public static final int SKELETONE0 = 64;
+	public static final int SKELETONE1 = 65;
+	public static final int GIANTE0 = 66;
+	public static final int GIANTE1 = 67;
+	public static final int DEVILE0 = 68;
+	public static final int DEVILE1 = 69;
+	public static final int IMPE0 = 70;
+	public static final int IMPE1 = 71;
+	public static final int METALE0 = 72;
+	public static final int METALE1 = 73;
+	public static final int GHOSTE0 = 74;
+	public static final int GHOSTE1 = 75;
+	public static final int SANDE0 = 76;
+	public static final int SANDE1 = 77;
+	public static final int ELEMENTALE0 = 78;
+	public static final int ELEMENTALE1 = 79;
 	public static final int CHESTENTITY0 = 80;
 	public static final int CHESTENTITY1 = 81;
 	public static final int CHESTENTITY2 = 82;
@@ -135,33 +135,6 @@ public class ImageLoader {
 	public static final int SKIN5 = 125;
 	public static final int TSTATUS = 126;
 	public static final int GSTATUS = 127;
-	//64x64 images
-	/*public static final int ZOMBIEPROFILE = 128;
-	public static final int HALFPROFILE = 129;
-	public static final int SKELETONPROFILE = 130;
-	public static final int MUSCLEPROFILE = 131;
-	public static final int CACTUSPROFILE = 132;
-	public static final int SHAMANPROFILE = 133;
-	public static final int OOZEPROFILE = 134;
-	public static final int FLAMEPROFILE = 135;
-	public static final int SANDPROFILE = 136;
-	public static final int IMPPROFILE = 137;
-	public static final int DEVILPROFILE = 138;
-	public static final int ELEMETNALPROFILE = 139;
-	public static final int METALPROFILE = 140;
-	public static final int GHOSTPROFILE = 141;
-	public static final int BEASTPROFILE = 142;
-	public static final int GIANTPROFILE = 143;
-	public static final int PLAYER0PROFILE = 144;
-	public static final int PLAYER1PROFILE = 145;
-	public static final int PLAYER2PROFILE = 146;
-	public static final int PLAYER3PROFILE = 147;
-	public static final int PLAYER4PROFILE = 148;
-	public static final int PLAYER5PROFILE = 149;
-	public static final int PLAYER6PROFILE = 150;
-	public static final int PLAYER7PROFILE = 151;*/
-	//8*8 images
-	public static final int GLYPHA = 164;
 	
 	static void loadimages(){
 		BufferedImage b = null;
@@ -185,7 +158,7 @@ public class ImageLoader {
 					}
 				}
 				Game.images[avance] = lod;
-				System.out.println("loaded "+(avance+1)+" out of "+Game.pmax);
+				System.out.println("loaded "+(avance+1)+" out of "+Game.Imax);
 				avance++;
 			}
 		}
