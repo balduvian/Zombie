@@ -1,8 +1,13 @@
 package main;
 
 import block.AirBlock;
+import block.BuildingfloorBlock;
+import block.PathBlock;
+import block.SandstoneBlock;
 import block.StoneBlock;
+import block.WaterBlock;
 import block.WoodBlock;
+import block.WoodfloorBlock;
 
 public class Block {
 	
@@ -26,19 +31,19 @@ public class Block {
 	public static final int PALMTREE = 17;
 	public static final int CEMENT = 18;
 	public static final int SIDEWALK = 19;
-	public static final int BARREL = 20;
-	public static final int TRASH = 21;
-	public static final int GLASS = 22;
+	public static final int TRASH = 20;
+	public static final int GLASS = 21;
 	public static final int SAND = 23;
-	public static final int FENCE = 24;
+	public static final int FENCE = 23;
 	
 	protected int blockid;
 	protected ImgSheet image;
 	protected int state = 0;
-	protected boolean solid;
+	protected boolean passable;
 	protected boolean oneway;
 	protected int onewaydir;
-	boolean walk;
+	protected boolean walk;
+	protected boolean slow;
 	
 	//used for determining frames of block anims
 	public static int eternal = 0;
@@ -48,7 +53,17 @@ public class Block {
 	
 	//when interacted with
 	public void oninteract(){
+		actroutine();
+		update();
+	}
+	
+	//the actual method to ovveride
+	protected void actroutine(){
 		
+	}
+	
+	private void update(){
+		image.mode = state;
 	}
 	
 	public Block block(int bid){
@@ -71,37 +86,35 @@ public class Block {
 		}if(bid==Block.HELLSTONE){
 			return new HellBlock();
 		}if(bid==Block.TREE){
-			return new AirBlock();
+			return new TreeBlock();
 		}if(bid==Block.ROCK){
-			return new AirBlock();
+			return new RockBlock();
 		}if(bid==Block.LAMP){
-			return new AirBlock();
+			return new LampBlock();
 		}if(bid==Block.FLAME){
-			return new AirBlock();
+			return new FlameBlock();
 		}if(bid==Block.CACTUS){
-			return new AirBlock();
+			return new CactusBlock();
 		}if(bid==Block.BONES){
-			return new AirBlock();
+			return new BonesBlock();
 		}if(bid==Block.LAVA){
-			return new AirBlock();
+			return new LavaBlock();
 		}if(bid==Block.DOOR){
-			return new AirBlock();
+			return new DoorBlock();
 		}if(bid==Block.PALMTREE){
-			return new AirBlock();
+			return new PalmtreeBlock();
 		}if(bid==Block.CEMENT){
-			return new AirBlock();
+			return new CementBlock();
 		}if(bid==Block.SIDEWALK){
-			return new AirBlock();
-		}if(bid==Block.BARREL){
-			return new AirBlock();
+			return new SidewalkBlock();
 		}if(bid==Block.TRASH){
-			return new AirBlock();
+			return new TrashBlock();
 		}if(bid==Block.GLASS){
-			return new AirBlock();
+			return new GlassBlock();
 		}if(bid==Block.SAND){
-			return new AirBlock();
+			return new SandBlock();
 		}if(bid==Block.FENCE){
-			return new AirBlock();
+			return new FenceBlock();
 		}else{
 			return new AirBlock();
 		}

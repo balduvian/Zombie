@@ -2,35 +2,34 @@ package main;
 
 public class ImgSheet {
 	boolean anim;
-	boolean randstart;
-	int frames;
-	int layers;
+	
+	int modes;
 	
 	int frametime;
 	int timer;
 	int vari;
 	
+	int mode;
 	int frame;
-	int[][] sheet;
+	int[][][] sheet;
 	
-	public ImgSheet(int[][] images, int time, int variation){
-		sheet = images.clone();
-		frametime=time;
+	public ImgSheet(int[][][] images, int time, int variation){
+		sheet = images;
+		frametime = time;
 		vari = variation;
 		anim = true;
-		randstart = true;
 		baseops();			
 	}
-	
-	public ImgSheet(int[][] images){
-		sheet = images.clone();
-		baseops();
+	public ImgSheet(int[][][] images, int time){
+		sheet = images;
+		frametime = time;
+		vari = 0;
+		anim = true;
+		baseops();			
 	}
-	
-	public ImgSheet(int[][] images, boolean rs){
-		randstart = rs;
-		sheet = images.clone();
-		baseops();
+	public ImgSheet(int[][][] images){
+		sheet = images;
+		baseops();			
 	}
 	
 	public int makeac(){
@@ -38,16 +37,12 @@ public class ImgSheet {
 	}
 	
 	public int randframe(){
-		return (int)(Math.random()*frames);
+		return (int)(Math.random()*sheet[mode].length);
 	}
 	
 	private void baseops(){
-		frame = randframe();
-		frames = sheet.length;
-		layers = sheet[0].length;
+		modes =sheet.length;
 		timer = makeac();
-		if(randstart){
-			frame = (int)(Math.random()*frames);
-		}
+		frame = randframe();
 	}
 }

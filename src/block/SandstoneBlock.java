@@ -8,8 +8,7 @@ public class SandstoneBlock extends Block{
 
 	public SandstoneBlock(){
 		blockid = Block.SANDSTONE;
-		image = new ImgSheet(new int[][]{{ImageLoader.SANDSTONE}});
-		solid = true;
+		image = new ImgSheet(new int[][][]{{{ImageLoader.SANDSTONE}}});
 	}
 
 }
