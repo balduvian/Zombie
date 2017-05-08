@@ -57,7 +57,11 @@ public class Block {
 		update();
 	}
 	
-	//the actual method to ovveride
+	public void setstate(int s){
+		state = s;
+	}
+	
+	//the actual method to override
 	protected void actroutine(){
 		
 	}
@@ -66,55 +70,23 @@ public class Block {
 		image.mode = state;
 	}
 	
-	public Block block(int bid){
+	public static Block block(int bid){
 		if(bid==Block.AIR){
 			return new AirBlock();
-		}if(bid==Block.WOOD){
+		}else if(bid==Block.WOOD){
 			return new WoodBlock();
-		}if(bid==Block.STONE){
+		}else if(bid==Block.STONE){
 			return new StoneBlock();
-		}if(bid==Block.BUILDINGFLOOR){
+		}else if(bid==Block.BUILDINGFLOOR){
 			return new BuildingfloorBlock();
-		}if(bid==Block.SANDSTONE){
+		}else if(bid==Block.SANDSTONE){
 			return new SandstoneBlock();
-		}if(bid==Block.WOODFLOOR){
+		}else if(bid==Block.WOODFLOOR){
 			return new WoodfloorBlock();
-		}if(bid==Block.PATH){
+		}else if(bid==Block.PATH){
 			return new PathBlock();
-		}if(bid==Block.WATER){
+		}else if(bid==Block.WATER){
 			return new WaterBlock();
-		}if(bid==Block.HELLSTONE){
-			return new HellBlock();
-		}if(bid==Block.TREE){
-			return new TreeBlock();
-		}if(bid==Block.ROCK){
-			return new RockBlock();
-		}if(bid==Block.LAMP){
-			return new LampBlock();
-		}if(bid==Block.FLAME){
-			return new FlameBlock();
-		}if(bid==Block.CACTUS){
-			return new CactusBlock();
-		}if(bid==Block.BONES){
-			return new BonesBlock();
-		}if(bid==Block.LAVA){
-			return new LavaBlock();
-		}if(bid==Block.DOOR){
-			return new DoorBlock();
-		}if(bid==Block.PALMTREE){
-			return new PalmtreeBlock();
-		}if(bid==Block.CEMENT){
-			return new CementBlock();
-		}if(bid==Block.SIDEWALK){
-			return new SidewalkBlock();
-		}if(bid==Block.TRASH){
-			return new TrashBlock();
-		}if(bid==Block.GLASS){
-			return new GlassBlock();
-		}if(bid==Block.SAND){
-			return new SandBlock();
-		}if(bid==Block.FENCE){
-			return new FenceBlock();
 		}else{
 			return new AirBlock();
 		}

@@ -1,7 +1,5 @@
-package zombie;
+package main;
 
-import main.Character;
-import main.Entity;
 import main.*;
 
 public class Zombie extends Character{
@@ -23,7 +21,7 @@ public class Zombie extends Character{
 	public static final int SANDZOMBIEID = 14;
 	public static final int ELEMENTALID = 15;
 	
-	int zombid;
+	protected int zombid;
 	
 	public Zombie(int level){
 		id = Entity.IDZOMBIE;

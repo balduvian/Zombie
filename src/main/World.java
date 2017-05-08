@@ -7,7 +7,7 @@ public class World {
 	int wsize = 64;
 	int rb;
 	int ssize;
-	Block[][][] world;//the rendered chunks
+	Block[][][] world;//the rendered blocks
 	int[][] worldregion;//the region for each chunk
 	int offy = 0;//offset of world
 	int offx = 0;
@@ -114,7 +114,7 @@ public class World {
 		
 		worldregion[y][x] = spawnmap.assignregion(acx,acy);
 		
-		spawnmap.spawnroutine(acx, acy, worldregion[y][x]);
+		spawnmap.spawnroutine(acx, acy);
 		
 		world[y][x] = spawnmap.build(acx,acy);
 	}
@@ -122,7 +122,7 @@ public class World {
 	public class SpawnMap {
 		
 		int numregions = 4;
-		Region[] regions = {new VillageRegion(), new ForestRegion()};
+		Region[] regions = {Region.region(Region.VILLAGEID), Region.region(Region.FORESTID)};
 		
 		public int assignregion(int cx, int cy){
 			int hmy = 0;
@@ -143,35 +143,12 @@ public class World {
 			return tsk;
 		}
 		
-		public void spawnroutine(int cx, int cy, int region){
-			int tryflag = (int)(Math.random()*spmax);
-			int tries = spawnchances[region][tryflag];
-			int[][] sofar = new int[tries][2];//no dupe spawns
-			int favance = 0;
-			for(int i=0;i<tries;i++){
-				boolean pass = true;
-				int andx = ((int)(Math.random()*csize));
-				int andy = ((int)(Math.random()*csize));
-				for(int u=0;u<favance;u++){
-					if(sofar[u][0]==andx && sofar[u][1]==andy){
-						pass = false;
-						break;
-					}
-				}
-				if(pass){
-					int spawnflag = (int)(Math.random()*chmax);
-					int gen = chances[region][spawnflag];
-					int levflag = (int)(Math.random()*lvmax);
-					int level = levelchances[region][levflag];
-					espw(cx*csize+andx, cy*csize+andy, gen, level);
-				}
+		public void spawnroutine(int cx, int cy){
+			if(Math.random()<regions[worldregion[cy][cx]].schance){
+				int enemy = regions[worldregion[cy][cx]].enemychances[(int)(Math.random()*regions[worldregion[cy][cx]].enmax)];
+				int level = regions[worldregion[cy][cx]].levelchances[(int)(Math.random()*regions[worldregion[cy][cx]].lvmax)];
+				espw(cx,cy,enemy,level);
 			}
-		}
-		
-		public void spawnspecificenemy(int cx, int cy, int enemy, int level){
-			int andx = ((int)(Math.random()*csize));
-			int andy = ((int)(Math.random()*csize));
-			espw((cx+offx-rb)*csize+andx, (cy+offy-rb)*csize+andy, enemy, level);
 		}
 		
 		private void espw(int x, int y, int we, int le){

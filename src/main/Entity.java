@@ -63,13 +63,13 @@ public class Entity {
 	
 	public void tick(){
 		if(despawn){
-			if(y<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offy){
+			if(y<(Game.world.wsize*-1)+Game.world.wsize*Game.world.offy){
 				destroy();
-			}else if(x>(Game.world.csize*(Game.world.rb+1))+(Game.world.csize*Game.world.offx)){
+			}else if(x>(Game.world.wsize)+(Game.world.wsize*Game.world.offx)){
 				destroy();
-			}else if(y>(Game.world.csize*(Game.world.rb+1))+(Game.world.csize*Game.world.offy)){
+			}else if(y>(Game.world.wsize)+(Game.world.wsize*Game.world.offy)){
 				destroy();
-			}else if(x<(Game.world.rb*Game.world.csize*-1)+Game.world.csize*Game.world.offx){
+			}else if(x<(Game.world.wsize*-1)+Game.world.wsize*Game.world.offx){
 				destroy();
 			}
 		}
@@ -77,7 +77,7 @@ public class Entity {
 			imgs.timer --;
 			if(imgs.timer==0){
 				imgs.timer = imgs.makeac();
-				imgs.frame = (imgs.frame+1)%imgs.frames;
+				imgs.frame = (imgs.frame+1)%imgs.sheet[imgs.mode].length;
 			}
 		}
 	}
