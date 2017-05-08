@@ -1,4 +1,4 @@
-package zombie;
+package main;
 
 import java.awt.image.BufferedImage;
 
@@ -39,16 +39,12 @@ public class Game {
 	public static double gexy;
 	public static double gexx;
 	
-	//desbugging nocamera movespeed
-	private double spd = 4;
-	
 	static int activity = 0;
 	
 	//ticking variables
 	private long goal = 0;
 	private long seccount = 0;
 	private int loopcount = 0;
-	private boolean ready = false;
 	private int tacklen = 100;
 	private int[] tickstack = new int[tacklen];
 	private int tackadd = 0;
@@ -104,67 +100,55 @@ public class Game {
 		create(0, 1, new Survivor(0));
 		
 		activity = 1;
-		gameloop: while(true){//LOOOOOOOOOOOOOOOP
+		
+		//game loop
+		while(true){
 			
 			if(seccount==0){
-				loopcount = 0;
-				goal = System.currentTimeMillis();
+				goal = System.nanoTime();
 				seccount = 1;
 			}else{
-				loopcount++;
-				int ovr = (int)(System.currentTimeMillis()-goal);
+				int ovr = (int)(System.nanoTime()-goal);
 				if(ovr>0){
 					seccount = 0;
-					if(tackfill<tacklen){
-						tackfill++;
-					}else{
-						pretpm -= tickstack[tackadd];
-					}
-					tickstack[tackadd] = loopcount/ovr;
-					pretpm += tickstack[tackadd];
-					tpm = (pretpm/tackfill)*1000;
-					//System.out.println(tpm);
-					tackadd++;
-					tackadd%=tacklen;
-					loopcount = 0;
+					tick();
 				}
 			}
 			
-			if(ready){
-				
-				globalx = (int)Math.floor(cameras[currentcamera].cx);
-				gexx = cameras[currentcamera].cx-globalx;
-				globaly = (int)Math.floor(cameras[currentcamera].cy);
-				gexy = cameras[currentcamera].cy-globaly;
-				
-				if(globaly<(world.csize*world.offy)-1){
-					world.shift(0);
-				}
-				if(globalx>(world.csize*(world.rb-1))+(world.csize*world.offx)){
-					world.shift(1);
-				}
-				if(globaly>(world.csize*(world.rb-1))+(world.csize*world.offy)){
-					world.shift(2);
-				}
-				if(globalx<(world.csize*world.offx)-1){
-					world.shift(3);
-				}
-				
-				if(window.pressed.keys[Binds.ENDBIND]){
-					System.exit(0);
-				}
-				
-				//TICK
-				for(int i=0;i<cnumm;i++){
-					cameras[i].tick();
-				}
-				for(int i=0;i<enumm;i++){
-					entities[i].tick();
-				}
-			}else if(tpm>0){
-				ready=true;
-			}
 		}
+	}
+	
+	private void tick(){	
+		globalx = (int)Math.floor(cameras[currentcamera].cx);
+		gexx = cameras[currentcamera].cx-globalx;
+		globaly = (int)Math.floor(cameras[currentcamera].cy);
+		gexy = cameras[currentcamera].cy-globaly;
+		
+		if(globaly<(world.csize*world.offy)-1){
+			world.shift(0);
+		}
+		if(globalx>(world.csize*(world.rb-1))+(world.csize*world.offx)){
+			world.shift(1);
+		}
+		if(globaly>(world.csize*(world.rb-1))+(world.csize*world.offy)){
+			world.shift(2);
+		}
+		if(globalx<(world.csize*world.offx)-1){
+			world.shift(3);
+		}
+		
+		if(window.pressed.keys[Binds.ENDBIND]){
+			System.exit(0);
+		}
+		
+		//subticks
+		for(int i=0;i<cnumm;i++){
+			cameras[i].tick();
+		}
+		for(int i=0;i<enumm;i++){
+			entities[i].tick();
+		}
+		Block.tick();
 	}
 	
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package zombie;
+package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -50,16 +50,16 @@ public class Window extends JFrame{
 									boolean fromright = false;
 									boolean fromdown = false;
 									boolean fromleft = false;
-									if(y>0 && ga.chunkregion[y][x] != ga.chunkregion[y-1][x]){
+									if(y>0 && ga.worldregion[y][x] != ga.worldregion[y-1][x]){
 										fromup = true;
 									}
-									if(x<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y][x+1]){
+									if(x<ga.rz-1 && ga.worldregion[y][x] != ga.worldregion[y][x+1]){
 										fromright = true;
 									}
-									if(y<ga.rz-1 && ga.chunkregion[y][x] != ga.chunkregion[y+1][x]){
+									if(y<ga.rz-1 && ga.worldregion[y][x] != ga.worldregion[y+1][x]){
 										fromdown = true;
 									}
-									if(x>0 && ga.chunkregion[y][x] != ga.chunkregion[y][x-1]){
+									if(x>0 && ga.worldregion[y][x] != ga.worldregion[y][x-1]){
 										fromleft = true;
 									}
 									for(int yy=0;yy<ga.csize;yy++){//draw within
@@ -78,34 +78,34 @@ public class Window extends JFrame{
 											int tempamm = 1;
 											int[] tempccp = new int[3];
 											for(int i=0;i<3;i++){
-												tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i];
+												tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x]][i];
 											}
 											if(fromup){
 												tempamm++;
 												for(int i=0;i<3;i++){
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y-1][x]][i]*ub;
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-ub);
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y-1][x]][i]*ub;
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x]][i]*(1-ub);
 												}
 											}
 											if(fromright){
 												tempamm++;
 												for(int i=0;i<3;i++){
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x+1]][i]*rb;
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-rb);
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x+1]][i]*rb;
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x]][i]*(1-rb);
 												}
 											}
 											if(fromdown){
 												tempamm++;
 												for(int i=0;i<3;i++){
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y+1][x]][i]*db;
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-db);
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y+1][x]][i]*db;
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x]][i]*(1-db);
 												}
 											}
 											if(fromleft){
 												tempamm++;
 												for(int i=0;i<3;i++){
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x-1]][i]*lb;
-													tempccp[i] += ga.spawnmap.rcolors[ga.chunkregion[y][x]][i]*(1-lb);
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x-1]][i]*lb;
+													tempccp[i] += ga.spawnmap.rcolors[ga.worldregion[y][x]][i]*(1-lb);
 												}
 											}
 											ccp = new int[]{tempccp[0]/tempamm,tempccp[1]/tempamm,tempccp[2]/tempamm};
@@ -133,10 +133,10 @@ public class Window extends JFrame{
 											int[] lo = ldr(acx,0,acy,0,1,1);
 											g.fillRect(lo[0],lo[1],lo[2],lo[3]);
 											
-											if(Game.world.rendered[y][x][yy][xx]==3){
-												g.drawImage(Game.images[Game.world.spawnmap.props[Game.world.chunkregion[y][x]][(int)(Game.bitrand(acx, acy)*Game.world.spawnmap.numprops)]],lo[0],lo[1],lo[2],lo[3],null);
-											}else if(Game.world.rendered[y][x][yy][xx]>0){
-												g.drawImage(Game.images[Game.world.spawnmap.tiles[Game.world.chunkregion[y][x]][Game.world.rendered[y][x][yy][xx]-1]],lo[0],lo[1],lo[2],lo[3],null);
+											if(Game.world.world[y][x][yy][xx]==3){
+												g.drawImage(Game.images[Game.world.spawnmap.props[Game.world.worldregion[y][x]][(int)(Game.bitrand(acx, acy)*Game.world.spawnmap.numprops)]],lo[0],lo[1],lo[2],lo[3],null);
+											}else if(Game.world.world[y][x][yy][xx]>0){
+												g.drawImage(Game.images[Game.world.spawnmap.tiles[Game.world.worldregion[y][x]][Game.world.world[y][x][yy][xx]-1]],lo[0],lo[1],lo[2],lo[3],null);
 											}
 										}
 									}

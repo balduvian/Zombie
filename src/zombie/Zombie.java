@@ -1,5 +1,9 @@
 package zombie;
 
+import main.Character;
+import main.Entity;
+import main.*;
+
 public class Zombie extends Character{
 	
 	public static final int BASICZOMBIEID = 0;

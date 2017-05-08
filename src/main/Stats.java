@@ -1,4 +1,4 @@
-package zombie;
+package main;
 
 public class Stats {
 	

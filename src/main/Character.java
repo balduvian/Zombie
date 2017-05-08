@@ -1,15 +1,15 @@
-package zombie;
+package main;
 
 public class Character extends Entity{
 	
 	Stats stats;
-	boolean friendly;
+	protected boolean friendly;
 	
 	boolean pre;
 	int[] prebase;
 	int defbase;
 	
-	String logname;
+	protected String logname;
 	
 	public void init(int level){
 		if(pre){

@@ -1,6 +1,4 @@
-package zombie;
-
-import zombie.Entity.ImgSheet;
+package main;
 
 public class Survivor extends Character{
 	
@@ -22,7 +20,7 @@ public class Survivor extends Character{
 	};
 	public static final int NUMNAMES = 30;
 	public static final String[] NAMES = {
-		"Jackson","Vincent","Emmett","Henry","Sam","Soren","Ben","Noah","Alexander","Matthew","Luke","Joseph","David","Ryan","Corbin","Muhammad","Michael","Daniel","John","Dylan","Robert","Cameron","Ethan","Brian","Charles","Steven","Adam","Joshua","Nicholas","Austin"
+		"Jackson","Vincent","Emmett","Henry","Sam","Soren","Ben","Noah","Alexander","Matthew","Luke","Joseph","David","Ryan","Corbin","Muhammad","Michael","Daniel","John","Dylan","Robert","Cameron","Ethan","Brian","Charles","Steven","Adam","Joshua","Nicholas","Austin","Barasu"
 	};
 	public int skin;
 	public int race;
@@ -40,7 +38,7 @@ public class Survivor extends Character{
 		id = Entity.IDSURVIVOR;
 		skin = (int)(Math.random()*NUMSKINS);
 		race = (int)(Math.random()*NUMRACES);
-		imgs = new ImgSheet(new int[][]{{RACEIDS[race],SKINIDS[skin],ImageLoader.PLAYEROUTLINE}},100,0);
+		imgs = new ImgSheet(new int[][]{{RACEIDS[race],SKINIDS[skin],ImageLoader.PLAYEROUTLINE}});
 		stats = new Stats(level,25);
 		despawn = false;
 		init(level);

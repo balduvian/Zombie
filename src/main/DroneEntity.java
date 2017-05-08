@@ -1,4 +1,4 @@
-package zombie;
+package main;
 
 import java.awt.Color;
 
