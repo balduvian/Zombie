@@ -2,8 +2,6 @@ package main;
 
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
-
 public class Game {
 	
 	//setting up list of entities of cameras and entities and related values
@@ -43,13 +41,7 @@ public class Game {
 	
 	//ticking variables
 	private long goal = 0;
-	private long seccount = 0;
 	private int loopcount = 0;
-	private int tacklen = 100;
-	private int[] tickstack = new int[tacklen];
-	private int tackadd = 0;
-	private int tackfill = 0;
-	private int pretpm = 0;
 	static double tpm = 0;//ticks per millisecond
 	
 	//random
@@ -103,13 +95,17 @@ public class Game {
 		
 		//game loop
 		tick();
+		goal = System.currentTimeMillis();
+		loopcount=0;
 		while(true){
-			int ovr = (int)(System.nanoTime()-goal);
+			int ovr = (int)(System.currentTimeMillis()-goal);
 			if(ovr>0){
-				seccount = 0;
-				goal = System.nanoTime();
+				goal = System.currentTimeMillis();
+				System.out.println(loopcount);
+				loopcount=0;
 				tick();
 			}
+			loopcount++;
 		}
 	}
 	
@@ -136,7 +132,6 @@ public class Game {
 			System.exit(0);
 		}
 		
-		//subticks
 		for(int i=0;i<cnumm;i++){
 			cameras[i].tick();
 		}
