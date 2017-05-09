@@ -4,11 +4,11 @@ import zombie.BasicZombie;
 public class World {
 	
 	int seed;
-	int wsize = 64;
+	int wsize = 32;
 	int rb;
 	int ssize;
 	Block[][][] world;//the rendered blocks
-	int[][] worldregion;//the region for each chunk
+	Region[][] worldregion;//the region for each chunk
 	int offy = 0;//offset of world
 	int offx = 0;
 	SpawnMap spawnmap;
@@ -19,7 +19,7 @@ public class World {
 		spawnmap = new SpawnMap();
 		ssize = 2;
 		world = new Block[wsize][wsize][ssize];
-		worldregion = new int[wsize][wsize];
+		worldregion = new Region[wsize][wsize];
 		for(int y=0;y<wsize;y++){
 			for(int x=0;x<wsize;x++){
 				loadstack(x,y);
@@ -44,7 +44,7 @@ public class World {
 							Block[] temp = world[ty][tx];
 							world[ty][tx] = world[ty-1][tx];
 							world[ty-1][tx] = temp;
-							int emp = worldregion[ty][tx];
+							Region emp = worldregion[ty][tx];
 							worldregion[ty][tx] = worldregion[ty-1][tx];
 							worldregion[ty-1][tx] = emp;
 						}catch(Exception ex){
@@ -61,7 +61,7 @@ public class World {
 							Block[] temp = world[ty][tx];
 							world[ty][tx] = world[ty][tx+1];
 							world[ty][tx+1] = temp;
-							int emp = worldregion[ty][tx];
+							Region emp = worldregion[ty][tx];
 							worldregion[ty][tx] = worldregion[ty][tx+1];
 							worldregion[ty][tx+1] = emp;
 						}catch(Exception ex){
@@ -78,7 +78,7 @@ public class World {
 							Block[] temp = world[ty][tx];
 							world[ty][tx] = world[ty+1][tx];
 							world[ty+1][tx] = temp;
-							int emp = worldregion[ty][tx];
+							Region emp = worldregion[ty][tx];
 							worldregion[ty][tx] = worldregion[ty+1][tx];
 							worldregion[ty+1][tx] = emp;
 						}catch(Exception ex){
@@ -95,7 +95,7 @@ public class World {
 							Block[] temp = world[ty][tx];
 							world[ty][tx] = world[ty][tx-1];
 							world[ty][tx-1] = temp;
-							int emp = worldregion[ty][tx];
+							Region emp = worldregion[ty][tx];
 							worldregion[ty][tx] = worldregion[ty][tx-1];
 							worldregion[ty][tx-1] = emp;
 						}catch(Exception ex){
@@ -108,45 +108,50 @@ public class World {
 	}
 	
 	public void loadstack(int x, int y){
-		
 		int acx = getacx(x);
 		int acy = getacy(y);
 		
-		worldregion[y][x] = spawnmap.assignregion(acx,acy);
+		worldregion[y][x] = spawnmap.assignregion(x,y,acx,acy);
 		
-		spawnmap.spawnroutine(acx, acy);
+		world[y][x] = spawnmap.build(x,y,acx,acy);
 		
-		world[y][x] = spawnmap.build(acx,acy);
+		spawnmap.spawnroutine(x,y,acx,acy);
 	}
 	
 	public class SpawnMap {
 		
-		int numregions = 4;
 		Region[] regions = {Region.region(Region.VILLAGEID), Region.region(Region.FORESTID)};
+		int numregions = regions.length;
 		
-		public int assignregion(int cx, int cy){
+		public Region assignregion(int x, int y, int cx, int cy){
 			int hmy = 0;
-			int[] hat = new int[numregions];
+			Region[] hat = new Region[numregions];
 			int nowt = Math.abs(cx)+Math.abs(cy);
 			for(int i=0;i<numregions;i++){
 				if((nowt>=regions[i].lowbound || regions[i].lowbound == -1) && (nowt<=regions[i].highbound || regions[i].highbound == -1)){
-					hat[hmy] = regions[i].regionid;
+					hat[hmy] = regions[i];
 					hmy++;
 				}
 			}
-			return hat[(int)(Game.bitrand(cx,cy)*hmy)];
+			int hsel = (int)(Game.bitrand(cx,cy)*hmy);
+			if(hat[hsel]==null){
+				return Region.region(Region.NULLID);
+			}else{
+				return hat[hsel];
+			}
 		}
 		
-		public Block[] build(int cx, int cy){
+		public Block[] build(int x, int y, int cx, int cy){
 			Block[] tsk = new Block[ssize];
-			tsk[1] = Block.block(Block.AIR);
+			tsk[0] = Block.block(Block.AIR,0);
+			tsk[1] = (worldregion[y][x].groundblock);
 			return tsk;
 		}
 		
-		public void spawnroutine(int cx, int cy){
-			if(Math.random()<regions[worldregion[cy][cx]].schance){
-				int enemy = regions[worldregion[cy][cx]].enemychances[(int)(Math.random()*regions[worldregion[cy][cx]].enmax)];
-				int level = regions[worldregion[cy][cx]].levelchances[(int)(Math.random()*regions[worldregion[cy][cx]].lvmax)];
+		public void spawnroutine(int x, int y, int cx, int cy){
+			if(Math.random()<worldregion[y][x].schance){
+				int enemy = worldregion[y][x].enemychances[(int)(Math.random()*worldregion[y][x].enmax)];
+				int level = worldregion[y][x].levelchances[(int)(Math.random()*worldregion[y][x].lvmax)];
 				espw(cx,cy,enemy,level);
 			}
 		}

@@ -7,7 +7,7 @@ public class AirBlock extends Block{
 
 	public AirBlock(){
 		blockid = Block.AIR;
-		image = new ImgSheet(new int[][][]{{{}}});
+		img = new ImgSheet(new int[][][]{{{}}});
 		passable = true;
 	}
 

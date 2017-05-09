@@ -102,19 +102,14 @@ public class Game {
 		activity = 1;
 		
 		//game loop
+		tick();
 		while(true){
-			
-			if(seccount==0){
+			int ovr = (int)(System.nanoTime()-goal);
+			if(ovr>0){
+				seccount = 0;
 				goal = System.nanoTime();
-				seccount = 1;
-			}else{
-				int ovr = (int)(System.nanoTime()-goal);
-				if(ovr>0){
-					seccount = 0;
-					tick();
-				}
+				tick();
 			}
-			
 		}
 	}
 	
@@ -124,17 +119,17 @@ public class Game {
 		globaly = (int)Math.floor(cameras[currentcamera].cy);
 		gexy = cameras[currentcamera].cy-globaly;
 		
-		if(globaly<(world.csize*world.offy)-1){
-			world.shift(0);
+		if(globaly<(world.wsize*world.offy)-1){
+			world.shift(0,1);
 		}
-		if(globalx>(world.csize*(world.rb-1))+(world.csize*world.offx)){
-			world.shift(1);
+		if(globalx>(world.wsize*(world.rb-1))+(world.wsize*world.offx)){
+			world.shift(1,1);
 		}
-		if(globaly>(world.csize*(world.rb-1))+(world.csize*world.offy)){
-			world.shift(2);
+		if(globaly>(world.wsize*(world.rb-1))+(world.wsize*world.offy)){
+			world.shift(2,1);
 		}
-		if(globalx<(world.csize*world.offx)-1){
-			world.shift(3);
+		if(globalx<(world.wsize*world.offx)-1){
+			world.shift(3,1);
 		}
 		
 		if(window.pressed.keys[Binds.ENDBIND]){
@@ -148,7 +143,7 @@ public class Game {
 		for(int i=0;i<enumm;i++){
 			entities[i].tick();
 		}
-		Block.tick();
+		window.render();
 	}
 	
 	public static void main(String[] args) {

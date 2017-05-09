@@ -1,15 +1,12 @@
 package main;
 
+import region.ForestRegion;
 import region.NullRegion;
 import region.VillageRegion;
 
 public class Region {
 	
-	protected int tlmax;
-	protected int[] tiles;
-	
-	protected int prmax;
-	protected int[] props;
+	protected Block groundblock;
 	
 	protected int enmax;
 	protected int[] enemychances;
@@ -48,16 +45,15 @@ public class Region {
 	public static Region region(int r){
 		if(r==Region.VILLAGEID){
 			return new VillageRegion();
+		}else if(r==Region.FORESTID){
+			return new ForestRegion();
 		}else{
 			return new NullRegion();
 		}
 	}
 	
-	protected void setup(){
-		tlmax = tiles.length;
-		prmax = props.length;
+	private void setup(){
 		enmax = enemychances.length;
 		lvmax = levelchances.length;
-		srmax = structures.length;
 	}
 }

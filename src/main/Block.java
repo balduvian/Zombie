@@ -2,6 +2,7 @@ package main;
 
 import block.AirBlock;
 import block.BuildingfloorBlock;
+import block.GrassBlock;
 import block.PathBlock;
 import block.SandstoneBlock;
 import block.StoneBlock;
@@ -34,22 +35,18 @@ public class Block {
 	public static final int TRASH = 20;
 	public static final int GLASS = 21;
 	public static final int SAND = 23;
-	public static final int FENCE = 23;
+	public static final int FENCE = 24;
+	public static final int GRASS = 25;
+	public static final int HELLFLOOR = 26;
 	
 	protected int blockid;
-	protected ImgSheet image;
+	protected ImgSheet img;
 	protected int state = 0;
 	protected boolean passable;
 	protected boolean oneway;
 	protected int onewaydir;
 	protected boolean walk;
 	protected boolean slow;
-	
-	//used for determining frames of block anims
-	public static int eternal = 0;
-	public static void tick(){
-		eternal = (eternal+1)%720720;
-	}
 	
 	//when interacted with
 	public void oninteract(){
@@ -58,7 +55,9 @@ public class Block {
 	}
 	
 	public void setstate(int s){
+		img.frame = 0;
 		state = s;
+		update();
 	}
 	
 	//the actual method to override
@@ -67,28 +66,33 @@ public class Block {
 	}
 	
 	private void update(){
-		image.mode = state;
+		img.mode = state;
 	}
 	
-	public static Block block(int bid){
+	public static Block block(int bid, int bst){
+		Block tmp = new Block();
 		if(bid==Block.AIR){
-			return new AirBlock();
+			tmp = new AirBlock();
 		}else if(bid==Block.WOOD){
-			return new WoodBlock();
+			tmp = new WoodBlock();
 		}else if(bid==Block.STONE){
-			return new StoneBlock();
+			tmp = new StoneBlock();
 		}else if(bid==Block.BUILDINGFLOOR){
-			return new BuildingfloorBlock();
+			tmp = new BuildingfloorBlock();
 		}else if(bid==Block.SANDSTONE){
-			return new SandstoneBlock();
+			tmp = new SandstoneBlock();
 		}else if(bid==Block.WOODFLOOR){
-			return new WoodfloorBlock();
+			tmp = new WoodfloorBlock();
 		}else if(bid==Block.PATH){
-			return new PathBlock();
+			tmp = new PathBlock();
 		}else if(bid==Block.WATER){
-			return new WaterBlock();
+			tmp = new WaterBlock();
+		}else if(bid==Block.GRASS){
+			tmp = new GrassBlock();
 		}else{
-			return new AirBlock();
+			tmp = new AirBlock();
 		}
+		tmp.setstate(bst);
+		return tmp;
 	}
 }

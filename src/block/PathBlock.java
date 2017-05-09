@@ -8,7 +8,7 @@ public class PathBlock extends Block{
 
 	public PathBlock(){
 		blockid = Block.PATH;
-		image = new ImgSheet(new int[][][]{{{ImageLoader.PATH}}});
+		img = new ImgSheet(new int[][][]{{{ImageLoader.PATH}}});
 		walk = true;
 	}
 

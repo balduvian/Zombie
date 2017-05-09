@@ -8,7 +8,7 @@ public class BuildingfloorBlock extends Block{
 
 	public BuildingfloorBlock(){
 		blockid = Block.BUILDINGFLOOR;
-		image = new ImgSheet(new int[][][]{{{ImageLoader.BUILDINGFLOOR}}});
+		img = new ImgSheet(new int[][][]{{{ImageLoader.BUILDINGFLOOR}}});
 		walk = true;
 	}
 

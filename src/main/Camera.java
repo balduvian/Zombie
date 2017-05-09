@@ -5,7 +5,7 @@ public class Camera{
 	double cx;
 	double cy;
 	int target;
-	int cspeed = 10;
+	double cspeed = 0.4;
 	int mode = 0;
 	double[] destin;
 	int tleft;
@@ -37,16 +37,16 @@ public class Camera{
 			}
 		}else if(mode==2){
 			if(Game.window.pressed.keys[Binds.UPBIND]){
-				cy -= (cspeed/Game.tpm);
+				cy -= cspeed;
 			}
 			if(Game.window.pressed.keys[Binds.RIGHTBIND]){
-				cx += (cspeed/Game.tpm);
+				cx += cspeed;
 			}
 			if(Game.window.pressed.keys[Binds.DOWNBIND]){
-				cy += (cspeed/Game.tpm);
+				cy += cspeed;
 			}
 			if(Game.window.pressed.keys[Binds.LEFTBIND]){
-				cx -= (cspeed/Game.tpm);
+				cx -= cspeed;
 			}
 		}
 	}

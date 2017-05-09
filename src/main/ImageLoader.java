@@ -137,6 +137,11 @@ public class ImageLoader {
 	public static final int TSTATUS = 126;
 	public static final int GSTATUS = 127;
 	
+	public static final int FORESTGRASS = 144;
+	public static final int TUMBLEWEED = 145;
+	public static final int ASPHALT = 146;
+	public static final int SWAMPGRASS = 147;
+	
 	static void loadimages(){
 		BufferedImage b = null;
 		try{
