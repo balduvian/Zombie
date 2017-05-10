@@ -164,7 +164,6 @@ public class ImageLoader {
 					}
 				}
 				Game.images[avance] = lod;
-				System.out.println("loaded "+(avance+1)+" out of "+Game.Imax);
 				avance++;
 			}
 		}

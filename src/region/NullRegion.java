@@ -12,8 +12,9 @@ public class NullRegion extends Region{
 		groundblock = Block.block(Block.WATER,0);
 		enemychances = new int[]{Zombie.ELEMENTALID};
 		levelchances = new int[]{20,21};
-		lowbound = 999;
-		highbound = 1200;
+		spawnchance = 0.02;
+		lowbound = -1;
+		highbound = -1;
 		name = "Why Are You Here?";
 		color = new int[]{100,100,100};
 		regionid = Region.NULLID;

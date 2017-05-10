@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.*;
 
@@ -23,6 +25,8 @@ public class Window extends JFrame{
 	Misen pressed;
 	BufferStrategy bb;
 	Graphics g;
+	ExecutorService exe;
+	JPanel canvas;
 	
 	public void setrender(int winw, int winh, double pfac, int ts){
 		tiles = ts;
@@ -34,9 +38,11 @@ public class Window extends JFrame{
 	}
 	
 	public void render(){
-		//do {
+		do {
 			try{
 				g = bb.getDrawGraphics();
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, width, height);
 				if(Game.activity==1){
 					//try{
 						World wo = Game.world;
@@ -50,7 +56,10 @@ public class Window extends JFrame{
 									g.fillRect(lo[0],lo[1],lo[2],lo[3]);
 									
 									ImgSheet tlo = wo.world[y][x][z].img;
-									tlo.tick();
+									//tlo.tick();
+									if(tlo.anim){
+										tlo.frame = (Block.empire/tlo.frametime)%tlo.getframes();
+									}
 									int nay = tlo.getlayers();
 									int[] nua = tlo.getcurrent();
 									for(int l=0;l<nay;l++){
@@ -64,8 +73,8 @@ public class Window extends JFrame{
 							Entity et = Game.entities[c];
 							if(et!=null){
 								int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
-								for(int l=0;l<et.imgs.sheet[et.imgs.mode][et.imgs.frame].length;l++){
-									g.drawImage(Game.images[et.imgs.sheet[et.imgs.mode][et.imgs.frame][l]], lo[0],lo[1],lo[2],lo[3], null);
+								for(int l=0;l<et.img.sheet[et.img.mode][et.img.frame].length;l++){
+									g.drawImage(Game.images[et.img.sheet[et.img.mode][et.img.frame][l]], lo[0],lo[1],lo[2],lo[3], null);
 								}
 							}
 						}
@@ -81,21 +90,34 @@ public class Window extends JFrame{
 			}
 			bb.show();
 			
-		//} while (bb.contentsLost());
+		} while (bb.contentsLost());
+	}
+	
+	public class PaintRun implements Runnable{
+		public void run() {
+			while(true){
+				render();
+			}
+		}
 	}
 	
 	public Window(){
 		Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
-		setrender(ss.width-200,ss.height-200,1.0,Game.square);
-		this.setBounds(50, 50, width+50, height+50);
-		setUndecorated(true);
+		setrender(ss.width-100,ss.height-100,1.0,Game.square);
+		//this.setBounds(50, 50, width+50, height+50);
+		//setUndecorated(true);
+		setResizable(false);
 		pressed = new Misen();
 		addKeyListener(pressed);
 		setTitle("Zombie");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		//canvas = new JPanel();
+		//add(canvas);
 		createBufferStrategy(2);
 		bb = getBufferStrategy();
+		exe = Executors.newFixedThreadPool(1);
+		exe.execute(new PaintRun());
 	}
 	
 	public class Misen implements KeyListener{

@@ -99,9 +99,8 @@ public class Game {
 		loopcount=0;
 		while(true){
 			int ovr = (int)(System.currentTimeMillis()-goal);
-			if(ovr>0){
+			if(ovr>=16){
 				goal = System.currentTimeMillis();
-				System.out.println(loopcount);
 				loopcount=0;
 				tick();
 			}
@@ -115,16 +114,16 @@ public class Game {
 		globaly = (int)Math.floor(cameras[currentcamera].cy);
 		gexy = cameras[currentcamera].cy-globaly;
 		
-		if(globaly<(world.wsize*world.offy)-1){
+		if(globaly<world.offy){
 			world.shift(0,1);
 		}
-		if(globalx>(world.wsize*(world.rb-1))+(world.wsize*world.offx)){
+		if(globalx>world.offx){
 			world.shift(1,1);
 		}
-		if(globaly>(world.wsize*(world.rb-1))+(world.wsize*world.offy)){
+		if(globaly>world.offy){
 			world.shift(2,1);
 		}
-		if(globalx<(world.wsize*world.offx)-1){
+		if(globalx<world.offx){
 			world.shift(3,1);
 		}
 		
@@ -138,7 +137,7 @@ public class Game {
 		for(int i=0;i<enumm;i++){
 			entities[i].tick();
 		}
-		window.render();
+		Block.tick();
 	}
 	
 	public static void main(String[] args) {

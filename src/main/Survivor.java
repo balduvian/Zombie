@@ -38,7 +38,7 @@ public class Survivor extends Character{
 		id = Entity.IDSURVIVOR;
 		skin = (int)(Math.random()*NUMSKINS);
 		race = (int)(Math.random()*NUMRACES);
-		imgs = new ImgSheet(new int[][][]{{{RACEIDS[race],SKINIDS[skin],ImageLoader.PLAYEROUTLINE}}});
+		img = new ImgSheet(new int[][][]{{{RACEIDS[race],SKINIDS[skin],ImageLoader.PLAYEROUTLINE}}});
 		stats = new Stats(level,25);
 		despawn = false;
 		init(level);

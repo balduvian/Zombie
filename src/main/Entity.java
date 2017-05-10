@@ -23,7 +23,7 @@ public class Entity {
 	double speed;
 	protected boolean despawn = false;
 	
-	protected ImgSheet imgs;
+	protected ImgSheet img;
 
 	int mmode = 0;
 	int mdir = 4;
@@ -63,23 +63,17 @@ public class Entity {
 	
 	public void tick(){
 		if(despawn){
-			if(y<(Game.world.wsize*-1)+Game.world.wsize*Game.world.offy){
+			if(y<Game.world.offy-Game.world.rb){
 				destroy();
-			}else if(x>(Game.world.wsize)+(Game.world.wsize*Game.world.offx)){
+			}else if(x>Game.world.offx+Game.world.rb-1){
 				destroy();
-			}else if(y>(Game.world.wsize)+(Game.world.wsize*Game.world.offy)){
+			}else if(y>Game.world.offy+Game.world.rb-1){
 				destroy();
-			}else if(x<(Game.world.wsize*-1)+Game.world.wsize*Game.world.offx){
+			}else if(x<Game.world.offx-Game.world.rb){
 				destroy();
 			}
 		}
-		if(imgs.anim){
-			imgs.timer --;
-			if(imgs.timer==0){
-				imgs.timer = imgs.makeac();
-				imgs.frame = (imgs.frame+1)%imgs.sheet[imgs.mode].length;
-			}
-		}
+		img.tick();
 	}
 	
 }

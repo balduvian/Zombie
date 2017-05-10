@@ -4,7 +4,7 @@ import zombie.BasicZombie;
 public class World {
 	
 	int seed;
-	int wsize = 32;
+	int wsize = 17;
 	int rb;
 	int ssize;
 	Block[][][] world;//the rendered blocks
@@ -149,7 +149,8 @@ public class World {
 		}
 		
 		public void spawnroutine(int x, int y, int cx, int cy){
-			if(Math.random()<worldregion[y][x].schance){
+			double chg = Math.random();
+			if(chg<worldregion[y][x].spawnchance){
 				int enemy = worldregion[y][x].enemychances[(int)(Math.random()*worldregion[y][x].enmax)];
 				int level = worldregion[y][x].levelchances[(int)(Math.random()*worldregion[y][x].lvmax)];
 				espw(cx,cy,enemy,level);
@@ -157,25 +158,39 @@ public class World {
 		}
 		
 		private void espw(int x, int y, int we, int le){
-			if(we==0){
+			if(we==Zombie.BASICZOMBIEID){
 				Game.create(x, y, new BasicZombie(le));
-			}
-			if(we==1){
+			}else if(we==Zombie.CACTUSZOMBIEID){
 				Game.create(x, y, new BasicZombie(le));
-			}
-			if(we==2){
+			}else if(we==Zombie.COWBOYZOMBIEID){
 				Game.create(x, y, new BasicZombie(le));
-			}
-			if(we==3){
+			}else if(we==Zombie.DEVILID){
 				Game.create(x, y, new BasicZombie(le));
-			}
-			if(we==4){
+			}else if(we==Zombie.ELEMENTALID){
 				Game.create(x, y, new BasicZombie(le));
-			}
-			if(we==5){
+			}else if(we==Zombie.FLAMESKELETONID){
 				Game.create(x, y, new BasicZombie(le));
-			}
-			if(we==6){
+			}else if(we==Zombie.GAPINGZOMBIEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.GHOSTID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.GIANTZOMBIEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.HALFZOMBIEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.IMPID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.METALZOMBIEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.MUSCLEZOMBIEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.OOZEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.SANDZOMBIEID){
+				Game.create(x, y, new BasicZombie(le));
+			}else if(we==Zombie.SKELETONID){
+				Game.create(x, y, new BasicZombie(le));
+			}else{
 				Game.create(x, y, new BasicZombie(le));
 			}
 		}

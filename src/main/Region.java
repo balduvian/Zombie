@@ -16,7 +16,6 @@ public class Region {
 	protected int lvmax;
 	protected int[] levelchances;
 	
-	protected double schance;
 	protected int srmax;
 	protected Structure[][][] structures;
 	

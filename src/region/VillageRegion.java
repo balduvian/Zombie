@@ -11,7 +11,7 @@ public class VillageRegion extends Region{
 	protected void initroutine(){
 		groundblock = Block.block(Block.GRASS,0);
 		enemychances = new int[]{Zombie.BASICZOMBIEID,Zombie.BASICZOMBIEID,Zombie.BASICZOMBIEID,Zombie.HALFZOMBIEID,Zombie.SKELETONID};
-		spawnchance = 0.07;
+		spawnchance = 0.03;
 		levelchances = new int[]{0,0,0,0,1,2};
 		lowbound = 0;
 		highbound = 10;

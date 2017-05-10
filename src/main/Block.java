@@ -69,6 +69,14 @@ public class Block {
 		img.mode = state;
 	}
 	
+	public static int empire;
+	public static void tick(){
+		empire++;
+		if(empire>720720){
+			empire=0;
+		}
+	}
+	
 	public static Block block(int bid, int bst){
 		Block tmp = new Block();
 		if(bid==Block.AIR){

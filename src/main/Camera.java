@@ -5,7 +5,7 @@ public class Camera{
 	double cx;
 	double cy;
 	int target;
-	double cspeed = 0.4;
+	double cspeed = 0.1;
 	int mode = 0;
 	double[] destin;
 	int tleft;

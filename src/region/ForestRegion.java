@@ -11,8 +11,8 @@ public class ForestRegion extends Region{
 	protected void initroutine(){
 		groundblock = Block.block(Block.GRASS,1);
 		enemychances = new int[]{Zombie.BASICZOMBIEID,Zombie.SKELETONID,Zombie.MUSCLEZOMBIEID,Zombie.HALFZOMBIEID,Zombie.SKELETONID};
-		spawnchance = 0.07;
 		levelchances = new int[]{1,1,1,1,2,3};
+		spawnchance = 0.04;
 		lowbound = 6;
 		highbound = 20;
 		name = "Silent Forest";
