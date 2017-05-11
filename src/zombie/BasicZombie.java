@@ -14,7 +14,7 @@ public class BasicZombie extends Zombie{
 	
 	public BasicZombie(int level){
 		super(level);
-		img = new ImgSheet(new int[][][]{{{ImageLoader.ZOMBIEE0}, {ImageLoader.ZOMBIEE1}}},1250,170);
+		img = new ImgSheet(new int[][][]{{{ImageLoader.ZOMBIEE0}, {ImageLoader.ZOMBIEE1}}},60,10);
 		zombid = Zombie.BASICZOMBIEID;
 		logname = "Basic Zombie";
 		init(level);

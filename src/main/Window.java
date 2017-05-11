@@ -41,10 +41,8 @@ public class Window extends JFrame{
 		do {
 			try{
 				g = bb.getDrawGraphics();
-				g.setColor(Color.BLACK);
-				g.fillRect(0, 0, width, height);
 				if(Game.activity==1){
-					//try{
+					try{
 						World wo = Game.world;
 						for(int z=0;z<wo.ssize;z++){
 							for(int y=0;y<wo.wsize;y++){//draw chunk
@@ -73,15 +71,22 @@ public class Window extends JFrame{
 							Entity et = Game.entities[c];
 							if(et!=null){
 								int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
+								int[] la = et.img.getcurrent();
 								for(int l=0;l<et.img.sheet[et.img.mode][et.img.frame].length;l++){
-									g.drawImage(Game.images[et.img.sheet[et.img.mode][et.img.frame][l]], lo[0],lo[1],lo[2],lo[3], null);
+									//g.drawImage(Game.images[et.img.sheet[et.img.mode][et.img.frame][l]], lo[0],lo[1],lo[2],lo[3], null);
+									g.drawImage(Game.images[la[l]], lo[0],lo[1],lo[2],lo[3], null);
 								}
 							}
 						}
+						g.setColor(Color.BLACK);
+						g.fillRect(0, 0, width/4, height);
+						g.fillRect(width-(width/4), 0, width/4, height);
 						g.setColor(Color.red);
 						g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 20, 30);
 						g.drawRect(width/2-2, height/2-2, 2, 2);
-					//}catch(Exception ex){}
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
 					}else{
 						//OH YEAH MR KRABS
 					}
@@ -118,6 +123,7 @@ public class Window extends JFrame{
 		bb = getBufferStrategy();
 		exe = Executors.newFixedThreadPool(1);
 		exe.execute(new PaintRun());
+		requestFocus();
 	}
 	
 	public class Misen implements KeyListener{

@@ -36,6 +36,8 @@ public class Game {
 	public static int globalx;
 	public static double gexy;
 	public static double gexx;
+	public static double cay;
+	public static double cax;
 	
 	static int activity = 0;
 	
@@ -74,7 +76,6 @@ public class Game {
 			entities[n].index--;
 		}
 		enumm--;
-		//System.out.println("destroyed"+enumm);
 	}
 	
 	public Game(){
@@ -108,11 +109,20 @@ public class Game {
 		}
 	}
 	
-	private void tick(){	
-		globalx = (int)Math.floor(cameras[currentcamera].cx);
+	public void gamegoto(int x, int y){
+		globalx = x;
+		globaly = y;
+	}
+	public void egoto(){
+		
+	}
+	
+	private void tick(){
+		
+		/*globalx = (int)Math.floor(cameras[currentcamera].cx);
 		gexx = cameras[currentcamera].cx-globalx;
 		globaly = (int)Math.floor(cameras[currentcamera].cy);
-		gexy = cameras[currentcamera].cy-globaly;
+		gexy = cameras[currentcamera].cy-globaly;*/
 		
 		if(globaly<world.offy){
 			world.shift(0,1);

@@ -150,10 +150,12 @@ public class World {
 		
 		public void spawnroutine(int x, int y, int cx, int cy){
 			double chg = Math.random();
-			if(chg<worldregion[y][x].spawnchance){
-				int enemy = worldregion[y][x].enemychances[(int)(Math.random()*worldregion[y][x].enmax)];
-				int level = worldregion[y][x].levelchances[(int)(Math.random()*worldregion[y][x].lvmax)];
-				espw(cx,cy,enemy,level);
+			if(Math.abs(cx)+Math.abs(cy)>8){
+				if(chg<worldregion[y][x].spawnchance){
+					int enemy = worldregion[y][x].enemychances[(int)(Math.random()*worldregion[y][x].enmax)];
+					int level = worldregion[y][x].levelchances[(int)(Math.random()*worldregion[y][x].lvmax)];
+					espw(cx,cy,enemy,level);
+				}
 			}
 		}
 		

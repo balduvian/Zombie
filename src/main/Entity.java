@@ -65,9 +65,9 @@ public class Entity {
 		if(despawn){
 			if(y<Game.world.offy-Game.world.rb){
 				destroy();
-			}else if(x>Game.world.offx+Game.world.rb-1){
+			}else if(x>Game.world.offx+Game.world.rb){
 				destroy();
-			}else if(y>Game.world.offy+Game.world.rb-1){
+			}else if(y>Game.world.offy+Game.world.rb){
 				destroy();
 			}else if(x<Game.world.offx-Game.world.rb){
 				destroy();
