@@ -34,6 +34,17 @@ public class World {
 		return (sy+offy-rb);
 	}
 	
+	public void tick(){
+		int dtimes = Game.globaly-offy;
+		shift(2,dtimes);
+		int ltimes = offx-Game.globalx;
+		shift(3,ltimes);
+		int utimes = offy-Game.globaly;
+		shift(0,utimes);
+		int rtimes = Game.globalx-offx;
+		shift(1,rtimes);
+	}
+	
 	public void shift(int dir, int times){
 		for(int ti=0;ti<times;ti++){
 			if(dir == 0){

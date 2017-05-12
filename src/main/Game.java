@@ -67,6 +67,20 @@ public class Game {
 		}
 	}
 	
+	public static void cdelete(int i){
+		if(currentcamera==cameras[i].index && currentcamera==cnumm-1){
+			currentcamera--;
+		}
+		cameras[i] = null;
+		for(int n=i;n<cnumm-1;n++){
+			Camera temp = cameras[n+1];
+			cameras[n+1] = cameras[n];
+			cameras[n] = temp;
+			cameras[n].index--;
+		}
+		cnumm--;
+	}
+	
 	public static void delete(int i){
 		entities[i] = null;
 		for(int n=i;n<enumm-1;n++){
@@ -76,6 +90,10 @@ public class Game {
 			entities[n].index--;
 		}
 		enumm--;
+	}
+	
+	public void changecamera(int c){
+		currentcamera = c;
 	}
 	
 	public Game(){
@@ -109,38 +127,36 @@ public class Game {
 		}
 	}
 	
-	public void gamegoto(int x, int y){
+	public void gamegoto(int x, int y, double xx, double yy){
 		globalx = x;
 		globaly = y;
+		gexx = xx;
+		gexy = yy;
 	}
-	public void egoto(){
-		
+	public void egoto(int eid){
+		Entity en = entities[eid];
+		globalx = en.x;
+		globaly = en.y;
+		gexx = en.exx;
+		gexy = en.exy;
+	}
+	public void cgoto(int cid){
+		Camera en = cameras[cid];
+		globalx = (int)Math.floor(en.cx);
+		gexx = en.cx-globalx;
+		globaly = (int)Math.floor(en.cy);
+		gexy = en.cy-globaly;
 	}
 	
 	private void tick(){
 		
-		/*globalx = (int)Math.floor(cameras[currentcamera].cx);
-		gexx = cameras[currentcamera].cx-globalx;
-		globaly = (int)Math.floor(cameras[currentcamera].cy);
-		gexy = cameras[currentcamera].cy-globaly;*/
-		
-		if(globaly<world.offy){
-			world.shift(0,1);
-		}
-		if(globalx>world.offx){
-			world.shift(1,1);
-		}
-		if(globaly>world.offy){
-			world.shift(2,1);
-		}
-		if(globalx<world.offx){
-			world.shift(3,1);
-		}
+		cay = cameras[currentcamera].cy;
+		cax = cameras[currentcamera].cx;
 		
 		if(window.pressed.keys[Binds.ENDBIND]){
 			System.exit(0);
 		}
-		
+		world.tick();
 		for(int i=0;i<cnumm;i++){
 			cameras[i].tick();
 		}

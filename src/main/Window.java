@@ -15,30 +15,18 @@ import javax.swing.*;
 public class Window extends JFrame{
 	private static final long serialVersionUID = 2645703612186155260L;
 	
-	int tiles;
 	int width;
 	int height;
-	int pixelh;
-	int pixelw;
 	int cdy;
 	int cdx;
 	Misen pressed;
 	BufferStrategy bb;
 	Graphics g;
 	ExecutorService exe;
-	JPanel canvas;
-	
-	public void setrender(int winw, int winh, double pfac, int ts){
-		tiles = ts;
-		width = winw;
-		height = winh;
-		pixelw = (int)(winw*pfac);
-		pixelh = (int)(winh*pfac);
-		setSize(width,height);
-	}
 	
 	public void render(){
 		do {
+			requestFocus();
 			try{
 				g = bb.getDrawGraphics();
 				if(Game.activity==1){
@@ -78,9 +66,14 @@ public class Window extends JFrame{
 								}
 							}
 						}
+						
+						//black border
 						g.setColor(Color.BLACK);
-						g.fillRect(0, 0, width/4, height);
-						g.fillRect(width-(width/4), 0, width/4, height);
+						g.fillRect(0,0,width/2-(int)((8+Game.cax)*Game.square),height);
+						g.fillRect(width/2+(int)((8+Game.cax)*Game.square),0,width/2-(int)((8-Game.cax)*Game.square),height);
+						
+						
+						
 						g.setColor(Color.red);
 						g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 20, 30);
 						g.drawRect(width/2-2, height/2-2, 2, 2);
@@ -108,17 +101,16 @@ public class Window extends JFrame{
 	
 	public Window(){
 		Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
-		setrender(ss.width-100,ss.height-100,1.0,Game.square);
-		//this.setBounds(50, 50, width+50, height+50);
-		//setUndecorated(true);
-		setResizable(false);
+		width = ss.width;
+		height = ss.height;
+		this.setBounds(0, 0, width, height);
+		setUndecorated(true);
+		setResizable(true);
 		pressed = new Misen();
 		addKeyListener(pressed);
 		setTitle("Zombie");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		//canvas = new JPanel();
-		//add(canvas);
 		createBufferStrategy(2);
 		bb = getBufferStrategy();
 		exe = Executors.newFixedThreadPool(1);
@@ -152,11 +144,11 @@ public class Window extends JFrame{
 	}
 	
 	public int xdisp(int x, double off, double w){
-		return (int)((((x+off)-(w/2.0))-Game.gexx-Game.globalx)*Game.square+width/2);
+		return (int)((((x+off)-(w/2.0))-Game.gexx-Game.globalx-Game.cax)*Game.square+width/2);
 	}
 	
 	public int ydisp(int y, double off, double h){
-		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly)*Game.square+height/2);
+		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly-Game.cay)*Game.square+height/2);
 	}
 	
 }
