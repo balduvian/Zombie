@@ -17,8 +17,8 @@ public class Window extends JFrame{
 	
 	int width;
 	int height;
-	int cdy;
-	int cdx;
+	int tilesup;
+	int tilesacr;
 	Misen pressed;
 	BufferStrategy bb;
 	Graphics g;
@@ -69,8 +69,11 @@ public class Window extends JFrame{
 						
 						//black border
 						g.setColor(Color.BLACK);
-						g.fillRect(0,0,width/2-(int)((8+Game.cax)*Game.square),height);
-						g.fillRect(width/2+(int)((8+Game.cax)*Game.square),0,width/2-(int)((8-Game.cax)*Game.square),height);
+						//int wid = width/2-(int)((7.5+Game.cax)*Game.square);
+						g.fillRect(0,0,width/2-(int)((7.5+Game.cax)*Game.square),height);
+						g.fillRect(0,0,width,height/2-(int)((7.5+Game.cay)*Game.square));
+						g.fillRect(width/2+(int)((7.5-Game.cax)*Game.square),0,1000,height);
+						g.fillRect(0,height/2+(int)((7.5-Game.cay)*Game.square),width,1000);
 						
 						
 						
