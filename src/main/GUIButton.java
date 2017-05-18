@@ -2,6 +2,8 @@ package main;
 
 public class GUIButton {
 	
+	boolean locked;
+	boolean accepting;
 	boolean pressed;
 	boolean hover;
 	boolean inactive;
@@ -27,13 +29,6 @@ public class GUIButton {
 		id = triggerid;
 		img = image;
 		link = true;
-	}
-	
-	public GUIButton(String bname, int triggerid, int image){
-		name = bname;
-		id = triggerid;
-		img = image;
-		link = false;
 	}
 	
 	public void onclick(){

@@ -1,7 +1,5 @@
 package main;
 
-import main.*;
-
 public class Zombie extends Character{
 	
 	public static final int BASICZOMBIEID = 0;
@@ -21,9 +19,19 @@ public class Zombie extends Character{
 	public static final int SANDZOMBIEID = 14;
 	public static final int ELEMENTALID = 15;
 	
+	public static final int[] BASICZOMBIESTATS = {5,5,5,5,5};
+	
 	protected int zombid;
 	
-	public Zombie(int level){
+	protected  void charinit(){
+		zombinit();
+		setup();
+	}
+	
+	//to override again!
+	protected void zombinit(){}
+	
+	private void setup(){
 		id = Entity.IDZOMBIE;
 		friendly = false;
 		despawn = true;

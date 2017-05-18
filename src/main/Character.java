@@ -2,16 +2,25 @@ package main;
 
 public class Character extends Entity{
 	
+	public final static int SURVIVORCONSTANT = -1;
+	
 	Stats stats;
 	protected boolean friendly;
 	
-	boolean pre;
-	int[] prebase;
+	protected boolean pre;
+	protected int[] prebase;
 	int defbase;
 	
 	protected String logname;
 	
-	public void init(int level){
+	protected void initroutine(){
+		charinit();
+	}
+	
+	//to override
+	protected void charinit(){}
+	
+	public void setlevel(int level){
 		if(pre){
 			stats = new Stats(level, prebase);
 		}else{

@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Game {
@@ -14,6 +15,11 @@ public class Game {
 	public static Entity[] entities = new Entity[emax];
 	
 	public static int currentcamera = 0;
+	
+	public static final int PARTYMAX = 6;
+	public static int[] party = new int[PARTYMAX];
+	public static int inparty = 0;
+	public static int partyselect = 0;
 	
 	//setting up a list of images
 	public final static int Imax = 256;
@@ -50,6 +56,33 @@ public class Game {
 	static GUI gui;
 	
 	//random
+	
+	public static Entity getpartymember(int er){
+		return entities[party[er]];
+	}
+	public static void addtoparty(int eta){
+		if(inparty<PARTYMAX){
+			party[inparty] = eta;
+			inparty++;
+		}
+	}
+	public static void removefromparty(int pindex){
+		party[pindex] = 0;
+		for(int n=pindex;n<inparty-1;n++){
+			int temp = party[n+1];
+			party[n+1] = party[n];
+			party[n] = temp;
+			//party[n].index--;
+		}
+		inparty--;
+	}
+	
+	public static Rectangle geterect(int eid){
+		Entity eng = entities[eid];
+		int[] bin = window.ldr(eng.x, eng.xx, eng.y, eng.yy, eng.w, eng.h);
+		return new Rectangle(bin[0], bin[1], bin[2], bin[3]);
+	}
+	
 	public static double bitrand(int s, int o){
 		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
 	}
@@ -126,7 +159,8 @@ public class Game {
 		globalx = 0;
 		globaly = 0;
 		ccreate(new Camera(0,0,Camera.CONTROLMODE));
-		create(0, 1, new Survivor(0));
+		world.spawnmap.spawncharacter(0, 0, Character.SURVIVORCONSTANT, 0);
+		addtoparty(0);
 		activity = 1;
 		gui = new GUI();
 	}
@@ -151,18 +185,11 @@ public class Game {
 		}
 	}
 	
-	public void gamegoto(int x, int y, double xx, double yy){
+	public void ggoto(int x, int y, double xx, double yy){
 		globalx = x;
 		globaly = y;
 		gexx = xx;
 		gexy = yy;
-	}
-	public void egoto(int eid){
-		Entity en = entities[eid];
-		globalx = en.x;
-		globaly = en.y;
-		gexx = en.exx;
-		gexy = en.exy;
 	}
 	public void cgoto(int cid){
 		Camera en = cameras[cid];
@@ -190,6 +217,42 @@ public class Game {
 		}
 		Block.tick();
 		gui.tick();
+		
+		
+	}
+	
+	public static final int CREATEMOVEARROWS = 0;
+	public static final int MOVEUP = 1;
+	public static final int MOVERIGHT = 2;
+	public static final int MOVEDOWN = 3;
+	public static final int MOVELEFT = 4;
+	public static final int DELETEMOVEARROWS = 5;
+	public static final int GUIGOMAIN = 6;
+	public static final int GUIGOMOVE = 7;
+	public static final int GUIGOATTACK = 8;
+	public static final int GUIGOACTION = 9;
+	public static final int ADVANCEPARTYTURN = 10;
+	public static final int SWITCHTURN = 11;
+	public static final int s = 12;
+	//all other nontimed events happen here
+	public static void broadcast(int signal){
+		if(signal==CREATEMOVEARROWS){
+			Entity pm = getpartymember(partyselect);
+			int alx = pm.x;
+			int aly = pm.y;
+			create(alx,aly-1,new ArrowEntity());
+			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.UPARROW);
+			create(alx+1,aly,new ArrowEntity());
+			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.RIGHTARROW);
+			create(alx,aly+1,new ArrowEntity());
+			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.DOWNARROW);
+			create(alx-1,aly,new ArrowEntity());
+			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.LEFTARROW);
+		}else if(signal==DELETEMOVEARROWS){
+			for(int i=0;i<7;i++){
+				
+			}
+		}
 	}
 	
 	public static void main(String[] args) {

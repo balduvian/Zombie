@@ -165,47 +165,52 @@ public class World {
 				if(chg<worldregion[y][x].spawnchance){
 					int enemy = worldregion[y][x].enemychances[(int)(Math.random()*worldregion[y][x].enmax)];
 					int level = worldregion[y][x].levelchances[(int)(Math.random()*worldregion[y][x].lvmax)];
-					espw(cx,cy,enemy,level);
+					spawncharacter(cx,cy,enemy,level);
 				}
 			}
 		}
 		
-		private void espw(int x, int y, int we, int le){
-			if(we==Zombie.BASICZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+		public void spawncharacter(int x, int y, int we, int le){
+			Character ctm = null;
+			if(we==Character.SURVIVORCONSTANT){
+				ctm = new Survivor();
+			}if(we==Zombie.BASICZOMBIEID){
+				ctm = new BasicZombie();
 			}else if(we==Zombie.CACTUSZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.COWBOYZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.DEVILID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.ELEMENTALID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.FLAMESKELETONID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.GAPINGZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.GHOSTID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.GIANTZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.HALFZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.IMPID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.METALZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.MUSCLEZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.OOZEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.SANDZOMBIEID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else if(we==Zombie.SKELETONID){
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}else{
-				Game.create(x, y, new BasicZombie(le));
+				ctm = new BasicZombie();
 			}
+			ctm.setlevel(le);
+			Game.create(x, y, ctm);
 		}
 	}
 }

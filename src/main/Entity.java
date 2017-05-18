@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Entity {
@@ -8,16 +9,25 @@ public class Entity {
 	public static int IDNULL = 0;
 	public static int IDSURVIVOR = 1;
 	public static int IDZOMBIE = 2;
+	public static int IDARROW = 3;
 	
 	public static int DEFAULTWIDTH = 1;
 	public static int DEFAULTHEIGHT = 1;
+	
+	boolean hover;
+	boolean pressed;
+	boolean accepting;
+	boolean locked;
+	boolean docast;
+	boolean casted;
+	int clickbroadcast;
 	
 	protected int id = IDNULL;
 	int index; //index in the list;
 	int y;
 	int x;
-	double exy;
-	double exx;
+	double yy;
+	double xx;
 	double w = DEFAULTWIDTH;
 	double h = DEFAULTHEIGHT;
 	double speed;
@@ -33,6 +43,16 @@ public class Entity {
 	}
 	
 	public Entity(){
+		initroutine();
+		setup();
+	}
+	
+	//toovveride tho
+	protected void initroutine(){
+		
+	}
+	
+	private void setup(){
 		index = Game.enumm;
 	}
 	
@@ -46,13 +66,13 @@ public class Entity {
 			mdir = dir;
 			mmode = 1;
 			if(mdir==0){
-				exy-=0.1;
+				yy-=0.1;
 			}else if(mdir==1){
-				exx+=0.1;
+				xx+=0.1;
 			}else if(mdir==2){
-				exy+=0.1;
+				yy+=0.1;
 			}else if(mdir==3){
-				exx-=0.1;
+				xx-=0.1;
 			}
 		}
 	}
@@ -62,6 +82,7 @@ public class Entity {
 	}
 	
 	public void tick(){
+		
 		if(despawn){
 			if(y<Game.world.offy-Game.world.rb){
 				destroy();
@@ -73,7 +94,37 @@ public class Entity {
 				destroy();
 			}
 		}
+		
 		img.tick();
+		
+		Rectangle mr = new Rectangle(Game.window.moussed2.mx,Game.window.moussed2.my,1,1);
+		if(mr.intersects(new Rectangle(Game.geterect(index)))){
+			hover = true;
+			if(!Game.window.moussed.mdown && accepting){
+				locked = true;
+				accepting = true;
+			}else if(!locked){
+				accepting = false;
+			}
+			if(accepting && Game.window.moussed.mdown){
+				pressed = true;
+				if(!casted){
+					casted = true;
+					if(docast){
+						Game.broadcast(clickbroadcast);
+					}
+				}
+			}else{
+				pressed = false;
+			}
+		}else{
+			casted = false;
+			hover = false;
+			pressed = false;
+			accepting = false;
+			locked = false;
+		}
+		
 	}
 	
 }

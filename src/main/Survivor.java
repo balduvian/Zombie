@@ -26,21 +26,16 @@ public class Survivor extends Character{
 	public int race;
 	public int nameindex;
 	
-	public Survivor(int level){
-		
+	protected void charinit(){
 		pre = false;
 		defbase = 25;
-		
 		nameindex = (int)(Math.random()*NUMNAMES);
 		logname = NAMES[nameindex];
-		
 		friendly = true;
 		id = Entity.IDSURVIVOR;
 		skin = (int)(Math.random()*NUMSKINS);
 		race = (int)(Math.random()*NUMRACES);
 		img = new ImgSheet(new int[][][]{{{RACEIDS[race],SKINIDS[skin],ImageLoader.PLAYEROUTLINE}}});
-		stats = new Stats(level,25);
 		despawn = false;
-		init(level);
 	}
 }

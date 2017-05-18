@@ -65,7 +65,7 @@ public class Window extends JFrame{
 						for(int c=0;c<Game.enumm;c++){
 							Entity et = Game.entities[c];
 							if(et!=null){
-								int[] lo = ldr(et.x,et.exx,et.y,et.exy,et.w,et.h);
+								int[] lo = ldr(et.x,et.xx,et.y,et.yy,et.w,et.h);
 								int[] la = et.img.getcurrent();
 								for(int l=0;l<et.img.sheet[et.img.mode][et.img.frame].length;l++){
 									//g.drawImage(Game.images[et.img.sheet[et.img.mode][et.img.frame][l]], lo[0],lo[1],lo[2],lo[3], null);

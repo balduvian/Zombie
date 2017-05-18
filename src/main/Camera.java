@@ -64,8 +64,8 @@ public class Camera{
 		}else if(mode==ENTITYMODE){
 			Entity fiii = Game.entities[target];
 			if(fiii!=null){
-				cx = fiii.x+fiii.exx;
-				cy = fiii.y+fiii.exy;
+				cx = fiii.x+fiii.xx;
+				cy = fiii.y+fiii.yy;
 			}
 		}else if(mode==CONTROLMODE){
 			if(Game.window.pressed.keys[Binds.UPBIND]){
