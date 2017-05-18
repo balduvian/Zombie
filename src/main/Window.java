@@ -3,9 +3,13 @@ package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,10 +23,13 @@ public class Window extends JFrame{
 	int height;
 	int tilesup;
 	int tilesacr;
-	Misen pressed;
+	Kisen pressed;
+	Misen moussed;
+	Misen2 moussed2;
 	BufferStrategy bb;
 	Graphics g;
 	ExecutorService exe;
+	Rectangle[] buttonbounds;
 	
 	public void render(){
 		do {
@@ -75,11 +82,48 @@ public class Window extends JFrame{
 						g.fillRect(width/2+(int)((7.5-Game.cax)*Game.square),0,1000,height);
 						g.fillRect(0,height/2+(int)((7.5-Game.cay)*Game.square),width,1000);
 						
-						
-						
 						g.setColor(Color.red);
 						g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 20, 30);
 						g.drawRect(width/2-2, height/2-2, 2, 2);
+						
+						int acr = (width/Game.square);
+						for(int x=1;x<acr;x++){
+							g.drawImage(Game.images[ImageLoader.GUIBKGU], x*Game.square,height-(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.GUIBKGD], x*Game.square,height-Game.square,Game.square,Game.square,null);
+						}
+						g.drawImage(Game.images[ImageLoader.GUIBKGUL],0,height-(2*Game.square),Game.square,Game.square,null);
+						g.drawImage(Game.images[ImageLoader.GUIBKGDL],0,height-Game.square,Game.square,Game.square,null);
+						g.drawImage(Game.images[ImageLoader.GUIBKGUR],width-Game.square,height-(2*Game.square),Game.square,Game.square,null);
+						g.drawImage(Game.images[ImageLoader.GUIBKGDR],width-Game.square,height-Game.square,Game.square,Game.square,null);
+						
+						GUI gui = Game.gui;
+						int bnum = gui.getbuttons();
+						for(int i=0;i<bnum;i++){
+							int wax = ((width/(bnum+1))*(i+1))-Game.square/2;
+							int way = height-(int)(1.5*Game.square);
+							
+							gui.bounds[i] = new Rectangle(wax,way,Game.square,Game.square);
+							
+							GUIButton button = gui.buttons[gui.mode][i];
+							
+							int bimage = 0;
+							if(button.inactive){
+								bimage = ImageLoader.BUTTONINACTIVE;
+							}else{
+								if(button.hover){
+									if(button.pressed){
+										bimage = ImageLoader.BUTTONINPRESSED;
+									}else{
+										bimage = ImageLoader.BUTTONHOVER;
+									}
+								}else{
+									bimage = ImageLoader.BUTTONACTIVE;
+								}
+							}
+							g.drawImage(Game.images[bimage], wax, way, Game.square, Game.square, null);
+							g.drawImage(Game.images[gui.buttons[gui.mode][i].img], wax, way, Game.square, Game.square, null);
+						}
+						
 					}catch(Exception ex){
 						ex.printStackTrace();
 					}
@@ -108,9 +152,14 @@ public class Window extends JFrame{
 		height = ss.height;
 		this.setBounds(0, 0, width, height);
 		setUndecorated(true);
-		setResizable(true);
-		pressed = new Misen();
+		
+		pressed = new Kisen();
 		addKeyListener(pressed);
+		moussed = new Misen();
+		addMouseListener(moussed);
+		moussed2 = new Misen2();
+		addMouseMotionListener(moussed2);
+		
 		setTitle("Zombie");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
@@ -121,7 +170,36 @@ public class Window extends JFrame{
 		requestFocus();
 	}
 	
-	public class Misen implements KeyListener{
+	public class Misen implements MouseListener{
+		boolean mdown = false;
+		public void mouseClicked(MouseEvent e) {
+		}
+		public void mouseEntered(MouseEvent e) {
+		}
+		public void mouseExited(MouseEvent e) {
+		}
+		public void mousePressed(MouseEvent e) {
+			mdown = true;
+		}
+		public void mouseReleased(MouseEvent e) {
+			mdown = false;
+		}
+	}
+	
+	public class Misen2 implements MouseMotionListener{
+		public int mx = 0;
+		public int my = 0;
+		public void mouseDragged(MouseEvent e) {
+			mx = e.getX();
+			my = e.getY();
+		}
+		public void mouseMoved(MouseEvent e) {
+			mx = e.getX();
+			my = e.getY();
+		}	
+	}
+	
+	public class Kisen implements KeyListener{
 		boolean[] keys = new boolean[100];
 		public void keyPressed(KeyEvent ex){
 			int y = ex.getKeyCode();

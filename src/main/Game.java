@@ -46,6 +46,9 @@ public class Game {
 	private int loopcount = 0;
 	static double tpm = 0;//ticks per millisecond
 	
+	//GUI
+	static GUI gui;
+	
 	//random
 	public static double bitrand(int s, int o){
 		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
@@ -58,6 +61,11 @@ public class Game {
 			entities[enumm].spawnpos(x, y);
 			enumm++;
 		}
+	}
+	
+	//open the menu
+	public static void openmenu(){
+		
 	}
 	
 	public static void ccreate(Camera c){
@@ -92,26 +100,42 @@ public class Game {
 		enumm--;
 	}
 	
+	//destroys everything
+	private void cleanup(){
+		while(true){
+			if(enumm==0){
+				break;
+			}
+			delete(0);
+		}
+		while(true){
+			if(cnumm==0){
+				break;
+			}
+			cdelete(0);
+		}
+	}
+	
 	public void changecamera(int c){
 		currentcamera = c;
 	}
 	
-	public Game(){
-		ImageLoader.loadimages();
-		
-		window = new Window();
+	public void spawnworld(){
+		cleanup();
 		world = new World((int)(Math.random()*1000+100));
-		
 		globalx = 0;
 		globaly = 0;
-		
-		ccreate(new Camera(0,0,2));
-		ccreate(new Camera(0,0,1,0));
-		
+		ccreate(new Camera(0,0,Camera.CONTROLMODE));
 		create(0, 1, new Survivor(0));
-		
 		activity = 1;
-		
+		gui = new GUI();
+	}
+	
+	public Game(){
+		ImageLoader.loadimages();
+		window = new Window();
+
+		spawnworld();
 		//game loop
 		tick();
 		goal = System.currentTimeMillis();
@@ -156,6 +180,7 @@ public class Game {
 		if(window.pressed.keys[Binds.ENDBIND]){
 			System.exit(0);
 		}
+		
 		world.tick();
 		for(int i=0;i<cnumm;i++){
 			cameras[i].tick();
@@ -164,6 +189,7 @@ public class Game {
 			entities[i].tick();
 		}
 		Block.tick();
+		gui.tick();
 	}
 	
 	public static void main(String[] args) {
