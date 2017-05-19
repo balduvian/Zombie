@@ -19,7 +19,6 @@ public class Game {
 	public static final int PARTYMAX = 6;
 	public static int[] party = new int[PARTYMAX];
 	public static int inparty = 0;
-	public static int partyselect = 0;
 	
 	//setting up a list of images
 	public final static int Imax = 256;
@@ -36,6 +35,13 @@ public class Game {
 	
 	//IT'S DA TURN
 	public static int turn;
+	public static int partyselect = 0;
+	public static final int NUMACTIONS = 3;
+	public static final int MOVEDACTION = 0;
+	public static final int ATTACKEDACTION = 1;
+	public static final int ACTIONEDACTION = 2;
+	public static int[] actionsused = new int[NUMACTIONS];
+	public static boolean arrowsdeployed = false;
 	
 	//global display positioning
 	public static int globaly;
@@ -160,7 +166,7 @@ public class Game {
 		globaly = 0;
 		ccreate(new Camera(0,0,Camera.CONTROLMODE));
 		world.spawnmap.spawncharacter(0, 0, Character.SURVIVORCONSTANT, 0);
-		addtoparty(0);
+		addtoparty(enumm-1);
 		activity = 1;
 		gui = new GUI();
 	}
@@ -221,6 +227,7 @@ public class Game {
 		
 	}
 	
+	public static final int NOACTION = -1;
 	public static final int CREATEMOVEARROWS = 0;
 	public static final int MOVEUP = 1;
 	public static final int MOVERIGHT = 2;
@@ -233,8 +240,13 @@ public class Game {
 	public static final int GUIGOACTION = 9;
 	public static final int ADVANCEPARTYTURN = 10;
 	public static final int SWITCHTURN = 11;
-	public static final int s = 12;
+	public static final int GUIOPENMENU = 12;
+	public static final int CAMERATONEWPARTY = 13;
+	public static final int CLEARACTIONS = 14;
+	public static final int BEGINAI = 15;
+	
 	//all other nontimed events happen here
+	
 	public static void broadcast(int signal){
 		if(signal==CREATEMOVEARROWS){
 			Entity pm = getpartymember(partyselect);
@@ -248,10 +260,66 @@ public class Game {
 			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.DOWNARROW);
 			create(alx-1,aly,new ArrowEntity());
 			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.LEFTARROW);
+			arrowsdeployed = true;
 		}else if(signal==DELETEMOVEARROWS){
-			for(int i=0;i<7;i++){
-				
+			if(arrowsdeployed){
+				for(int i=0;i<enumm;i++){
+					Entity enn = entities[i];
+					if(enn.id==Entity.IDARROW){
+						enn.destroy();
+					}
+				}
+				arrowsdeployed = false;
 			}
+		}else if(signal==MOVEUP){
+			world.shift(0, 1);
+			Game.broadcast(DELETEMOVEARROWS);
+		}else if(signal==MOVERIGHT){
+			world.shift(1, 1);
+			Game.broadcast(DELETEMOVEARROWS);
+		}else if(signal==MOVEDOWN){
+			world.shift(2, 1);
+			Game.broadcast(DELETEMOVEARROWS);
+		}else if(signal==MOVELEFT){
+			world.shift(3, 1);
+			Game.broadcast(DELETEMOVEARROWS);
+		}else if(signal==GUIGOMAIN){
+			gui.setmode(GUI.MAIN);
+			Game.broadcast(DELETEMOVEARROWS);
+		}else if(signal==GUIGOMOVE){
+			gui.setmode(GUI.MOVEMENT);
+			broadcast(CREATEMOVEARROWS);
+		}else if(signal==GUIGOATTACK){
+			gui.setmode(GUI.ATTACKING);
+		}else if(signal==GUIGOACTION){
+			gui.setmode(GUI.ACTION);
+		}else if(signal==ADVANCEPARTYTURN){
+			partyselect++;
+			if(partyselect==inparty){
+				Game.broadcast(SWITCHTURN);
+			}else{
+				Game.broadcast(CLEARACTIONS);
+				Game.broadcast(CAMERATONEWPARTY);
+			}
+		}else if(signal==CLEARACTIONS){
+			for(int i=0;i<NUMACTIONS;i++){
+				actionsused[i] = 0;
+			}
+		}else if(signal==SWITCHTURN){
+			if(turn==0){
+				turn=1;
+				gui.setmode(GUI.ENEMYTURN);
+				Game.broadcast(BEGINAI);
+			}else{
+				turn = 0;
+				gui.setmode(GUI.MAIN);
+				partyselect = 0;
+				Game.broadcast(CLEARACTIONS);
+			}
+		}else if(signal==BEGINAI){
+			
+		}else if(signal==CAMERATONEWPARTY){
+			
 		}
 	}
 	

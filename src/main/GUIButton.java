@@ -12,28 +12,23 @@ public class GUIButton {
 	int img;
 	int width = 16;
 	int height = 16;
-	int destin;
-	boolean link;
+	int tocast;
 	
 	public GUIButton(GUIButton i){
-		destin = i.destin;
 		name = i.name;
 		id = i.id;
 		img = i.img;
-		link = i.link;
+		tocast = i.tocast;
 	}
 	
-	public GUIButton(String bname, int triggerid, int image, int destination){
-		destin = destination;
+	public GUIButton(String bname, int triggerid, int image, int broadcasting){
 		name = bname;
 		id = triggerid;
 		img = image;
-		link = true;
+		tocast = broadcasting;
 	}
 	
 	public void onclick(){
-		if(link){
-			Game.gui.setmode(destin);
-		}
+		Game.broadcast(tocast);
 	}
 }

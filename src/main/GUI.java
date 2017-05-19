@@ -4,23 +4,23 @@ import java.awt.Rectangle;
 
 public class GUI {
 	
-	public static final int TURNMENU = 0;
-	public static final int MOVEMENU = 1;
-	public static final int ATTACKMENU = 2;
-	public static final int ACTIONMENU = 3;
+	public static final int MAIN = 0;
+	public static final int MOVEMENT = 1;
+	public static final int ATTACKING = 2;
+	public static final int ACTION = 3;
 	public static final int ENEMYTURN = 4;
 	
-	public static final GUIButton MOVEBUTTON = new GUIButton("Move",0,ImageLoader.GUIMOVE,MOVEMENU);
-	public static final GUIButton ATTACKBUTTON = new GUIButton("Attack",1,ImageLoader.GUIATTACK,ATTACKMENU);
-	public static final GUIButton ACTIONBUTTON = new GUIButton("Action",2,ImageLoader.GUIACTION,ACTIONMENU);
-	public static final GUIButton STOPBUTTON = new GUIButton("Stop",3,ImageLoader.GUISTOP,ENEMYTURN);
-	public static final GUIButton MENUBUTTON = new GUIButton("Menu",4,ImageLoader.GUIMENU,TURNMENU);
-	public static final GUIButton BACKBUTTON = new GUIButton("Back",5,ImageLoader.GUIBACK,TURNMENU);
+	public static final GUIButton MOVEBUTTON = new GUIButton("Move",0,ImageLoader.GUIMOVE,Game.GUIGOMOVE);
+	public static final GUIButton ATTACKBUTTON = new GUIButton("Attack",1,ImageLoader.GUIATTACK,Game.GUIGOATTACK);
+	public static final GUIButton ACTIONBUTTON = new GUIButton("Action",2,ImageLoader.GUIACTION,Game.GUIGOACTION);
+	public static final GUIButton STOPBUTTON = new GUIButton("Stop",3,ImageLoader.GUISTOP,Game.ADVANCEPARTYTURN);
+	public static final GUIButton MENUBUTTON = new GUIButton("Menu",4,ImageLoader.GUIMENU,Game.GUIOPENMENU);
+	public static final GUIButton BACKBUTTON = new GUIButton("Back",5,ImageLoader.GUIBACK,Game.GUIGOMAIN);
 	
 	int mode = 0;
 	
 	GUIButton[][] buttons= {
-			{new GUIButton(MOVEBUTTON),new GUIButton(ATTACKBUTTON),new GUIButton(ACTIONBUTTON),new GUIButton(STOPBUTTON),new GUIButton(MENUBUTTON)},//turnmenu
+			{new GUIButton(MOVEBUTTON),new GUIButton(ATTACKBUTTON),new GUIButton(ACTIONBUTTON),new GUIButton(STOPBUTTON),new GUIButton(MENUBUTTON)},//main
 			{new GUIButton(BACKBUTTON)},//movement
 			{new GUIButton(BACKBUTTON)},//attacking 
 			{new GUIButton(BACKBUTTON)},//action
@@ -50,7 +50,7 @@ public class GUI {
 					}
 					if(buttons[mode][i].accepting && Game.window.moussed.mdown){
 						buttons[mode][i].pressed = true;
-						setmode(buttons[mode][i].destin);
+						buttons[mode][i].onclick();
 					}else{
 						buttons[mode][i].pressed = false;
 					}

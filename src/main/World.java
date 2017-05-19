@@ -174,7 +174,7 @@ public class World {
 			Character ctm = null;
 			if(we==Character.SURVIVORCONSTANT){
 				ctm = new Survivor();
-			}if(we==Zombie.BASICZOMBIEID){
+			}else if(we==Zombie.BASICZOMBIEID){
 				ctm = new BasicZombie();
 			}else if(we==Zombie.CACTUSZOMBIEID){
 				ctm = new BasicZombie();
