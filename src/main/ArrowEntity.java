@@ -11,7 +11,7 @@ public class ArrowEntity extends Entity{
 	
 	public static final int[] BROADCASTS = {Game.MOVEUP,Game.MOVERIGHT,Game.MOVEDOWN,Game.MOVELEFT};
 			
-	public void initroutine(){
+	protected void initroutine(){
 		active = true;
 		id = Entity.IDARROW;
 		img = new ImgSheet(new int[][][]{{{ImageLoader.ARROWUP0},{ImageLoader.ARROWUP1}},{{ImageLoader.ARROWRIGHT0},{ImageLoader.ARROWRIGHT1}},{{ImageLoader.ARROWDOWN0},{ImageLoader.ARROWDOWN1}},{{ImageLoader.ARROWLEFT0},{ImageLoader.ARROWLEFT1}}});

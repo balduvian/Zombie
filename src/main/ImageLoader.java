@@ -120,7 +120,7 @@ public class ImageLoader {
 	public static final int BUTTONINACTIVE = 109;
 	public static final int BUTTONHOVER = 110;
 	public static final int BUTTONINPRESSED = 111;
-	public static final int TARGET = 112;
+	public static final int Aaaaaaaaaaaaaaaaaaaaaa = 112;
 	public static final int MENUSELECT = 113;
 	public static final int STICKMASK = 114;
 	public static final int BROADSWORDMASK = 115;
@@ -130,12 +130,22 @@ public class ImageLoader {
 	public static final int ARROWRIGHT1 = 119;
 	public static final int ARROWDOWN1 = 120;
 	public static final int ARROWLEFT1 = 121;
-	public static final int aaaaaaaaa = 122;
+	public static final int MISSINGTEXTURE = 122;
 	public static final int SKIN3 = 123;
 	public static final int SKIN4 = 124;
 	public static final int SKIN5 = 125;
 	public static final int TSTATUS = 126;
 	public static final int GSTATUS = 127;
+	public static final int MATERIALWOOD0 = 128;
+	public static final int MATERIALLAVA = 129;
+	public static final int MATERIALAQUA = 130;
+	public static final int MATERIALNATURE = 131;
+	public static final int MATERIALWOOD1 = 132;
+	public static final int MATERIALMETAL = 133;
+	public static final int ARROWUP2 = 134;
+	public static final int ARROWRIGHT2 = 135;
+	public static final int ARROWDOWN2 = 136;
+	public static final int ARROWLEFT2 = 137;
 	
 	public static final int GUIBKGU = 142;
 	public static final int GUIBKGD = 143;
@@ -145,6 +155,15 @@ public class ImageLoader {
 	public static final int ASPHALT = 146;
 	public static final int SWAMPGRASS = 147;
 	
+	public static final int SELECTOR0 = 160;
+	public static final int SELECTOR1 = 161;
+	public static final int SELECTOR2 = 162;
+	public static final int SELECTOR3 = 163;
+	public static final int SELECTOR4 = 164;
+	public static final int SELECTOR5 = 165;
+	public static final int SELECTOR6 = 166;
+	public static final int SELECTOR7 = 167;
+	public static final int SELECTORNULL = 168;
 	static void loadimages(){
 		BufferedImage b = null;
 		try{
