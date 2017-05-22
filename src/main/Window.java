@@ -104,23 +104,7 @@ public class Window extends JFrame{
 							
 							gui.bounds[i] = new Rectangle(wax,way,Game.square,Game.square);
 							
-							GUIButton button = gui.buttons[gui.mode][i];
-							
-							int bimage = 0;
-							if(button.inactive){
-								bimage = ImageLoader.BUTTONINACTIVE;
-							}else{
-								if(button.hover){
-									if(button.pressed){
-										bimage = ImageLoader.BUTTONINPRESSED;
-									}else{
-										bimage = ImageLoader.BUTTONHOVER;
-									}
-								}else{
-									bimage = ImageLoader.BUTTONACTIVE;
-								}
-							}
-							g.drawImage(Game.images[bimage], wax, way, Game.square, Game.square, null);
+							g.drawImage(Game.images[GUIButton.bbacks[gui.buttons[gui.mode][i].bstate]], wax, way, Game.square, Game.square, null);
 							g.drawImage(Game.images[gui.buttons[gui.mode][i].img], wax, way, Game.square, Game.square, null);
 						}
 						

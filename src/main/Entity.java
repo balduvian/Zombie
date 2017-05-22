@@ -1,11 +1,9 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 public class Entity {
-	
+
 	public static int IDNULL = 0;
 	public static int IDSURVIVOR = 1;
 	public static int IDZOMBIE = 2;
@@ -14,13 +12,18 @@ public class Entity {
 	public static int DEFAULTWIDTH = 1;
 	public static int DEFAULTHEIGHT = 1;
 	
-	boolean hover;
+	public static final int INACTIVESTATE = 0;
+	public static final int ACTIVESTATE = 1;
+	public static final int HOVERSTATE = 2;
+	public static final int PRESSEDSTATE = 3;
+	
 	boolean pressed;
 	boolean accepting;
 	boolean locked;
-	boolean docast;
-	boolean casted;
-	int clickbroadcast;
+	boolean active;
+	boolean acclock;
+	int cast;
+	int bstate = 0;
 	
 	protected int id = IDNULL;
 	int index; //index in the list;
@@ -81,6 +84,10 @@ public class Entity {
 		return speed/Game.tpm;
 	}
 	
+	protected void onclick(){
+		
+	}
+	
 	public void tick(){
 		
 		if(despawn){
@@ -97,32 +104,42 @@ public class Entity {
 		
 		img.tick();
 		
-		Rectangle mr = new Rectangle(Game.window.moussed2.mx,Game.window.moussed2.my,1,1);
-		if(mr.intersects(new Rectangle(Game.geterect(index)))){
-			hover = true;
-			if(!Game.window.moussed.mdown && accepting){
-				locked = true;
-				accepting = true;
-			}else if(!locked){
-				accepting = false;
-			}
-			if(accepting && Game.window.moussed.mdown){
-				pressed = true;
-				if(!casted){
-					casted = true;
-					if(docast){
-						Game.broadcast(clickbroadcast);
+		boolean md = Game.window.moussed.mdown;
+		boolean on = Game.getmouserect().intersects(Game.geterect(index));
+		if(active){
+			if(on || locked){
+				if(locked){
+					if(on){
+						bstate = GUIButton.PRESSEDSTATE;
+						if(!md){
+							locked = false;
+							onclick();
+						}
+					}else{
+						bstate = GUIButton.HOVERSTATE;
 					}
+				}else{
+					bstate = GUIButton.HOVERSTATE;
+				}
+				if(!md && !accepting){
+					accepting = true;
+					acclock = true;
+				}else{
+					accepting = false;
+				}
+				if(md && acclock){
+					locked = true;
+				}else{
+					locked = false;
 				}
 			}else{
-				pressed = false;
+				acclock = false;
+				bstate = GUIButton.ACTIVESTATE;
+				locked = false;
+				accepting = false;
 			}
 		}else{
-			casted = false;
-			hover = false;
-			pressed = false;
-			accepting = false;
-			locked = false;
+			bstate = GUIButton.INACTIVESTATE;
 		}
 		
 	}

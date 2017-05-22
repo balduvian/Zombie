@@ -1,7 +1,6 @@
 package region;
 
 import main.Block;
-import main.ImageLoader;
 import main.Region;
 import main.Zombie;
 

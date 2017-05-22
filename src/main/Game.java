@@ -17,7 +17,7 @@ public class Game {
 	public static int currentcamera = 0;
 	
 	public static final int PARTYMAX = 6;
-	public static int[] party = new int[PARTYMAX];
+	public static Survivor[] party = new Survivor[PARTYMAX];
 	public static int inparty = 0;
 	
 	//setting up a list of images
@@ -34,14 +34,14 @@ public class Game {
 	public static World world;
 	
 	//IT'S DA TURN
+	public static final int PLAYERTURN = 0;
+	public static final int ENEMYTURN = 1;
 	public static int turn;
 	public static int partyselect = 0;
-	public static final int NUMACTIONS = 3;
-	public static final int MOVEDACTION = 0;
-	public static final int ATTACKEDACTION = 1;
-	public static final int ACTIONEDACTION = 2;
-	public static int[] actionsused = new int[NUMACTIONS];
+	
 	public static boolean arrowsdeployed = false;
+	public static int moved;
+	public static int maxmoved;
 	
 	//global display positioning
 	public static int globaly;
@@ -55,6 +55,7 @@ public class Game {
 	
 	//ticking variables
 	private long goal = 0;
+	@SuppressWarnings("unused")
 	private int loopcount = 0;
 	static double tpm = 0;//ticks per millisecond
 	
@@ -63,19 +64,23 @@ public class Game {
 	
 	//random
 	
-	public static Entity getpartymember(int er){
-		return entities[party[er]];
+	public static Rectangle getmouserect(){
+		return new Rectangle(window.moussed2.mx,window.moussed2.my,1,1);
+	}
+	
+	public static Survivor getpartymember(int er){
+		return party[er];
 	}
 	public static void addtoparty(int eta){
 		if(inparty<PARTYMAX){
-			party[inparty] = eta;
+			party[inparty] = (Survivor)entities[eta];
 			inparty++;
 		}
 	}
 	public static void removefromparty(int pindex){
-		party[pindex] = 0;
+		party[pindex] = null;
 		for(int n=pindex;n<inparty-1;n++){
-			int temp = party[n+1];
+			Survivor temp = party[n+1];
 			party[n+1] = party[n];
 			party[n] = temp;
 			//party[n].index--;
@@ -84,9 +89,13 @@ public class Game {
 	}
 	
 	public static Rectangle geterect(int eid){
-		Entity eng = entities[eid];
-		int[] bin = window.ldr(eng.x, eng.xx, eng.y, eng.yy, eng.w, eng.h);
-		return new Rectangle(bin[0], bin[1], bin[2], bin[3]);
+		try{
+			Entity eng = entities[eid];
+			int[] bin = window.ldr(eng.x, eng.xx, eng.y, eng.yy, eng.w, eng.h);
+			return new Rectangle(bin[0], bin[1], bin[2], bin[3]);
+		}catch(Exception ex){
+			return new Rectangle(1,1,1,1);
+		}
 	}
 	
 	public static double bitrand(int s, int o){
@@ -167,8 +176,9 @@ public class Game {
 		ccreate(new Camera(0,0,Camera.CONTROLMODE));
 		world.spawnmap.spawncharacter(0, 0, Character.SURVIVORCONSTANT, 0);
 		addtoparty(enumm-1);
-		activity = 1;
 		gui = new GUI();
+		activity = 1;
+		broadcast(STARTPLAYERTURN);
 	}
 	
 	public Game(){
@@ -223,8 +233,6 @@ public class Game {
 		}
 		Block.tick();
 		gui.tick();
-		
-		
 	}
 	
 	public static final int NOACTION = -1;
@@ -239,50 +247,79 @@ public class Game {
 	public static final int GUIGOATTACK = 8;
 	public static final int GUIGOACTION = 9;
 	public static final int ADVANCEPARTYTURN = 10;
-	public static final int SWITCHTURN = 11;
-	public static final int GUIOPENMENU = 12;
-	public static final int CAMERATONEWPARTY = 13;
-	public static final int CLEARACTIONS = 14;
-	public static final int BEGINAI = 15;
+	public static final int STARTPLAYERTURN = 11;
+	public static final int STARTENEMYTURN = 12;
+	public static final int GUIOPENMENU = 13;
+	public static final int CAMERATOPARTY = 14;
+	public static final int CLEARACTIONS = 15;
+	public static final int BEGINAI = 16;
 	
 	//all other nontimed events happen here
 	
 	public static void broadcast(int signal){
-		if(signal==CREATEMOVEARROWS){
-			Entity pm = getpartymember(partyselect);
-			int alx = pm.x;
-			int aly = pm.y;
-			create(alx,aly-1,new ArrowEntity());
-			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.UPARROW);
-			create(alx+1,aly,new ArrowEntity());
-			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.RIGHTARROW);
-			create(alx,aly+1,new ArrowEntity());
-			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.DOWNARROW);
-			create(alx-1,aly,new ArrowEntity());
-			((ArrowEntity)entities[enumm]).setarrowtype(ArrowEntity.LEFTARROW);
-			arrowsdeployed = true;
+		if(signal==NOACTION){
+			
+		}else if(signal==CREATEMOVEARROWS){
+			broadcast(DELETEMOVEARROWS);
+			if(moved==maxmoved){
+				gui.buttons[GUI.MAIN][GUI.MAINMOVE].inactive = true;
+				//gui.setmode(GUI.MAIN);
+			}else{
+				Entity pm = getpartymember(partyselect);
+				int alx = pm.x;
+				int aly = pm.y;
+				
+				ArrowEntity ae = new ArrowEntity();
+				ae.setarrowtype(ArrowEntity.UPARROW);
+				create(alx,aly-1,ae);
+				
+				ae = new ArrowEntity();
+				ae.setarrowtype(ArrowEntity.RIGHTARROW);
+				create(alx+1,aly,ae);
+	
+				ae = new ArrowEntity();
+				ae.setarrowtype(ArrowEntity.DOWNARROW);
+				create(alx,aly+1,ae);
+				
+				ae = new ArrowEntity();
+				ae.setarrowtype(ArrowEntity.LEFTARROW);
+				create(alx-1,aly,ae);
+				
+				arrowsdeployed = true;
+			}
 		}else if(signal==DELETEMOVEARROWS){
 			if(arrowsdeployed){
-				for(int i=0;i<enumm;i++){
+				int i=0;
+				while(i<enumm){
 					Entity enn = entities[i];
 					if(enn.id==Entity.IDARROW){
 						enn.destroy();
+					}else{
+						i++;
 					}
 				}
 				arrowsdeployed = false;
 			}
 		}else if(signal==MOVEUP){
-			world.shift(0, 1);
-			Game.broadcast(DELETEMOVEARROWS);
+			globaly--;
+			getpartymember(partyselect).y--;
+			moved++;
+			broadcast(CREATEMOVEARROWS);
 		}else if(signal==MOVERIGHT){
-			world.shift(1, 1);
-			Game.broadcast(DELETEMOVEARROWS);
+			globalx++;
+			getpartymember(partyselect).x++;
+			moved++;
+			broadcast(CREATEMOVEARROWS);
 		}else if(signal==MOVEDOWN){
-			world.shift(2, 1);
-			Game.broadcast(DELETEMOVEARROWS);
+			globaly++;
+			getpartymember(partyselect).y++;
+			moved++;
+			broadcast(CREATEMOVEARROWS);
 		}else if(signal==MOVELEFT){
-			world.shift(3, 1);
-			Game.broadcast(DELETEMOVEARROWS);
+			globalx--;
+			getpartymember(partyselect).x--;
+			moved++;
+			broadcast(CREATEMOVEARROWS);
 		}else if(signal==GUIGOMAIN){
 			gui.setmode(GUI.MAIN);
 			Game.broadcast(DELETEMOVEARROWS);
@@ -296,29 +333,28 @@ public class Game {
 		}else if(signal==ADVANCEPARTYTURN){
 			partyselect++;
 			if(partyselect==inparty){
-				Game.broadcast(SWITCHTURN);
+				Game.broadcast(ENEMYTURN);
 			}else{
 				Game.broadcast(CLEARACTIONS);
-				Game.broadcast(CAMERATONEWPARTY);
+				Game.broadcast(CAMERATOPARTY);
 			}
 		}else if(signal==CLEARACTIONS){
-			for(int i=0;i<NUMACTIONS;i++){
-				actionsused[i] = 0;
-			}
-		}else if(signal==SWITCHTURN){
-			if(turn==0){
-				turn=1;
-				gui.setmode(GUI.ENEMYTURN);
-				Game.broadcast(BEGINAI);
-			}else{
-				turn = 0;
-				gui.setmode(GUI.MAIN);
-				partyselect = 0;
-				Game.broadcast(CLEARACTIONS);
-			}
+			maxmoved = getpartymember(partyselect).stats.stats[Stats.SPEED];
+			moved = 0;
+			gui.enableall();
+		}else if(signal==STARTPLAYERTURN){
+			turn=PLAYERTURN;
+			gui.setmode(GUI.MAIN);
+			partyselect = 0;
+			Game.broadcast(CLEARACTIONS);
+			Game.broadcast(CAMERATOPARTY);
+		}else if(signal==STARTENEMYTURN){
+			turn=ENEMYTURN;
+			gui.setmode(GUI.ENEMYTURN);
+			Game.broadcast(BEGINAI);
 		}else if(signal==BEGINAI){
 			
-		}else if(signal==CAMERATONEWPARTY){
+		}else if(signal==CAMERATOPARTY){
 			
 		}
 	}

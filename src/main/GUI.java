@@ -4,11 +4,19 @@ import java.awt.Rectangle;
 
 public class GUI {
 	
+	public static final int MAINBUTTONS = 6;
+	
 	public static final int MAIN = 0;
 	public static final int MOVEMENT = 1;
 	public static final int ATTACKING = 2;
 	public static final int ACTION = 3;
 	public static final int ENEMYTURN = 4;
+	
+	public static final int MAINMOVE = 0;
+	public static final int MAINATTACK = 1;
+	public static final int MAINACTION = 2;
+	public static final int MAINSTOP = 3;
+	public static final int MAINMENU = 4;
 	
 	public static final GUIButton MOVEBUTTON = new GUIButton("Move",0,ImageLoader.GUIMOVE,Game.GUIGOMOVE);
 	public static final GUIButton ATTACKBUTTON = new GUIButton("Attack",1,ImageLoader.GUIATTACK,Game.GUIGOATTACK);
@@ -33,32 +41,59 @@ public class GUI {
 		return buttons[mode].length;
 	}
 	
-	public GUI(){}//eh tho... whatever
+	public GUI(){
+		mode = MAIN;
+	}
+	
+	public void enableall(){
+		for(int i=0;i<MAINBUTTONS;i++){
+			buttons[MAIN][0].inactive = false;
+		}
+	}
 	
 	public void tick(){
 		Rectangle mr = new Rectangle(Game.window.moussed2.mx,Game.window.moussed2.my,1,1);
 		int thro = getbuttons();
 		try{
 			for(int i=0;i<thro;i++){
-				if(mr.intersects(bounds[i])){
-					buttons[mode][i].hover = true;
-					if(!Game.window.moussed.mdown && !buttons[mode][i].accepting){
-						buttons[mode][i].locked = true;
-						buttons[mode][i].accepting = true;
-					}else if(!buttons[mode][i].locked){
-						buttons[mode][i].accepting = false;
-					}
-					if(buttons[mode][i].accepting && Game.window.moussed.mdown){
-						buttons[mode][i].pressed = true;
-						buttons[mode][i].onclick();
+				
+				GUIButton bu = buttons[mode][i];
+				boolean md = Game.window.moussed.mdown;
+				boolean on = mr.intersects(bounds[i]);
+				if(!bu.inactive){
+					if(on || bu.locked){
+						if(bu.locked){
+							if(on){
+								bu.bstate = GUIButton.PRESSEDSTATE;
+								if(!md){
+									bu.locked = false;
+									bu.onclick();
+								}
+							}else{
+								bu.bstate = GUIButton.HOVERSTATE;
+							}
+						}else{
+							bu.bstate = GUIButton.HOVERSTATE;
+						}
+						if(!md && !bu.accepting){
+							bu.accepting = true;
+							bu.acclock = true;
+						}else{
+							bu.accepting = false;
+						}
+						if(md && bu.acclock){
+							bu.locked = true;
+						}else{
+							bu.locked = false;
+						}
 					}else{
-						buttons[mode][i].pressed = false;
+						bu.acclock = false;
+						bu.bstate = GUIButton.ACTIVESTATE;
+						bu.locked = false;
+						bu.accepting = false;
 					}
 				}else{
-					buttons[mode][i].hover = false;
-					buttons[mode][i].pressed = false;
-					buttons[mode][i].accepting = false;
-					buttons[mode][i].locked = false;
+					bu.bstate = GUIButton.INACTIVESTATE;
 				}
 			}
 		}catch(Exception ex){}
@@ -66,13 +101,6 @@ public class GUI {
 	
 	public void setmode(int m){
 		mode = m;
-		int thro = getbuttons();
-		for(int i=0;i<thro;i++){
-			buttons[mode][i].hover = false;
-			buttons[mode][i].pressed = false;
-			buttons[mode][i].accepting = false;
-			buttons[mode][i].locked = false;
-		}
 	}
 	
 }

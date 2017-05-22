@@ -6,6 +6,15 @@ public class Stats {
 	public static final int NUMSTATS = 5;
 	public static final int NUMBARS = 2;
 	
+	public static final int BODY = 0;
+	public static final int MIND = 1;
+	public static final int ATTACK = 2;
+	public static final int DEFENSE = 3;
+	public static final int SPEED = 4;
+	
+	public static final int HP = 0;
+	public static final int SANITY = 1;
+	
 	String type;
 	String name;
 	int level;

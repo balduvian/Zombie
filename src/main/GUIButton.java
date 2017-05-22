@@ -2,11 +2,18 @@ package main;
 
 public class GUIButton {
 	
+	public static final int INACTIVESTATE = 0;
+	public static final int ACTIVESTATE = 1;
+	public static final int HOVERSTATE = 2;
+	public static final int PRESSEDSTATE = 3;
+	public static final int[] bbacks = {ImageLoader.BUTTONINACTIVE,ImageLoader.BUTTONACTIVE,ImageLoader.BUTTONHOVER,ImageLoader.BUTTONINPRESSED};
 	boolean locked;
+	boolean acclock;
 	boolean accepting;
 	boolean pressed;
-	boolean hover;
+	//boolean hover;//doweneedit???
 	boolean inactive;
+	int bstate = 0;
 	int id;
 	String name;
 	int img;

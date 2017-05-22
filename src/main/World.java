@@ -44,7 +44,7 @@ public class World {
 		int rtimes = Game.globalx-offx;
 		shift(1,rtimes);
 	}
-	
+
 	public void shift(int dir, int times){
 		for(int ti=0;ti<times;ti++){
 			if(dir == 0){
@@ -63,8 +63,7 @@ public class World {
 						}
 					}
 				}
-			}
-			if(dir == 1){
+			}else if(dir == 1){
 				offx++;
 				for(int ty=0;ty<wsize;ty++){
 					for(int tx=0;tx<wsize;tx++){
@@ -80,8 +79,7 @@ public class World {
 						}
 					}
 				}
-			}
-			if(dir == 2){
+			}else if(dir == 2){
 				offy++;
 				for(int ty=0;ty<wsize;ty++){
 					for(int tx=0;tx<wsize;tx++){
@@ -97,8 +95,7 @@ public class World {
 						}
 					}
 				}
-			}
-			if(dir == 3){
+			}else if(dir == 3){
 				offx--;
 				for(int ty=0;ty<wsize;ty++){
 					for(int tx=wsize-1;tx>-1;tx--){
