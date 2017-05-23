@@ -3,14 +3,20 @@ package main;
 import java.awt.Rectangle;
 
 public class Entity {
-
-	public static int IDNULL = 0;
-	public static int IDSURVIVOR = 1;
-	public static int IDZOMBIE = 2;
-	public static int IDARROW = 3;
 	
-	public static int DEFAULTWIDTH = 1;
-	public static int DEFAULTHEIGHT = 1;
+	public static final int UP = 0;
+	public static final int RIGHT = 1;
+	public static final int DOWN = 2;
+	public static final int LEFT = 3;
+	
+	public static final int IDNULL = 0;
+	public static final int IDSURVIVOR = 1;
+	public static final int IDZOMBIE = 2;
+	public static final int IDARROW = 3;
+	public static final int IDSELECTOR = 4;
+	
+	public static final int DEFAULTWIDTH = 1;
+	public static final int DEFAULTHEIGHT = 1;
 	
 	public static final int INACTIVESTATE = 0;
 	public static final int ACTIVESTATE = 1;
@@ -38,7 +44,7 @@ public class Entity {
 	
 	protected ImgSheet img;
 
-	int mmode = 0;
+	boolean shifting = false;
 	int mdir = 4;
 	
 	public void destroy(){
@@ -64,31 +70,62 @@ public class Entity {
 		y = spy;
 	}
 	
-	public void shift(int dir){
-		if(mmode == 0){
-			mdir = dir;
-			mmode = 1;
-			if(mdir==0){
-				yy-=0.1;
-			}else if(mdir==1){
-				xx+=0.1;
-			}else if(mdir==2){
-				yy+=0.1;
-			}else if(mdir==3){
-				xx-=0.1;
-			}
-		}
+	public void inactivate(){
+		active = false;
 	}
 	
-	public double movam(){
-		return speed/Game.tpm;
+	public void shift(int dir){
+		if(!shifting){
+			mdir = dir;
+			shifting = true;
+		}
 	}
 	
 	protected void onclick(){
 		
 	}
 	
+	protected void finishshift(){
+		shifting = false;
+		if(Game.arrowwait){
+			Game.broadcast(Game.CREATEMOVEARROWS);
+			Game.arrowwait = false;
+		}
+	}
+	
 	public void tick(){
+		
+		if(shifting){
+			if(mdir==0){
+				yy-=0.1;
+				if(yy<=-1){
+					yy=0;
+					y--;
+					finishshift();
+				}
+			}else if(mdir==1){
+				xx+=0.1;
+				if(xx>=1){
+					xx=0;
+					x++;
+					finishshift();
+				}
+			}else if(mdir==2){
+				yy+=0.1;
+				if(yy>=1){
+					yy=0;
+					y++;
+					finishshift();
+				}
+			}else if(mdir==3){
+				xx-=0.1;
+				if(xx<=-1){
+					xx=0;
+					x--;
+					finishshift();
+				}
+			}
+		}
 		
 		if(despawn){
 			if(y<Game.world.offy-Game.world.rb){

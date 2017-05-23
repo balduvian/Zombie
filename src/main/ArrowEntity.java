@@ -14,7 +14,7 @@ public class ArrowEntity extends Entity{
 	protected void initroutine(){
 		active = true;
 		id = Entity.IDARROW;
-		img = new ImgSheet(new int[][][]{{{ImageLoader.ARROWUP0},{ImageLoader.ARROWUP1}},{{ImageLoader.ARROWRIGHT0},{ImageLoader.ARROWRIGHT1}},{{ImageLoader.ARROWDOWN0},{ImageLoader.ARROWDOWN1}},{{ImageLoader.ARROWLEFT0},{ImageLoader.ARROWLEFT1}}});
+		img = new ImgSheet(new int[][][]{{{ImageLoader.ARROWUP0},{ImageLoader.ARROWUP1},{ImageLoader.ARROWUP2}},{{ImageLoader.ARROWRIGHT0},{ImageLoader.ARROWRIGHT1},{ImageLoader.ARROWRIGHT2}},{{ImageLoader.ARROWDOWN0},{ImageLoader.ARROWDOWN1},{ImageLoader.ARROWDOWN2}},{{ImageLoader.ARROWLEFT0},{ImageLoader.ARROWLEFT1},{ImageLoader.ARROWLEFT2}}});
 	}
 	
 	public void setarrowtype(int type){
@@ -29,10 +29,14 @@ public class ArrowEntity extends Entity{
 	
 	public void tick(){
 		super.tick();
-		if(bstate >= HOVERSTATE){
-			img.frame = 1;
+		if(active){
+			if(bstate >= HOVERSTATE){
+				img.frame = 1;
+			}else{
+				img.frame = 0;
+			}
 		}else{
-			img.frame = 0;
+			img.frame = 2;
 		}
 	}
 }
