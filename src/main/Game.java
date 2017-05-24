@@ -47,11 +47,16 @@ public class Game {
 	public static int moved;
 	public static int maxmoved;
 	
+	public static boolean entityselected;
+	public static Entity entityselect;
+	
 	//global display positioning
+	public static boolean follow;
+	public static Entity following;
 	public static int globaly;
 	public static int globalx;
-	public static double gexy;
-	public static double gexx;
+	public static double globalyy;
+	public static double globalxx;
 	public static double cay;
 	public static double cax;
 	
@@ -182,6 +187,8 @@ public class Game {
 		addtoparty(enumm-1);
 		gui = new GUI();
 		activity = 1;
+		follow = true;
+		following = getpartymember(partyselect);
 		broadcast(STARTPLAYERTURN);
 	}
 	
@@ -205,24 +212,43 @@ public class Game {
 		}
 	}
 	
+	public static void targetdelete(int eid){
+		int i=0;
+		while(i<enumm){
+			Entity enn = entities[i];
+			if(enn.id==eid){
+				enn.destroy();
+			}else{
+				i++;
+			}
+		}
+	}
+	
 	public void ggoto(int x, int y, double xx, double yy){
 		globalx = x;
 		globaly = y;
-		gexx = xx;
-		gexy = yy;
+		globalxx = xx;
+		globalyy = yy;
 	}
 	public void cgoto(int cid){
 		Camera en = cameras[cid];
 		globalx = (int)Math.floor(en.cx);
-		gexx = en.cx-globalx;
+		globalxx = en.cx-globalx;
 		globaly = (int)Math.floor(en.cy);
-		gexy = en.cy-globaly;
+		globalyy = en.cy-globaly;
 	}
 	
 	private void tick(){
 		
 		cay = cameras[currentcamera].cy;
 		cax = cameras[currentcamera].cx;
+		
+		if(follow){
+			globalx = following.x;
+			globaly = following.y;
+			globalxx = following.xx;
+			globalyy = following.yy;
+		}
 		
 		if(window.pressed.keys[Binds.ENDBIND]){
 			System.exit(0);
@@ -305,33 +331,25 @@ public class Game {
 			
 		}else if(signal==DELETEMOVEARROWS){
 			if(arrowsdeployed){
-				int i=0;
-				while(i<enumm){
-					Entity enn = entities[i];
-					if(enn.id==Entity.IDARROW){
-						enn.destroy();
-					}else{
-						i++;
-					}
-				}
+				targetdelete(Entity.IDARROW);
 				arrowsdeployed = false;
 			}
 		}else if(signal==MOVEUP){
 			Game.broadcast(Game.MOVEOPS);
-			globaly--;
-			getpartymember(partyselect).shift(Entity.UP);
+			//globaly-=5;
+			getpartymember(partyselect).shift(Entity.UP,5);
 		}else if(signal==MOVERIGHT){
 			Game.broadcast(Game.MOVEOPS);
-			globalx++;
-			getpartymember(partyselect).shift(Entity.RIGHT);
+			//globalx++;
+			getpartymember(partyselect).shift(Entity.RIGHT,1);
 		}else if(signal==MOVEDOWN){
 			Game.broadcast(Game.MOVEOPS);
-			globaly++;
-			getpartymember(partyselect).shift(Entity.DOWN);
+			//globaly++;
+			getpartymember(partyselect).shift(Entity.DOWN,1);
 		}else if(signal==MOVELEFT){
 			Game.broadcast(Game.MOVEOPS);
-			globalx--;
-			getpartymember(partyselect).shift(Entity.LEFT);
+			//globalx--;
+			getpartymember(partyselect).shift(Entity.LEFT,1);
 		}else if(signal==MOVEOPS){
 			broadcast(DELETEMOVEARROWS);
 			arrowwait = true;
@@ -382,15 +400,7 @@ public class Game {
 			selectordeployed = true;
 		}else if(signal==DELETESELECTORS){
 			if(selectordeployed){
-				int i=0;
-				while(i<enumm){
-					Entity enn = entities[i];
-					if(enn.id==Entity.IDSELECTOR){
-						enn.destroy();
-					}else{
-						i++;
-					}
-				}
+				targetdelete(Entity.IDSELECTOR);
 				selectordeployed = false;
 			}
 		}

@@ -155,15 +155,24 @@ public class ImageLoader {
 	public static final int ASPHALT = 146;
 	public static final int SWAMPGRASS = 147;
 	
-	public static final int SELECTOR0 = 160;
-	public static final int SELECTOR1 = 161;
-	public static final int SELECTOR2 = 162;
-	public static final int SELECTOR3 = 163;
-	public static final int SELECTOR4 = 164;
-	public static final int SELECTOR5 = 165;
-	public static final int SELECTOR6 = 166;
-	public static final int SELECTOR7 = 167;
-	public static final int SELECTORNULL = 168;
+	public static final int SELECTOR00 = 160;
+	public static final int SELECTOR01 = 161;
+	public static final int SELECTOR02 = 162;
+	public static final int SELECTOR03 = 163;
+	public static final int SELECTOR04 = 164;
+	public static final int SELECTOR05 = 165;
+	public static final int SELECTOR06 = 166;
+	public static final int SELECTOR07 = 167;
+	public static final int SELECTORFULL0 = 168;
+	public static final int SELECTOR10 = 176;
+	public static final int SELECTOR11 = 177;
+	public static final int SELECTOR12 = 178;
+	public static final int SELECTOR13 = 179;
+	public static final int SELECTOR14 = 180;
+	public static final int SELECTOR15 = 181;
+	public static final int SELECTOR16 = 182;
+	public static final int SELECTOR17 = 183;
+	public static final int SELECTORFULL1 = 184;
 	static void loadimages(){
 		BufferedImage b = null;
 		try{

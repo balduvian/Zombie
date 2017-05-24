@@ -46,6 +46,7 @@ public class Entity {
 
 	boolean shifting = false;
 	int mdir = 4;
+	int shiftsleft = 0;
 	
 	public void destroy(){
 		Game.delete(index);
@@ -74,8 +75,9 @@ public class Entity {
 		active = false;
 	}
 	
-	public void shift(int dir){
+	public void shift(int dir, int times){
 		if(!shifting){
+			shiftsleft = times;
 			mdir = dir;
 			shifting = true;
 		}
@@ -86,10 +88,13 @@ public class Entity {
 	}
 	
 	protected void finishshift(){
-		shifting = false;
-		if(Game.arrowwait){
-			Game.broadcast(Game.CREATEMOVEARROWS);
-			Game.arrowwait = false;
+		shiftsleft--;
+			if(shiftsleft==0){
+			shifting = false;
+			if(Game.arrowwait){
+				Game.broadcast(Game.CREATEMOVEARROWS);
+				Game.arrowwait = false;
+			}
 		}
 	}
 	

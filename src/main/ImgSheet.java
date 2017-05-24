@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.image.BufferedImage;
+
 public class ImgSheet {
 	
 	public static final int NOIMAGE = ImageLoader.FLAME0;
@@ -43,6 +45,23 @@ public class ImgSheet {
 	}
 	public int getframes(){
 		return sheet[mode].length;
+	}
+	
+	public BufferedImage getimage(){
+		try{
+			BufferedImage temp = Game.images[sheet[mode][frame][0]];
+			for(int i=1;i<getlayers();i++){
+				BufferedImage dispose = Game.images[sheet[mode][frame][i]];
+				for(int y=0;y<16;y++){
+					for(int x=0;x<16;x++){
+						temp.setRGB(x, y, dispose.getRGB(x, y));
+					}
+				}
+			}
+			return temp;
+		}catch(Exception ex){
+			return Game.images[ImageLoader.MISSINGTEXTURE];
+		}
 	}
 	
 	public int makeac(){

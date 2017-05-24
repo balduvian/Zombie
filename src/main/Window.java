@@ -66,11 +66,7 @@ public class Window extends JFrame{
 							Entity et = Game.entities[c];
 							if(et!=null){
 								int[] lo = ldr(et.x,et.xx,et.y,et.yy,et.w,et.h);
-								int[] la = et.img.getcurrent();
-								for(int l=0;l<et.img.sheet[et.img.mode][et.img.frame].length;l++){
-									//g.drawImage(Game.images[et.img.sheet[et.img.mode][et.img.frame][l]], lo[0],lo[1],lo[2],lo[3], null);
-									g.drawImage(Game.images[la[l]], lo[0],lo[1],lo[2],lo[3], null);
-								}
+								g.drawImage(et.img.getimage(), lo[0],lo[1],lo[2],lo[3], null);
 							}
 						}
 						
@@ -83,7 +79,7 @@ public class Window extends JFrame{
 						g.fillRect(0,height/2+(int)((7.5-Game.cay)*Game.square),width,1000);
 						
 						g.setColor(Color.red);
-						g.drawString(Game.globaly+" | "+Math.floor(Game.gexy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.gexx*100)/100+" | "+Game.world.seed, 20, 30);
+						g.drawString(Game.globaly+" | "+Math.floor(Game.globalyy*100)/100+" | "+Game.globalx+" | "+Math.floor(Game.globalxx*100)/100+" | "+Game.world.seed, 20, 30);
 						g.drawRect(width/2-2, height/2-2, 2, 2);
 						
 						int acr = (width/Game.square);
@@ -209,11 +205,11 @@ public class Window extends JFrame{
 	}
 	
 	public int xdisp(int x, double off, double w){
-		return (int)((((x+off)-(w/2.0))-Game.gexx-Game.globalx-Game.cax)*Game.square+width/2);
+		return (int)((((x+off)-(w/2.0))-Game.globalxx-Game.globalx-Game.cax)*Game.square+width/2);
 	}
 	
 	public int ydisp(int y, double off, double h){
-		return (int)((((y+off)-(h/2.0))-Game.gexy-Game.globaly-Game.cay)*Game.square+height/2);
+		return (int)((((y+off)-(h/2.0))-Game.globalyy-Game.globaly-Game.cay)*Game.square+height/2);
 	}
 	
 }

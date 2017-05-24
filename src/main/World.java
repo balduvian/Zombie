@@ -36,79 +36,86 @@ public class World {
 	
 	public void tick(){
 		int dtimes = Game.globaly-offy;
-		shift(2,dtimes);
+		if(dtimes>0){
+			shift(2,dtimes);
+		}
 		int ltimes = offx-Game.globalx;
-		shift(3,ltimes);
+		if(ltimes>0){
+			shift(3,ltimes);
+		}
 		int utimes = offy-Game.globaly;
-		shift(0,utimes);
+		if(utimes>0){
+			shift(0,utimes);
+		}
 		int rtimes = Game.globalx-offx;
-		shift(1,rtimes);
+		if(rtimes>0){
+			shift(1,rtimes);
+		}
 	}
 
 	public void shift(int dir, int times){
-		for(int ti=0;ti<times;ti++){
-			if(dir == 0){
-				offy--;
-				for(int ty=wsize-1;ty>-1;ty--){
-					for(int tx=0;tx<wsize;tx++){
-						try{
-							Block[] temp = world[ty][tx];
-							world[ty][tx] = world[ty-1][tx];
-							world[ty-1][tx] = temp;
-							Region emp = worldregion[ty][tx];
-							worldregion[ty][tx] = worldregion[ty-1][tx];
-							worldregion[ty-1][tx] = emp;
-						}catch(Exception ex){
-							loadstack(tx,ty);
-						}
+		if(dir == 0){
+			//System.out.println("UP");
+			offy-=times;
+			for(int ty=wsize-1;ty>-1;ty--){
+				for(int tx=0;tx<wsize;tx++){
+					try{
+						Block[] temp = world[ty][tx];
+						world[ty][tx] = world[ty-times][tx];
+						world[ty-times][tx] = temp;
+						Region emp = worldregion[ty][tx];
+						worldregion[ty][tx] = worldregion[ty-times][tx];
+						worldregion[ty-times][tx] = emp;
+					}catch(Exception ex){
+						loadstack(tx,ty);
 					}
 				}
-			}else if(dir == 1){
-				offx++;
-				for(int ty=0;ty<wsize;ty++){
-					for(int tx=0;tx<wsize;tx++){
-						try{
-							Block[] temp = world[ty][tx];
-							world[ty][tx] = world[ty][tx+1];
-							world[ty][tx+1] = temp;
-							Region emp = worldregion[ty][tx];
-							worldregion[ty][tx] = worldregion[ty][tx+1];
-							worldregion[ty][tx+1] = emp;
-						}catch(Exception ex){
-							loadstack(tx,ty);
-						}
+			}
+		}else if(dir == 1){
+			offx+=times;
+			for(int ty=0;ty<wsize;ty++){
+				for(int tx=0;tx<wsize;tx++){
+					try{
+						Block[] temp = world[ty][tx];
+						world[ty][tx] = world[ty][tx+times];
+						world[ty][tx+times] = temp;
+						Region emp = worldregion[ty][tx];
+						worldregion[ty][tx] = worldregion[ty][tx+times];
+						worldregion[ty][tx+times] = emp;
+					}catch(Exception ex){
+						loadstack(tx,ty);
 					}
 				}
-			}else if(dir == 2){
-				offy++;
-				for(int ty=0;ty<wsize;ty++){
-					for(int tx=0;tx<wsize;tx++){
-						try{
-							Block[] temp = world[ty][tx];
-							world[ty][tx] = world[ty+1][tx];
-							world[ty+1][tx] = temp;
-							Region emp = worldregion[ty][tx];
-							worldregion[ty][tx] = worldregion[ty+1][tx];
-							worldregion[ty+1][tx] = emp;
-						}catch(Exception ex){
-							loadstack(tx,ty);
-						}
+			}
+		}else if(dir == 2){
+			offy+=times;
+			for(int ty=0;ty<wsize;ty++){
+				for(int tx=0;tx<wsize;tx++){
+					try{
+						Block[] temp = world[ty][tx];
+						world[ty][tx] = world[ty+times][tx];
+						world[ty+times][tx] = temp;
+						Region emp = worldregion[ty][tx];
+						worldregion[ty][tx] = worldregion[ty+times][tx];
+						worldregion[ty+times][tx] = emp;
+					}catch(Exception ex){
+						loadstack(tx,ty);
 					}
 				}
-			}else if(dir == 3){
-				offx--;
-				for(int ty=0;ty<wsize;ty++){
-					for(int tx=wsize-1;tx>-1;tx--){
-						try{
-							Block[] temp = world[ty][tx];
-							world[ty][tx] = world[ty][tx-1];
-							world[ty][tx-1] = temp;
-							Region emp = worldregion[ty][tx];
-							worldregion[ty][tx] = worldregion[ty][tx-1];
-							worldregion[ty][tx-1] = emp;
-						}catch(Exception ex){
-							loadstack(tx,ty);
-						}
+			}
+		}else if(dir == 3){
+			offx-=times;
+			for(int ty=0;ty<wsize;ty++){
+				for(int tx=wsize-1;tx>-1;tx--){
+					try{
+						Block[] temp = world[ty][tx];
+						world[ty][tx] = world[ty][tx-times];
+						world[ty][tx-times] = temp;
+						Region emp = worldregion[ty][tx];
+						worldregion[ty][tx] = worldregion[ty][tx-times];
+						worldregion[ty][tx-times] = emp;
+					}catch(Exception ex){
+						loadstack(tx,ty);
 					}
 				}
 			}
