@@ -54,6 +54,9 @@ public class Entity {
 	int shiftsleft = 0;
 	
 	public void destroy(){
+		if(selected){
+			Game.deselect(index);
+		}
 		Game.delete(index);
 	}
 	
@@ -62,7 +65,7 @@ public class Entity {
 		setup();
 	}
 	
-	//toovveride tho
+	//to override tho
 	protected void initroutine(){
 		
 	}

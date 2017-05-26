@@ -14,6 +14,7 @@ public class Camera{
 	double[] destin;
 	int tleft;
 	int index;
+	int climit;
 	
 	//modes = 0: static, 1:following, 2: movable
 	public Camera(double nx, double ny){
@@ -80,17 +81,18 @@ public class Camera{
 			if(Game.window.pressed.keys[Binds.LEFTBIND]){
 				cx -= cspeed;
 			}
-			if(cy>4){
-				cy=4;
+			climit = Game.world.rb-1;
+			if(cy>climit){
+				cy=climit;
 			}
-			if(cx>4){
-				cx=4;
+			if(cx>climit){
+				cx=climit;
 			}
-			if(cy<-4){
-				cy=-4;
+			if(cy<-climit){
+				cy=-climit;
 			}
-			if(cx<-4){
-				cx=-4;
+			if(cx<-climit){
+				cx=-climit;
 			}
 		}
 	}

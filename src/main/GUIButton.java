@@ -2,9 +2,9 @@ package main;
 
 public class GUIButton {
 	
-	public static final int INACTIVESTATE = 0;
-	public static final int ACTIVESTATE = 1;
-	public static final int HOVERSTATE = 2;
+	public static final int INACTIVESTATE = 2;
+	public static final int ACTIVESTATE = 0;
+	public static final int HOVERSTATE = 1;
 	public static final int PRESSEDSTATE = 3;
 	public static final int[] bbacks = {ImageLoader.BUTTONINACTIVE,ImageLoader.BUTTONACTIVE,ImageLoader.BUTTONHOVER,ImageLoader.BUTTONINPRESSED};
 	boolean locked;
@@ -15,7 +15,8 @@ public class GUIButton {
 	boolean inactive;
 	int bstate = 0;
 	String name;
-	int img;
+	//int img;
+	ImgSheet img;
 	int width = 16;
 	int height = 16;
 	int tocast;
@@ -28,7 +29,7 @@ public class GUIButton {
 	
 	public GUIButton(String bname, int image, int broadcasting){
 		name = bname;
-		img = image;
+		img = new ImgSheet(new int[][][]{{{ImageLoader.BUTTONACTIVE,image}},{{ImageLoader.BUTTONHOVER,image}},{{ImageLoader.BUTTONINACTIVE,image}},{{ImageLoader.BUTTONINPRESSED,image}}});
 		tocast = broadcasting;
 	}
 	

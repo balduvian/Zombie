@@ -139,6 +139,13 @@ public class Game {
 			return new Rectangle(1,1,1,1);
 		}
 	}
+	public static Rectangle getbrect(int bid, int tob){
+		try{
+			return window.getbuttonbounds(bid, tob);
+		}catch(Exception ex){
+			return new Rectangle(1,1,1,1);
+		}
+	}
 	
 	public static double bitrand(int s, int o){
 		return(Math.abs(((s+s*o*o)^(o*s+o-s)^((s-1)*o+(o-1)*s))*Math.PI)%1);
@@ -360,19 +367,15 @@ public class Game {
 			}
 		}else if(signal==MOVEUP){
 			Game.broadcast(Game.MOVEOPS);
-			//globaly-=5;
 			getpartymember(partyselect).shift(Entity.UP,1);
 		}else if(signal==MOVERIGHT){
 			Game.broadcast(Game.MOVEOPS);
-			//globalx++;
 			getpartymember(partyselect).shift(Entity.RIGHT,1);
 		}else if(signal==MOVEDOWN){
 			Game.broadcast(Game.MOVEOPS);
-			//globaly++;
 			getpartymember(partyselect).shift(Entity.DOWN,1);
 		}else if(signal==MOVELEFT){
 			Game.broadcast(Game.MOVEOPS);
-			//globalx--;
 			getpartymember(partyselect).shift(Entity.LEFT,1);
 		}else if(signal==MOVEOPS){
 			broadcast(DELETEMOVEARROWS);
@@ -398,28 +401,16 @@ public class Game {
 			if(partyselect==inparty){
 				Game.broadcast(STARTENEMYTURN);
 			}else{
-				Game.broadcast(CLEARACTIONS);
-				Game.broadcast(CAMERATOPARTY);
+				turnstartup();
 			}
-		}else if(signal==CLEARACTIONS){
-			maxmoved = getpartymember(partyselect).stats.stats[Stats.SPEED];
-			moved = 0;
-			gui.enableall();
 		}else if(signal==STARTPLAYERTURN){
-			select(getpartymember(partyselect));
-			turn=PLAYERTURN;
-			gui.setmode(GUI.MAIN);
 			partyselect = 0;
-			Game.broadcast(CLEARACTIONS);
-			Game.broadcast(CAMERATOPARTY);
+			turn=PLAYERTURN;
+			turnstartup();
 		}else if(signal==STARTENEMYTURN){
 			turn=ENEMYTURN;
 			gui.setmode(GUI.ENEMYTURN);
-			Game.broadcast(BEGINAI);
-		}else if(signal==BEGINAI){
-			Game.broadcast(STARTPLAYERTURN);
-		}else if(signal==CAMERATOPARTY){
-			
+			enemyai();
 		}else if(signal==CREATESELECTOR){
 			create(globalx+100,globaly+100,new SelectorEntity());
 			selectordeployed = true;
@@ -430,6 +421,24 @@ public class Game {
 			}
 		}
 	}
+	
+	public static void enemyai(){
+		Game.broadcast(STARTPLAYERTURN);
+	}
+	
+	public static void turnstartup(){
+		gui.setmode(GUI.MAIN);
+		select(getpartymember(partyselect));
+		clearactions();
+		Game.broadcast(CAMERATOPARTY);
+	}
+	
+	public static void clearactions(){
+		maxmoved = getpartymember(partyselect).stats.stats[Stats.SPEED];
+		moved = 0;
+		gui.enableall();
+	}
+	
 	
 	public static void main(String[] args) {
 		new Game();

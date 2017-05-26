@@ -21,21 +21,21 @@ public class GUI {
 	public static final GUIButton MOVEBUTTON = new GUIButton("Move",ImageLoader.GUIMOVE,Game.GUIGOMOVE);
 	public static final GUIButton ATTACKBUTTON = new GUIButton("Attack",ImageLoader.GUIATTACK,Game.GUIGOATTACK);
 	public static final GUIButton ACTIONBUTTON = new GUIButton("Action",ImageLoader.GUIACTION,Game.GUIGOACTION);
-	public static final GUIButton STOPBUTTON = new GUIButton("Stop",ImageLoader.GUISTOP,Game.ADVANCEPARTYTURN);
+	public static final GUIButton ENDBUTTON = new GUIButton("Stop",ImageLoader.GUIEND,Game.ADVANCEPARTYTURN);
 	public static final GUIButton BAGBUTTON = new GUIButton("Bag",ImageLoader.GUIBAG,Game.GUIOPENBAG);
 	public static final GUIButton BACKBUTTON = new GUIButton("Back",ImageLoader.GUIBACK,Game.GUIGOMAIN);
 	
 	int mode = 0;
 	
 	GUIButton[][] buttons= {
-			{new GUIButton(MOVEBUTTON),new GUIButton(ATTACKBUTTON),new GUIButton(ACTIONBUTTON),new GUIButton(STOPBUTTON),new GUIButton(BAGBUTTON)},//main
+			{new GUIButton(MOVEBUTTON),new GUIButton(ATTACKBUTTON),new GUIButton(ACTIONBUTTON),new GUIButton(ENDBUTTON),new GUIButton(BAGBUTTON)},//main
 			{new GUIButton(BACKBUTTON)},//movement
 			{new GUIButton(BACKBUTTON)},//attacking 
 			{new GUIButton(BACKBUTTON)},//action
 			{}//enemy turn
 	};
 	
-	Rectangle[] bounds = new Rectangle[getbuttons()];
+	Rectangle[] bounds;
 	
 	public int getbuttons(){
 		return buttons[mode].length;
@@ -43,6 +43,7 @@ public class GUI {
 	
 	public GUI(){
 		mode = MAIN;
+		bounds = new Rectangle[getbuttons()];
 	}
 	
 	public void enableall(){
@@ -56,7 +57,7 @@ public class GUI {
 		int thro = getbuttons();
 		try{
 			for(int i=0;i<thro;i++){
-				
+				bounds[i] = Game.getbrect(i,thro);
 				GUIButton bu = buttons[mode][i];
 				boolean md = Game.window.moussed.mdown;
 				boolean on = mr.intersects(bounds[i]);
@@ -64,16 +65,16 @@ public class GUI {
 					if(on || bu.locked){
 						if(bu.locked){
 							if(on){
-								bu.bstate = GUIButton.PRESSEDSTATE;
+								bu.img.mode = GUIButton.PRESSEDSTATE;
 								if(!md){
 									bu.locked = false;
 									bu.onclick();
 								}
 							}else{
-								bu.bstate = GUIButton.HOVERSTATE;
+								bu.img.mode = GUIButton.HOVERSTATE;
 							}
 						}else{
-							bu.bstate = GUIButton.HOVERSTATE;
+							bu.img.mode = GUIButton.HOVERSTATE;
 						}
 						if(!md && !bu.accepting){
 							bu.accepting = true;
@@ -88,12 +89,12 @@ public class GUI {
 						}
 					}else{
 						bu.acclock = false;
-						bu.bstate = GUIButton.ACTIVESTATE;
+						bu.img.mode = GUIButton.ACTIVESTATE;
 						bu.locked = false;
 						bu.accepting = false;
 					}
 				}else{
-					bu.bstate = GUIButton.INACTIVESTATE;
+					bu.img.mode = GUIButton.INACTIVESTATE;
 				}
 			}
 		}catch(Exception ex){}

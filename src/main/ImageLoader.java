@@ -88,12 +88,12 @@ public class ImageLoader {
 	public static final int SANDE1 = 77;
 	public static final int ELEMENTALE0 = 78;
 	public static final int ELEMENTALE1 = 79;
-	public static final int CHESTENTITY0 = 80;
-	public static final int CHESTENTITY1 = 81;
-	public static final int CHESTENTITY2 = 82;
-	public static final int LOOTENTITY0 = 83;
-	public static final int LOOTENTITY1 = 84;
-	public static final int LOOTENTITY2 = 85;
+	public static final int CHESTSMALL = 80;
+	public static final int CHESTMED = 81;
+	public static final int CHESTBIG = 82;
+	public static final int LOOTSMALL = 83;
+	public static final int LOOTMED = 84;
+	public static final int LOOTBIG = 85;
 	public static final int PLAYEROUTLINE = 86;
 	public static final int RACE0 = 87;
 	public static final int RACE1 = 88;
@@ -114,7 +114,7 @@ public class ImageLoader {
 	public static final int GUIATTACK = 103;
 	public static final int GUIACTION = 104;
 	public static final int GUIBACK = 105;
-	public static final int GUISTOP = 106;
+	public static final int GUIEND = 106;
 	public static final int GUIMENU = 107;
 	public static final int BUTTONACTIVE = 108;
 	public static final int BUTTONINACTIVE = 109;
@@ -195,13 +195,14 @@ public class ImageLoader {
 	public static final int SELECTORFULL1 = 184;
 	public static final int STATUSBLEED = 185;
 	public static final int SELECTIONAURA = 186;
+	public static final int RETICLE = 187;
 	
 	static void loadimages(){
 		BufferedImage b = null;
 		try{
 			b = ImageIO.read(ImageLoader.class.getResource("/zimages/spritesheet16x16.png"));
 		}catch(Exception ex){
-			ex.printStackTrace();
+			b = new BufferedImage(1,1,BufferedImage.TYPE_INT_RGB); 
 		}
 		int cuo = 16;
 		int avance = 0;
@@ -209,13 +210,18 @@ public class ImageLoader {
 		int hu = b.getHeight()/cuo;
 		for(int y=0;y<hu;y++){
 			for(int x=0;x<wu;x++){
-				BufferedImage lod = new BufferedImage(cuo,cuo,BufferedImage.TYPE_INT_ARGB);
-				for(int yy=0;yy<cuo;yy++){
-					for(int xx=0;xx<cuo;xx++){
-						int lay = y*cuo+yy;
-						int lax = x*cuo+xx;
-						lod.setRGB(xx, yy, b.getRGB(lax, lay));	
+				BufferedImage lod;
+				try{
+					lod = new BufferedImage(cuo,cuo,BufferedImage.TYPE_INT_ARGB);
+					for(int yy=0;yy<cuo;yy++){
+						for(int xx=0;xx<cuo;xx++){
+							int lay = y*cuo+yy;
+							int lax = x*cuo+xx;
+							lod.setRGB(xx, yy, b.getRGB(lax, lay));	
+						}
 					}
+				}catch(Exception ex){
+					lod = new BufferedImage(cuo,cuo,BufferedImage.TYPE_INT_RGB);
 				}
 				Game.images[avance] = lod;
 				avance++;

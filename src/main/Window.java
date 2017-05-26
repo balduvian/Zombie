@@ -50,19 +50,11 @@ public class Window extends JFrame{
 									int acy = ((y+wo.offy-wo.rb));
 
 									int[] lo = ldr(acx,0,acy,0,1,1);
-									g.fillRect(lo[0],lo[1],lo[2],lo[3]);
-									
 									ImgSheet tlo = wo.world[y][x][z].img;
-									//tlo.tick();
 									if(tlo.anim){
 										tlo.frame = (Block.empire/tlo.frametime)%tlo.getframes();
 									}
-									int nay = tlo.getlayers();
-									int[] nua = tlo.getcurrent();
-									for(int l=0;l<nay;l++){
-										g.drawImage(Game.images[nua[l]],lo[0],lo[1],lo[2],lo[3],null);
-									}
-
+									g.drawImage(tlo.getimage(),lo[0],lo[1],lo[2],lo[3],null);
 								}
 							}
 						}
@@ -101,6 +93,7 @@ public class Window extends JFrame{
 						
 						GUI gui = Game.gui;
 						int bnum = gui.getbuttons();
+						g.setFont(new Font("Serif",Font.BOLD,12));
 						
 						if(!Game.selected){
 							g.drawImage(Game.images[ImageLoader.ESELECTUL0],0,height-(int)(2*Game.square),Game.square,Game.square,null);
@@ -118,18 +111,18 @@ public class Window extends JFrame{
 							g.drawImage(Game.images[ImageLoader.ESELECTDR1],Game.square*2,height-(int)(Game.square),Game.square,Game.square,null);
 							g.drawImage(Game.entityselect.img.getimage(), (int)((6/16.0)*Game.square), height-(int)((26/16.0)*Game.square), (int)(Game.square*(12/16.0)), (int)(Game.square*(12/16.0)), null);
 							g.setColor(Color.BLACK);
-							g.setFont(new Font("Serif",Font.BOLD,12));
 							g.drawString(Game.entityselect.name,(int)((6/16.0)*Game.square), height-(int)((6/16.0)*Game.square));
 						}
 						
+						int mmm = gui.mode;
 						for(int i=0;i<bnum;i++){
-							int wax = ((width/(bnum+2))*(i+2))-Game.square/2;
-							int way = height-(int)(1.5*Game.square);
-							
-							gui.bounds[i] = new Rectangle(wax,way,Game.square,Game.square);
-							
-							g.drawImage(Game.images[GUIButton.bbacks[gui.buttons[gui.mode][i].bstate]], wax, way, Game.square, Game.square, null);
-							g.drawImage(Game.images[gui.buttons[gui.mode][i].img], wax, way, Game.square, Game.square, null);
+							int[] r = getbuttonposition(i,bnum);
+							g.drawImage(gui.buttons[mmm][i].img.getimage(), r[0], r[1], Game.square, Game.square, null);
+						}
+						if(gui.mode==GUI.MOVEMENT){
+							int[] r = getbuttonposition(0,bnum);
+							g.setColor(Color.WHITE);
+							g.drawString((Game.maxmoved-Game.moved)+" Moves Left", r[0], r[1]);
 						}
 						
 					}catch(Exception ex){
@@ -234,6 +227,17 @@ public class Window extends JFrame{
 			}
 		}
 		public void keyTyped(KeyEvent arg0){}
+	}
+	
+	public Rectangle getbuttonbounds(int bid, int tob){
+		int wax = ((width/(tob+2))*(bid+2))-Game.square/2;
+		int way = height-(int)(1.5*Game.square);
+		return new Rectangle(wax,way,Game.square,Game.square);
+	}
+	public int[] getbuttonposition(int bid, int tob){
+		int wax = ((width/(tob+2))*(bid+2))-Game.square/2;
+		int way = height-(int)(1.5*Game.square);
+		return new int[]{wax,way};
 	}
 	
 	public int[] ldr(int x, double xx, int y, double yy, double w, double h){
