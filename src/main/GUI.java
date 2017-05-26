@@ -16,19 +16,19 @@ public class GUI {
 	public static final int MAINATTACK = 1;
 	public static final int MAINACTION = 2;
 	public static final int MAINSTOP = 3;
-	public static final int MAINMENU = 4;
+	public static final int MAINBAG = 4;
 	
-	public static final GUIButton MOVEBUTTON = new GUIButton("Move",0,ImageLoader.GUIMOVE,Game.GUIGOMOVE);
-	public static final GUIButton ATTACKBUTTON = new GUIButton("Attack",1,ImageLoader.GUIATTACK,Game.GUIGOATTACK);
-	public static final GUIButton ACTIONBUTTON = new GUIButton("Action",2,ImageLoader.GUIACTION,Game.GUIGOACTION);
-	public static final GUIButton STOPBUTTON = new GUIButton("Stop",3,ImageLoader.GUISTOP,Game.ADVANCEPARTYTURN);
-	public static final GUIButton MENUBUTTON = new GUIButton("Menu",4,ImageLoader.GUIMENU,Game.GUIOPENMENU);
-	public static final GUIButton BACKBUTTON = new GUIButton("Back",5,ImageLoader.GUIBACK,Game.GUIGOMAIN);
+	public static final GUIButton MOVEBUTTON = new GUIButton("Move",ImageLoader.GUIMOVE,Game.GUIGOMOVE);
+	public static final GUIButton ATTACKBUTTON = new GUIButton("Attack",ImageLoader.GUIATTACK,Game.GUIGOATTACK);
+	public static final GUIButton ACTIONBUTTON = new GUIButton("Action",ImageLoader.GUIACTION,Game.GUIGOACTION);
+	public static final GUIButton STOPBUTTON = new GUIButton("Stop",ImageLoader.GUISTOP,Game.ADVANCEPARTYTURN);
+	public static final GUIButton BAGBUTTON = new GUIButton("Bag",ImageLoader.GUIBAG,Game.GUIOPENBAG);
+	public static final GUIButton BACKBUTTON = new GUIButton("Back",ImageLoader.GUIBACK,Game.GUIGOMAIN);
 	
 	int mode = 0;
 	
 	GUIButton[][] buttons= {
-			{new GUIButton(MOVEBUTTON),new GUIButton(ATTACKBUTTON),new GUIButton(ACTIONBUTTON),new GUIButton(STOPBUTTON),new GUIButton(MENUBUTTON)},//main
+			{new GUIButton(MOVEBUTTON),new GUIButton(ATTACKBUTTON),new GUIButton(ACTIONBUTTON),new GUIButton(STOPBUTTON),new GUIButton(BAGBUTTON)},//main
 			{new GUIButton(BACKBUTTON)},//movement
 			{new GUIButton(BACKBUTTON)},//attacking 
 			{new GUIButton(BACKBUTTON)},//action

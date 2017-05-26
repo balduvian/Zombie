@@ -120,7 +120,7 @@ public class ImageLoader {
 	public static final int BUTTONINACTIVE = 109;
 	public static final int BUTTONHOVER = 110;
 	public static final int BUTTONINPRESSED = 111;
-	public static final int Aaaaaaaaaaaaaaaaaaaaaa = 112;
+	public static final int GUIBAG = 112;
 	public static final int MENUSELECT = 113;
 	public static final int STICKMASK = 114;
 	public static final int BROADSWORDMASK = 115;
@@ -134,8 +134,8 @@ public class ImageLoader {
 	public static final int SKIN3 = 123;
 	public static final int SKIN4 = 124;
 	public static final int SKIN5 = 125;
-	public static final int TSTATUS = 126;
-	public static final int GSTATUS = 127;
+	public static final int STATUSFIRE = 126;
+	public static final int STATUSCONFUSION = 127;
 	public static final int MATERIALWOOD0 = 128;
 	public static final int MATERIALLAVA = 129;
 	public static final int MATERIALAQUA = 130;
@@ -146,15 +146,28 @@ public class ImageLoader {
 	public static final int ARROWRIGHT2 = 135;
 	public static final int ARROWDOWN2 = 136;
 	public static final int ARROWLEFT2 = 137;
-	
+	public static final int HEALTHBAR = 138;
+	public static final int SANITYBAR = 139;
+	public static final int SNEKE0 = 140;
+	public static final int SNEKE1 = 141;
 	public static final int GUIBKGU = 142;
 	public static final int GUIBKGD = 143;
-	
 	public static final int FORESTGRASS = 144;
 	public static final int TUMBLEWEED = 145;
 	public static final int ASPHALT = 146;
 	public static final int SWAMPGRASS = 147;
-	
+	public static final int MATERIALMASK = 148;
+	public static final int MATERIALGOLD = 149;
+	public static final int SPEARMASK = 150;
+	public static final int HOOKMASK = 151;
+	public static final int BOWMASK = 152;
+	public static final int ARROWMASK = 153;
+	public static final int ESELECTUL0 = 154;
+	public static final int ESELECTUM0 = 155;
+	public static final int ESELECTUR0 = 156;
+	public static final int ESELECTUL1 = 157;
+	public static final int ESELECTUM1 = 158;
+	public static final int ESELECTUR1 = 159;
 	public static final int SELECTOR00 = 160;
 	public static final int SELECTOR01 = 161;
 	public static final int SELECTOR02 = 162;
@@ -164,6 +177,13 @@ public class ImageLoader {
 	public static final int SELECTOR06 = 166;
 	public static final int SELECTOR07 = 167;
 	public static final int SELECTORFULL0 = 168;
+	public static final int STATUSPOSION = 169;
+	public static final int ESELECTDL0 = 170;
+	public static final int ESELECTDM0 = 171;
+	public static final int ESELECTDR0 = 172;
+	public static final int ESELECTDL1 = 173;
+	public static final int ESELECTDM1 = 174;
+	public static final int ESELECTDR1 = 175;
 	public static final int SELECTOR10 = 176;
 	public static final int SELECTOR11 = 177;
 	public static final int SELECTOR12 = 178;
@@ -173,6 +193,9 @@ public class ImageLoader {
 	public static final int SELECTOR16 = 182;
 	public static final int SELECTOR17 = 183;
 	public static final int SELECTORFULL1 = 184;
+	public static final int STATUSBLEED = 185;
+	public static final int SELECTIONAURA = 186;
+	
 	static void loadimages(){
 		BufferedImage b = null;
 		try{

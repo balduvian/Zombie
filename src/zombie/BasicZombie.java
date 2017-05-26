@@ -9,7 +9,7 @@ public class BasicZombie extends Zombie{
 		prebase = Zombie.BASICZOMBIESTATS; 
 		img = new ImgSheet(new int[][][]{{{ImageLoader.ZOMBIEE0}, {ImageLoader.ZOMBIEE1}}},60,10);
 		zombid = Zombie.BASICZOMBIEID;
-		logname = "Basic Zombie";
+		name = "Basic Zombie";
 	}
 	
 }

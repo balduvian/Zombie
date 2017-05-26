@@ -14,7 +14,6 @@ public class GUIButton {
 	//boolean hover;//doweneedit???
 	boolean inactive;
 	int bstate = 0;
-	int id;
 	String name;
 	int img;
 	int width = 16;
@@ -23,14 +22,12 @@ public class GUIButton {
 	
 	public GUIButton(GUIButton i){
 		name = i.name;
-		id = i.id;
 		img = i.img;
 		tocast = i.tocast;
 	}
 	
-	public GUIButton(String bname, int triggerid, int image, int broadcasting){
+	public GUIButton(String bname, int image, int broadcasting){
 		name = bname;
-		id = triggerid;
 		img = image;
 		tocast = broadcasting;
 	}

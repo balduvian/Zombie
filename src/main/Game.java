@@ -25,7 +25,7 @@ public class Game {
 	public static BufferedImage[] images = new BufferedImage[Imax];
 	
 	//display size
-	public static int square = 64;
+	public static int square = 48;
 	
 	//window
 	public static Window window;
@@ -47,7 +47,7 @@ public class Game {
 	public static int moved;
 	public static int maxmoved;
 	
-	public static boolean entityselected;
+	public static boolean selected;
 	public static Entity entityselect;
 	
 	//global display positioning
@@ -69,9 +69,42 @@ public class Game {
 	static double tpm = 0;//ticks per millisecond
 	
 	//GUI
-	static GUI gui;
+	public static GUI gui;
 	
-	//random
+	public static void select(int eid){
+		selected = true;
+		if(entityselect!=null){
+			entityselect.selected = false;
+		}
+		entityselect = entities[eid];
+		entityselect.selected = true;
+	}
+	
+	public static void select(Entity en){
+		selected = true;
+		if(entityselect!=null){
+			entityselect.selected = false;
+		}
+		entityselect = en;
+		entityselect.selected = true;
+	}
+	
+	public static void deselect(int eid){
+		if(entityselect!=null){
+			entityselect.selected = false;
+		}
+		selected = false;
+	}
+	
+	public static Entity entityatloc(int x, int y){
+		for(int i=0;i<enumm;i++){
+			Entity tt = entities[i];
+			if(tt.x==x && tt.y==y){
+				return tt;
+			}
+		}
+		return null;
+	}
 	
 	public static Rectangle getmouserect(){
 		return new Rectangle(window.moussed2.mx,window.moussed2.my,1,1);
@@ -279,7 +312,7 @@ public class Game {
 	public static final int ADVANCEPARTYTURN = 10;
 	public static final int STARTPLAYERTURN = 11;
 	public static final int STARTENEMYTURN = 12;
-	public static final int GUIOPENMENU = 13;
+	public static final int GUIOPENBAG = 13;
 	public static final int CAMERATOPARTY = 14;
 	public static final int CLEARACTIONS = 15;
 	public static final int BEGINAI = 16;
@@ -294,41 +327,32 @@ public class Game {
 		if(signal==NOACTION){
 			
 		}else if(signal==CREATEMOVEARROWS){
+			if(moved<maxmoved){
 				Entity pm = getpartymember(partyselect);
 				int alx = pm.x;
 				int aly = pm.y;
 				
 				ArrowEntity ae = new ArrowEntity();
 				ae.setarrowtype(ArrowEntity.UPARROW);
-				if(moved==maxmoved){
-					gui.buttons[GUI.MAIN][GUI.MAINMOVE].inactive = true;
-					ae.inactivate();
-				}
 				create(alx,aly-1,ae);
 				
 				ae = new ArrowEntity();
 				ae.setarrowtype(ArrowEntity.RIGHTARROW);
-				if(moved==maxmoved){
-					ae.inactivate();
-				}
 				create(alx+1,aly,ae);
 	
 				ae = new ArrowEntity();
 				ae.setarrowtype(ArrowEntity.DOWNARROW);
-				if(moved==maxmoved){
-					ae.inactivate();
-				}
 				create(alx,aly+1,ae);
 				
 				ae = new ArrowEntity();
 				ae.setarrowtype(ArrowEntity.LEFTARROW);
-				if(moved==maxmoved){
-					ae.inactivate();
-				}
 				create(alx-1,aly,ae);
 				
 				arrowsdeployed = true;
-			
+			}else{
+				gui.setmode(GUI.MAIN);
+				gui.buttons[GUI.MAIN][GUI.MAINMOVE].inactive = true;
+			}
 		}else if(signal==DELETEMOVEARROWS){
 			if(arrowsdeployed){
 				targetdelete(Entity.IDARROW);
@@ -337,7 +361,7 @@ public class Game {
 		}else if(signal==MOVEUP){
 			Game.broadcast(Game.MOVEOPS);
 			//globaly-=5;
-			getpartymember(partyselect).shift(Entity.UP,5);
+			getpartymember(partyselect).shift(Entity.UP,1);
 		}else if(signal==MOVERIGHT){
 			Game.broadcast(Game.MOVEOPS);
 			//globalx++;
@@ -372,7 +396,7 @@ public class Game {
 		}else if(signal==ADVANCEPARTYTURN){
 			partyselect++;
 			if(partyselect==inparty){
-				Game.broadcast(ENEMYTURN);
+				Game.broadcast(STARTENEMYTURN);
 			}else{
 				Game.broadcast(CLEARACTIONS);
 				Game.broadcast(CAMERATOPARTY);
@@ -382,6 +406,7 @@ public class Game {
 			moved = 0;
 			gui.enableall();
 		}else if(signal==STARTPLAYERTURN){
+			select(getpartymember(partyselect));
 			turn=PLAYERTURN;
 			gui.setmode(GUI.MAIN);
 			partyselect = 0;
@@ -392,7 +417,7 @@ public class Game {
 			gui.setmode(GUI.ENEMYTURN);
 			Game.broadcast(BEGINAI);
 		}else if(signal==BEGINAI){
-			
+			Game.broadcast(STARTPLAYERTURN);
 		}else if(signal==CAMERATOPARTY){
 			
 		}else if(signal==CREATESELECTOR){

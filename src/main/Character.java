@@ -11,9 +11,8 @@ public class Character extends Entity{
 	protected int[] prebase;
 	int defbase;
 	
-	protected String logname;
-	
 	protected void initroutine(){
+		eselectable = true;
 		charinit();
 	}
 	

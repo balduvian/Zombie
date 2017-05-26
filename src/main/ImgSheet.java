@@ -50,11 +50,14 @@ public class ImgSheet {
 	public BufferedImage getimage(){
 		try{
 			BufferedImage temp = Game.images[sheet[mode][frame][0]];
-			for(int i=1;i<getlayers();i++){
+			int gl = sheet[mode][frame].length;
+			for(int i=1;i<gl;i++){
 				BufferedImage dispose = Game.images[sheet[mode][frame][i]];
 				for(int y=0;y<16;y++){
 					for(int x=0;x<16;x++){
-						temp.setRGB(x, y, dispose.getRGB(x, y));
+						if((dispose.getRGB(x,y) >> 24)!=0){
+							temp.setRGB(x, y, dispose.getRGB(x, y));
+						}
 					}
 				}
 			}

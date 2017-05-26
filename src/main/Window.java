@@ -1,7 +1,9 @@
 package main;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -30,6 +32,8 @@ public class Window extends JFrame{
 	Graphics g;
 	ExecutorService exe;
 	Rectangle[] buttonbounds;
+	
+	Canvas j;
 	
 	public void render(){
 		do {
@@ -66,6 +70,9 @@ public class Window extends JFrame{
 							Entity et = Game.entities[c];
 							if(et!=null){
 								int[] lo = ldr(et.x,et.xx,et.y,et.yy,et.w,et.h);
+								if(et.selected){
+									g.drawImage(Game.images[ImageLoader.SELECTIONAURA], lo[0],lo[1],lo[2],lo[3], null);
+								}
 								g.drawImage(et.img.getimage(), lo[0],lo[1],lo[2],lo[3], null);
 							}
 						}
@@ -94,8 +101,29 @@ public class Window extends JFrame{
 						
 						GUI gui = Game.gui;
 						int bnum = gui.getbuttons();
+						
+						if(!Game.selected){
+							g.drawImage(Game.images[ImageLoader.ESELECTUL0],0,height-(int)(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTUM0],Game.square,height-(int)(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTUR0],Game.square*2,height-(int)(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTDL0],0,height-(int)(Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTDM0],Game.square,height-(int)(Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTDR0],Game.square*2,height-(int)(Game.square),Game.square,Game.square,null);
+						}else{
+							g.drawImage(Game.images[ImageLoader.ESELECTUL1],0,height-(int)(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTUM1],Game.square,height-(int)(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTUR1],Game.square*2,height-(int)(2*Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTDL1],0,height-(int)(Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTDM1],Game.square,height-(int)(Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.images[ImageLoader.ESELECTDR1],Game.square*2,height-(int)(Game.square),Game.square,Game.square,null);
+							g.drawImage(Game.entityselect.img.getimage(), (int)((6/16.0)*Game.square), height-(int)((26/16.0)*Game.square), (int)(Game.square*(12/16.0)), (int)(Game.square*(12/16.0)), null);
+							g.setColor(Color.BLACK);
+							g.setFont(new Font("Serif",Font.BOLD,12));
+							g.drawString(Game.entityselect.name,(int)((6/16.0)*Game.square), height-(int)((6/16.0)*Game.square));
+						}
+						
 						for(int i=0;i<bnum;i++){
-							int wax = ((width/(bnum+1))*(i+1))-Game.square/2;
+							int wax = ((width/(bnum+2))*(i+2))-Game.square/2;
 							int way = height-(int)(1.5*Game.square);
 							
 							gui.bounds[i] = new Rectangle(wax,way,Game.square,Game.square);
@@ -127,11 +155,23 @@ public class Window extends JFrame{
 	}
 	
 	public Window(){
-		Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
-		width = ss.width;
-		height = ss.height;
-		this.setBounds(0, 0, width, height);
+		//Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
+		//width = ss.width;
+		//height = ss.height;
+		
+		width = 1000;
+		height = 700;
+		
+		//this.setBounds(0, 0, width, height);
+		setSize(width, height);
 		setUndecorated(true);
+		//j = new Canvas();
+		//add(j);
+		
+		//setSize(getSize());
+		//System.out.println(j.getHeight());
+		//width = j.getWidth();
+		//height = j.getHeight();
 		
 		pressed = new Kisen();
 		addKeyListener(pressed);

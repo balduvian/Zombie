@@ -30,7 +30,7 @@ public class Survivor extends Character{
 		pre = false;
 		defbase = 25;
 		nameindex = (int)(Math.random()*NUMNAMES);
-		logname = NAMES[nameindex];
+		name = NAMES[nameindex];
 		friendly = true;
 		id = Entity.IDSURVIVOR;
 		skin = (int)(Math.random()*NUMSKINS);

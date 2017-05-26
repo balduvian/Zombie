@@ -23,10 +23,15 @@ public class Entity {
 	public static final int HOVERSTATE = 2;
 	public static final int PRESSEDSTATE = 3;
 	
+	protected String name;
+	
+	boolean selected;
+	boolean eselectable;
+	
 	boolean pressed;
 	boolean accepting;
 	boolean locked;
-	boolean active;
+	boolean active = true;
 	boolean acclock;
 	int cast;
 	int bstate = 0;
@@ -84,7 +89,13 @@ public class Entity {
 	}
 	
 	protected void onclick(){
-		
+		if(eselectable){
+			if(!selected){
+				Game.select(index);
+			}else{
+				Game.deselect(index);
+			}
+		}
 	}
 	
 	protected void finishshift(){
@@ -152,16 +163,16 @@ public class Entity {
 			if(on || locked){
 				if(locked){
 					if(on){
-						bstate = GUIButton.PRESSEDSTATE;
+						bstate = PRESSEDSTATE;
 						if(!md){
 							locked = false;
 							onclick();
 						}
 					}else{
-						bstate = GUIButton.HOVERSTATE;
+						bstate = HOVERSTATE;
 					}
 				}else{
-					bstate = GUIButton.HOVERSTATE;
+					bstate = HOVERSTATE;
 				}
 				if(!md && !accepting){
 					accepting = true;
@@ -176,12 +187,12 @@ public class Entity {
 				}
 			}else{
 				acclock = false;
-				bstate = GUIButton.ACTIVESTATE;
+				bstate = ACTIVESTATE;
 				locked = false;
 				accepting = false;
 			}
 		}else{
-			bstate = GUIButton.INACTIVESTATE;
+			bstate = INACTIVESTATE;
 		}
 		
 	}
